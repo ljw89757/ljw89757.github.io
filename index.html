@@ -147,6 +147,251 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/27/deepLearningNote/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ljw">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wow">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/03/27/deepLearningNote/" class="post-title-link" itemprop="url">Deep Learning Note</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-03-27 21:29:12 / 修改时间：21:36:21" itemprop="dateCreated datePublished" datetime="2024-03-27T21:29:12+08:00">2024-03-27</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="Machine-Learning"><a href="#Machine-Learning" class="headerlink" title="Machine Learning"></a>Machine Learning</h2><ul>
+<li>Training<ol>
+<li>Function - Model - Linear model -<br>Activation function (Sigmoid Function | ReLU Function) -<br>Deep (Many layers) Learning - Overfitting<ul>
+<li>Regression<ul>
+<li>MSE</li>
+</ul>
+</li>
+<li>Classification - class as one-hot vector<ul>
+<li>softmax function</li>
+<li>binary classification - sigmoid</li>
+<li>Cross-entropy</li>
+</ul>
+</li>
+<li>Structured Learning</li>
+</ul>
+</li>
+<li>Define Loss from Training Data</li>
+<li>Optimization<ul>
+<li>Gradient Descent - Backpropagation</li>
+<li>Batch - 10 (1000 Examples)<ul>
+<li>Epoch - 1 &#x3D;&gt; Shuffle after each epoch</li>
+<li>Batch Size - 100</li>
+<li>Update - 10</li>
+</ul>
+</li>
+<li>Momentum</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>Predict</li>
+</ul>
+<hr>
+<h2 id="Data"><a href="#Data" class="headerlink" title="Data"></a>Data</h2><ul>
+<li>Training Set -&gt; N-fold Cross Validation<ul>
+<li>Training Set - 90% - Data Augmentation</li>
+<li>Validation Set - 10%</li>
+</ul>
+</li>
+<li>Public Testing Set</li>
+<li>Private Testing Set</li>
+</ul>
+<hr>
+<h2 id="General-Guide"><a href="#General-Guide" class="headerlink" title="General Guide"></a>General Guide</h2><ul>
+<li>loss on training data<ul>
+<li>large<ul>
+<li>model bias &#x3D;&gt; make your model complex<br>  &lt;&#x3D;&gt; make your model simpler</li>
+<li>optimization - critical point<ol>
+<li>local minima - H is positive definite</li>
+<li>local maxima - H is negative definite</li>
+<li>saddle point &#x3D;&gt; H: parameter update direction</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>small<ul>
+<li>loss on testing data<ul>
+<li>large<ul>
+<li>overfitting<ol>
+<li>more training data - data augmentation</li>
+<li>constrained model<ul>
+<li>Less parameters, sharing parameters</li>
+<li>Less features</li>
+<li>Early stopping</li>
+<li>Regularization</li>
+<li>Dropout</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>mismatch - training data and testing data have<br>different distributions.</li>
+</ul>
+</li>
+<li>small &#x3D;&gt; good</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>trade-off &#x3D;&gt; split training data into training set and validation set</li>
+</ul>
+<hr>
+<h2 id="Tips-for-training"><a href="#Tips-for-training" class="headerlink" title="Tips for training"></a>Tips for training</h2><ul>
+<li><p>Batch</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Small</th>
+<th>Large</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Speed for one update<br/>(no parallel)</td>
+<td>Faster</td>
+<td></td>
+</tr>
+<tr>
+<td>Speed for one update<br/>(with parallel)</td>
+<td>same</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Time for one epoch</td>
+<td></td>
+<td>Faster</td>
+</tr>
+<tr>
+<td>Gradient</td>
+<td></td>
+<td>Stable</td>
+</tr>
+<tr>
+<td>Optimization</td>
+<td>Batter</td>
+<td></td>
+</tr>
+<tr>
+<td>Generalization</td>
+<td>Batter</td>
+<td></td>
+</tr>
+</tbody></table>
+</li>
+<li><p>Momentum</p>
+</li>
+<li><p>Batch Normalization</p>
+</li>
+<li><p>Feature Normalization</p>
+</li>
+</ul>
+<hr>
+<h2 id="Hyperparameter"><a href="#Hyperparameter" class="headerlink" title="Hyperparameter"></a>Hyperparameter</h2><ul>
+<li>Batch size</li>
+<li>Learning Rate<ul>
+<li>Apagrad</li>
+<li>RMSProp - α</li>
+<li>Adam - RMSProp + Momentum</li>
+<li>Learning Rate Scheduling<ul>
+<li>Learning Rate Decay</li>
+<li>Warm Up</li>
+</ul>
+</li>
+<li>RAdam</li>
+</ul>
+</li>
+<li>stride</li>
+</ul>
+<hr>
+<ul>
+<li>Regression</li>
+<li>Classification<ul>
+<li>Class as one-hot vector</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li>Fully-connected<ul>
+<li>Receptive Field<ul>
+<li>Parameter Sharing (filter) - convolutional layer - Convolutional Neural Network (CNN) - Pattern</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Residual Network</li>
+<li>Transformer</li>
+</ul>
+<hr>
+<h2 id="CNN"><a href="#CNN" class="headerlink" title="CNN"></a>CNN</h2><ul>
+<li>Convolution  _</li>
+<li>Pooling      _| repeat</li>
+<li>Flatten</li>
+<li>Fully Connected Layers | softmax</li>
+<li>Spatial Transformer Layer</li>
+</ul>
+<hr>
+<h2 id="Self-attention"><a href="#Self-attention" class="headerlink" title="Self-attention"></a>Self-attention</h2><ul>
+<li>Vector Set as Input</li>
+<li>Output<ul>
+<li>Each vector has a label - Sequence Labeling</li>
+<li>The whole sequence has a label</li>
+<li>Model decides the number of labels itself - seq2seq</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/26/hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -281,7 +526,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-count">2</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
