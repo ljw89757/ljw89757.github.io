@@ -177,7 +177,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2024-03-31 17:14:42 / 修改时间：18:05:58" itemprop="dateCreated datePublished" datetime="2024-03-31T17:14:42+08:00">2024-03-31</time>
+              <time title="创建时间：2024-03-31 17:14:42 / 修改时间：22:08:28" itemprop="dateCreated datePublished" datetime="2024-03-31T17:14:42+08:00">2024-03-31</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -200,7 +200,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="线性回归公式"><a href="#线性回归公式" class="headerlink" title="线性回归公式"></a>线性回归公式</h2><p>$$<br>^y &#x3D; Xw + b<br>$$</p>
+          <h2 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h2><p>数学公式：</p>
+<p>$$<br>\hat{y} &#x3D; Xw + b<br>$$</p>
+<p>平方误差：</p>
+<p>$$<br>MSE &#x3D; \sum_{i&#x3D;1}^{n}(\hat{y_i} - y_i)^2<br>$$</p>
+<h2 id="准备数据集"><a href="#准备数据集" class="headerlink" title="准备数据集"></a>准备数据集</h2><p>$$<br>y_i &#x3D; 2X_{i,0} -3.4X_{i,0} + 4.2 + noise<br>$$</p>
+<p>噪音服从均值0方差0.1的正态分布</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>from mxnet import ndarray as nd</p>
+<p>num_input &#x3D; 2<br>num_examples &#x3D; 1000</p>
+<p>true_w &#x3D; [2, -3.14]<br>true_b &#x3D; 4.2</p>
+<p>x &#x3D; nd.random.normal(shape&#x3D;(num_examples, num_input))<br>print(x.shape)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
 
       
     </div>
@@ -245,7 +260,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2024-03-31 16:06:15 / 修改时间：17:18:43" itemprop="dateCreated datePublished" datetime="2024-03-31T16:06:15+08:00">2024-03-31</time>
+              <time title="创建时间：2024-03-31 16:06:15 / 修改时间：18:52:20" itemprop="dateCreated datePublished" datetime="2024-03-31T16:06:15+08:00">2024-03-31</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -269,12 +284,14 @@
 
       
           <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>ubuntu 5.15.0-91-generic</p>
-<h2 id="书"><a href="#书" class="headerlink" title="书"></a>书</h2><p><img src="/2024/03/31/note1/front.png" alt="《动手学深度学习》"></p>
+<h2 id="书"><a href="#书" class="headerlink" title="书"></a>书</h2><img src="https://zh.d2l.ai/_images/front.png" width="50%" height="50%">
+
 <ul>
 <li><a target="_blank" rel="noopener" href="https://zh.d2l.ai/index.html">https://zh.d2l.ai/index.html</a></li>
 </ul>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装miniconda</span></span><br><span class="line">$ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh</span><br><span class="line"><span class="comment"># 更新</span></span><br><span class="line">$ sudo apt-get update</span><br><span class="line"><span class="comment"># 安装git</span></span><br><span class="line">$ sudo apt-get install git</span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/d2l-ai/d2l-zh.git</span><br><span class="line">$ <span class="built_in">cd</span> d2l-zh</span><br><span class="line">$ pip install requests</span><br><span class="line"><span class="comment"># 添加PATH</span></span><br><span class="line">$ <span class="built_in">export</span> PATH=<span class="string">&quot;<span class="variable">$PATH</span>:/home/ubuntu/.local/bin&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装jupyter</span></span><br><span class="line">$ sudo apt-get install jupyter</span><br><span class="line"><span class="comment"># 安装matplotlib</span></span><br><span class="line">$ sudo apt-get install matplotlib</span><br><span class="line"><span class="comment"># 重新加载bash让conda生效</span></span><br><span class="line">$ bash</span><br><span class="line">$ conda init</span><br><span class="line">$ conda create --name d2l python=3.9 -y</span><br><span class="line">$ conda activate d2l</span><br><span class="line"><span class="comment"># mxnet</span></span><br><span class="line">$ pip install mxnet</span><br><span class="line">$ python</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> mxnet</span><br><span class="line"><span class="built_in">print</span>(mxnet.__version__)</span><br></pre></td></tr></table></figure>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装miniconda</span></span><br><span class="line">$ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更新</span></span><br><span class="line">$ sudo apt-get update</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装git</span></span><br><span class="line">$ sudo apt-get install git</span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/d2l-ai/d2l-zh.git</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">cd</span> d2l-zh</span><br><span class="line">$ pip install requests</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加PATH</span></span><br><span class="line">$ <span class="built_in">export</span> PATH=<span class="string">&quot;<span class="variable">$PATH</span>:/home/ubuntu/.local/bin&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装jupyter</span></span><br><span class="line">$ sudo apt-get install jupyter</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装matplotlib</span></span><br><span class="line">$ sudo apt-get install matplotlib</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重新加载bash让conda生效</span></span><br><span class="line">$ bash</span><br><span class="line">$ conda init</span><br><span class="line">$ conda create --name d2l python=3.9 -y</span><br><span class="line">$ conda activate d2l</span><br><span class="line"></span><br><span class="line"><span class="comment"># mxnet</span></span><br><span class="line">$ pip install mxnet</span><br><span class="line">$ python</span><br></pre></td></tr></table></figure>
+<p>查看mxnet是否安装完成</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> mxnet</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(mxnet.__version__)</span><br></pre></td></tr></table></figure>
 <h3 id="遇到问题"><a href="#遇到问题" class="headerlink" title="遇到问题"></a>遇到问题</h3><p>报错：AttributeError: module ‘numpy’ has no attribute ‘bool’.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ pip3 install mxnet-mkl==1.6.0 numpy==1.23.1</span><br><span class="line"><span class="comment"># 安装notedown</span></span><br><span class="line"><span class="comment"># $ pip install https://github.com/mli/notedown/tarball/master</span></span><br></pre></td></tr></table></figure>
       
