@@ -166,7 +166,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/03/31/note1/" class="post-title-link" itemprop="url">安装配置</a>
+            <a href="/2024/03/31/note1/" class="post-title-link" itemprop="url">深度学习安装配置</a>
         </h2>
 
         <div class="post-meta">
@@ -177,7 +177,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2024-03-31 16:06:15 / 修改时间：16:45:15" itemprop="dateCreated datePublished" datetime="2024-03-31T16:06:15+08:00">2024-03-31</time>
+              <time title="创建时间：2024-03-31 16:06:15 / 修改时间：17:09:40" itemprop="dateCreated datePublished" datetime="2024-03-31T16:06:15+08:00">2024-03-31</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -201,7 +201,10 @@
 
       
           <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>ubuntu 5.15.0-91-generic</p>
-<h2 id="书："><a href="#书：" class="headerlink" title="书："></a>书：</h2><p><img src="/2024/03/31/note1/front.png" alt="《动手学深度学习》"></p>
+<h2 id="书"><a href="#书" class="headerlink" title="书"></a>书</h2><p><img src="/2024/03/31/note1/front.png" alt="《动手学深度学习》"></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://zh.d2l.ai/index.html">https://zh.d2l.ai/index.html</a></li>
+</ul>
 <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装miniconda</span></span><br><span class="line">$ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh</span><br><span class="line"><span class="comment"># 更新</span></span><br><span class="line">$ sudo apt-get update</span><br><span class="line"><span class="comment"># 安装git</span></span><br><span class="line">$ sudo apt-get install git</span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/d2l-ai/d2l-zh.git</span><br><span class="line">$ <span class="built_in">cd</span> d2l-zh</span><br><span class="line">$ pip install requests</span><br><span class="line"><span class="comment"># 添加PATH</span></span><br><span class="line">$ <span class="built_in">export</span> PATH=<span class="string">&quot;<span class="variable">$PATH</span>:/home/ubuntu/.local/bin&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装jupyter</span></span><br><span class="line">$ sudo apt-get install jupyter</span><br><span class="line"><span class="comment"># 安装matplotlib</span></span><br><span class="line">$ sudo apt-get install matplotlib</span><br><span class="line"><span class="comment"># 重新加载bash让conda生效</span></span><br><span class="line">$ bash</span><br><span class="line">$ conda init</span><br><span class="line">$ conda create --name d2l python=3.9 -y</span><br><span class="line">$ conda activate d2l</span><br><span class="line"><span class="comment"># mxnet</span></span><br><span class="line">$ pip install mxnet</span><br><span class="line">$ python</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> mxnet</span><br><span class="line"><span class="built_in">print</span>(mxnet.__version__)</span><br></pre></td></tr></table></figure>
 <h3 id="遇到问题"><a href="#遇到问题" class="headerlink" title="遇到问题"></a>遇到问题</h3><p>报错：AttributeError: module ‘numpy’ has no attribute ‘bool’.</p>
