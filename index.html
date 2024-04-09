@@ -152,6 +152,73 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/09/torch_note/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="_">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="_">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/09/torch_note/" class="post-title-link" itemprop="url">PyTorch常用函数总结</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-04-09 16:57:08 / 修改时间：17:26:10" itemprop="dateCreated datePublished" datetime="2024-04-09T16:57:08+08:00">2024-04-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建张量</span></span><br><span class="line">torch.tensor(data, dtype=<span class="literal">None</span>, device=<span class="literal">None</span>, requires_grad=<span class="literal">False</span>) -&gt; Tensor</span><br><span class="line"><span class="comment"># 生成服从正态分布的随机数</span></span><br><span class="line">torch.normal(mean, std, size, *, generator=<span class="literal">None</span>, out=<span class="literal">None</span>) -&gt; Tensor</span><br><span class="line"><span class="comment"># 创建服从标准正态分布的随机张量</span></span><br><span class="line">torch.randn(*size, out=<span class="literal">None</span>, dtype=<span class="literal">None</span>, layout=torch.strided, device=<span class="literal">None</span>, requires_grad=<span class="literal">False</span>) -&gt; Tensor</span><br><span class="line"><span class="comment"># 矩阵乘法</span></span><br><span class="line">torch.matmul(<span class="built_in">input</span>, other, *, out=<span class="literal">None</span>) -&gt; Tensor</span><br><span class="line"><span class="comment"># 执行矩阵与矩阵的乘法操作</span></span><br><span class="line">torch.mm(mat1, mat2) -&gt; Tensor</span><br><span class="line"><span class="comment"># 计算两个一维张量的点积</span></span><br><span class="line">torch.dot(tensor1, tensor2) -&gt; Tensor</span><br><span class="line"><span class="comment"># 执行矩阵与向量的乘法操作</span></span><br><span class="line">torch.mv(mat, vec, out=<span class="literal">None</span>) -&gt; Tensor</span><br><span class="line"><span class="comment"># 创建全零张量</span></span><br><span class="line">torch.zeros(*size, out=<span class="literal">None</span>, dtype=<span class="literal">None</span>, layout=torch.strided, device=<span class="literal">None</span>, requires_grad=<span class="literal">False</span>) -&gt; Tensor</span><br><span class="line"><span class="comment"># 创建全一张量</span></span><br><span class="line">torch.ones(*size, out=<span class="literal">None</span>, dtype=<span class="literal">None</span>, layout=torch.strided, device=<span class="literal">None</span>, requires_grad=<span class="literal">False</span>) -&gt; Tensor</span><br><span class="line"><span class="comment"># 创建等差数列</span></span><br><span class="line">torch.arange(start=<span class="number">0</span>, end, step=<span class="number">1</span>, dtype=<span class="literal">None</span>, layout=torch.strided, device=<span class="literal">None</span>, requires_grad=<span class="literal">False</span>) -&gt; Tensor</span><br><span class="line"><span class="comment"># 计算张量中每个元素的指数值</span></span><br><span class="line">torch.exp(<span class="built_in">input</span>, out=<span class="literal">None</span>) -&gt; Tensor</span><br><span class="line"><span class="comment"># 沿着指定的维度对张量进行拼接</span></span><br><span class="line">torch.cat(tensors, dim=<span class="number">0</span>, out=<span class="literal">None</span>) -&gt; Tensor</span><br><span class="line"><span class="comment"># 创建一个与输入张量形状相同，并且所有元素都为零的新张量</span></span><br><span class="line">torch.zeros_like(<span class="built_in">input</span>, dtype=<span class="literal">None</span>, layout=<span class="literal">None</span>, device=<span class="literal">None</span>, requires_grad=<span class="literal">False</span>, memory_format=torch.preserve_format) -&gt; Tensor</span><br><span class="line"><span class="comment"># 计算张量元素之和</span></span><br><span class="line">torch.<span class="built_in">sum</span>(<span class="built_in">input</span>, dim=<span class="literal">None</span>, keepdim=<span class="literal">False</span>, dtype=<span class="literal">None</span>) -&gt; Tensor</span><br><span class="line"><span class="comment"># 计算张量的范数</span></span><br><span class="line">torch.norm(<span class="built_in">input</span>, p=<span class="string">&#x27;fro&#x27;</span>, dim=<span class="literal">None</span>, keepdim=<span class="literal">False</span>, out=<span class="literal">None</span>, dtype=<span class="literal">None</span>) -&gt; Tensor</span><br><span class="line"><span class="comment"># 计算张量各元素的绝对值</span></span><br><span class="line">torch.<span class="built_in">abs</span>(<span class="built_in">input</span>, out=<span class="literal">None</span>) -&gt; Tensor</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/31/note2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -183,7 +250,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-04 22:17:53" itemprop="dateModified" datetime="2024-04-04T22:17:53+08:00">2024-04-04</time>
+                <time title="修改时间：2024-04-10 00:33:10" itemprop="dateModified" datetime="2024-04-10T00:33:10+08:00">2024-04-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -210,9 +277,11 @@
 <p>$$<br>\hat{y} &#x3D; Xw + b<br>$$</p>
 <p>误差公式：</p>
 <p>$$<br>MSE &#x3D; \frac{1}{n} \sum_{i&#x3D;1}^{n}(\hat{y_i} - y_i)^2<br>$$</p>
-<h2 id="准备数据集"><a href="#准备数据集" class="headerlink" title="准备数据集"></a>准备数据集</h2><p>$$<br>y_i &#x3D; 2X_{i,0} -3.4X_{i,0} + 4.2 + noise<br>$$</p>
-<p>噪音服从均值0方差0.1的正态分布</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">num_examples = <span class="number">1000</span></span><br><span class="line"></span><br><span class="line">true_w = torch.tensor([<span class="number">2</span>, -<span class="number">3.4</span>])  <span class="comment"># torch.Size([2])</span></span><br><span class="line">true_b = <span class="number">4.2</span></span><br><span class="line"></span><br><span class="line">X = torch.normal(<span class="number">0</span>, <span class="number">1</span>, (num_examples, <span class="built_in">len</span>(true_w)))  <span class="comment"># torch.Size([1000, 2])</span></span><br><span class="line">y = torch.matmul(X, true_w) + true_b  <span class="comment"># torch.Size([1000])</span></span><br><span class="line">y += torch.normal(<span class="number">0</span>, <span class="number">0.01</span>, y.shape)</span><br></pre></td></tr></table></figure>
+<h2 id="准备数据集"><a href="#准备数据集" class="headerlink" title="准备数据集"></a>准备数据集</h2><p>$$<br>y_i &#x3D; 2X_{i,0} -3.4X_{i,0} + 4.2 + \epsilon<br>$$</p>
+<p>$ X \in \mathbb{R}^{1000 \times 2} $，噪音项$\epsilon$服从均值0方差0.1的正态分布。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">synthetic_data</span>(<span class="params">w, b, examples, inputs</span>):</span><br><span class="line">    X = torch.normal(<span class="number">0</span>, <span class="number">1</span>, (examples, inputs))  <span class="comment"># torch.Size([1000, 2])</span></span><br><span class="line">    y = torch.matmul(X, w) + b  <span class="comment"># torch.Size([1000])</span></span><br><span class="line">    y += torch.normal(<span class="number">0</span>, <span class="number">0.01</span>, y.shape)</span><br><span class="line">    <span class="keyword">return</span> X, y.reshape((-<span class="number">1</span>, <span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">num_inputs = <span class="number">2</span></span><br><span class="line">num_examples = <span class="number">1000</span></span><br><span class="line">true_w = torch.tensor([<span class="number">2</span>, -<span class="number">3.4</span>])  <span class="comment"># torch.Size([2])</span></span><br><span class="line">true_b = <span class="number">4.2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成数据集</span></span><br><span class="line">features, labels = synthetic_data(true_w, true_b, num_examples, num_inputs)</span><br></pre></td></tr></table></figure>
 
 <p>生成X第二个特征和y的散点图</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装matplotlib库</span></span><br><span class="line">$ pip install matplotlib</span><br></pre></td></tr></table></figure>
@@ -220,6 +289,24 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">plt.scatter(X[:, <span class="number">1</span>], y)</span><br><span class="line"><span class="comment"># plt.savefig(&#x27;scatter_plot.png&#x27;)</span></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
 
 <img src="https://s2.loli.net/2024/04/04/AxZNyK2IrYkUEBc.png" width="35%" height="50%" style="opacity: 1">
+
+<h2 id="读取数据集"><a href="#读取数据集" class="headerlink" title="读取数据集"></a>读取数据集</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生长小批量</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">data_iter</span>(<span class="params">batch_size, features, labels</span>):</span><br><span class="line">    indices = <span class="built_in">list</span>(<span class="built_in">range</span>(num_examples))</span><br><span class="line">    random.shuffle(indices)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, num_examples, batch_size):</span><br><span class="line">        batch_indices = torch.tensor(indices[i: <span class="built_in">min</span>(i + batch_size, num_examples)])</span><br><span class="line">        <span class="keyword">yield</span> features[batch_indices], labels[batch_indices]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">batch_size = <span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="初始化模型参数"><a href="#初始化模型参数" class="headerlink" title="初始化模型参数"></a>初始化模型参数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">w = torch.normal(<span class="number">0</span>, <span class="number">0.01</span>, (num_inputs, <span class="number">1</span>), requires_grad=<span class="literal">True</span>)</span><br><span class="line">b = torch.normal(<span class="number">0</span>, <span class="number">0.01</span>, (<span class="number">1</span>,), requires_grad=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="定义模型"><a href="#定义模型" class="headerlink" title="定义模型"></a>定义模型</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">linreg</span>(<span class="params">X, w, b</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;线性回归模型&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> torch.matmul(X, w) + b</span><br></pre></td></tr></table></figure>
+
+<h2 id="梯度下降"><a href="#梯度下降" class="headerlink" title="梯度下降"></a>梯度下降</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">sgd</span>(<span class="params">lr, batch_size</span>):</span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        <span class="keyword">for</span> param <span class="keyword">in</span> params:</span><br><span class="line">            param -= lr * param.grad / batch_size</span><br><span class="line">            param.grad.zero_()</span><br></pre></td></tr></table></figure>
+
+<h2 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 初始化参数</span></span><br><span class="line">lr = <span class="number">0.00003</span></span><br><span class="line">num_epochs = <span class="number">5000</span></span><br><span class="line">net = linreg</span><br><span class="line">loss = squared_loss</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(num_epochs):</span><br><span class="line">    <span class="keyword">for</span> X, y <span class="keyword">in</span> data_iter(batch_size, features, labels):</span><br><span class="line">        l = loss(net(X, w, b), y)</span><br><span class="line">        l.<span class="built_in">sum</span>().backward()</span><br><span class="line">        sgd([w, b], lr, batch_size)</span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        train_l = loss(net(features, w, b), labels)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;epoch <span class="subst">&#123;epoch + <span class="number">1</span>&#125;</span>, loss <span class="subst">&#123;<span class="built_in">float</span>(train_l.mean()):f&#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;true_w: <span class="subst">&#123;true_w&#125;</span>, w: <span class="subst">&#123;w.reshape(true_w.shape)&#125;</span>, w的估计误差: <span class="subst">&#123;true_w - w.reshape(true_w.shape)&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;true_b: <span class="subst">&#123;true_b&#125;</span>, b: <span class="subst">&#123;b&#125;</span>, b的估计误差: <span class="subst">&#123;true_b - b&#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">true_w: tensor([ 2.0000, -3.4000]), w: tensor([ 1.9997, -3.3998], grad_fn=&lt;ReshapeAliasBackward0&gt;), w的估计误差: tensor([ 0.0003, -0.0002], grad_fn=&lt;SubBackward0&gt;)</span><br><span class="line">true_b: 4.2, b: tensor([4.1990], requires_grad=True), b的估计误差: tensor([0.0010], grad_fn=&lt;RsubBackward1&gt;)</span><br></pre></td></tr></table></figure>
 
 <h2 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h2><p>发现了这个老师讲的贝叶斯公式讲得好。<br>【这些年来，第一次理解“贝叶斯公式”】<br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV19V411o7Pu?vd_source=a3ad741ec0a0dd3d6dae51fed06db63a">https://www.bilibili.com/video/BV19V411o7Pu?vd_source=a3ad741ec0a0dd3d6dae51fed06db63a</a></p>
 
@@ -699,7 +786,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
