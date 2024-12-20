@@ -1,0 +1,107 @@
+<hr>
+<h2 id="title-0-Hexo搭建Blogdate-2024-12-20-15-10-11tags"><a href="#title-0-Hexo搭建Blogdate-2024-12-20-15-10-11tags" class="headerlink" title="title: 0_Hexo搭建Blogdate: 2024-12-20 15:10:11tags:"></a>title: 0_Hexo搭建Blog<br>date: 2024-12-20 15:10:11<br>tags:</h2><h3 id="Hexo搭建Blog"><a href="#Hexo搭建Blog" class="headerlink" title="Hexo搭建Blog"></a>Hexo搭建Blog</h3><p>以下是使用 Hexo 搭建个人博客的详细步骤。</p>
+<hr>
+<h5 id="1-安装-Hexo-CLI-并初始化项目"><a href="#1-安装-Hexo-CLI-并初始化项目" class="headerlink" title="1. 安装 Hexo CLI 并初始化项目"></a>1. 安装 Hexo CLI 并初始化项目</h5><pre><code class="bash">npm install -g hexo-cli
+hexo init
+npm install
+hexo server
+</code></pre>
+<p>在浏览器中输入 <code>http://localhost:4000</code> 查看效果。</p>
+<p><img src="/2024-12-20-12-48-38-image.png"></p>
+<hr>
+<h5 id="2-更换主题"><a href="#2-更换主题" class="headerlink" title="2. 更换主题"></a>2. 更换主题</h5><p><strong>克隆主题仓库</strong></p>
+<pre><code class="bash">git clone https://github.com/theme-next/hexo-theme-next themes/next
+</code></pre>
+<p><strong>修改主题配置</strong></p>
+<p>打开 <code>_config.yml</code> 文件，将 <code>theme</code> 从 <code>landscape</code> 修改为 <code>next</code>。</p>
+<p><img src="/2024-12-20-12-56-10-image.png"></p>
+<p>然后，编辑 <code>/themes/next/_config.yml</code> 文件，在 <code>scheme</code> 选项中选择 <code>Mist</code> 主题样式。</p>
+<p><img src="/2024-12-20-12-59-57-image.png"></p>
+<p><strong>生成并启动服务器</strong></p>
+<pre><code class="bash">hexo g
+hexo server
+</code></pre>
+<p><img src="/2024-12-20-13-01-15-image.png"></p>
+<p>在浏览器中刷新页面查看新主题效果。</p>
+<hr>
+<h5 id="3-站点配置"><a href="#3-站点配置" class="headerlink" title="3. 站点配置"></a>3. 站点配置</h5><p>编辑根目录下的 <code>_config.yml</code> 文件，根据个人需求修改站点配置。</p>
+<p><img src="/2024-12-20-13-21-04-image.png"></p>
+<hr>
+<h5 id="4-设置头像"><a href="#4-设置头像" class="headerlink" title="4. 设置头像"></a>4. 设置头像</h5><ul>
+<li>在 <code>/source</code> 目录下新建文件夹 <code>uploads</code>，并将头像图片 <code>avatar.jpg</code> 放入该文件夹内。</li>
+<li>修改 <code>/themes/next/_config.yml</code> 中 <code>avatar</code> 下的 <code>url</code>，指向刚才上传的头像图片。</li>
+</ul>
+<p><img src="/2024-12-20-13-22-50-image.png"></p>
+<hr>
+<h5 id="5-解决乱码问题"><a href="#5-解决乱码问题" class="headerlink" title="5.  解决乱码问题"></a>5.  解决乱码问题</h5><p><img src="/2024-12-20-13-13-16-image.png"></p>
+<p>如果遇到乱码问题，需将 <code>_config.yml</code> 文件另存为 UTF-8 编码。</p>
+<p><img src="/2024-12-20-13-23-37-image.png"></p>
+<hr>
+<h5 id="6-与Git关联"><a href="#6-与Git关联" class="headerlink" title="6. 与Git关联"></a>6. 与Git关联</h5><p><strong>在 GitHub 上新建仓库</strong></p>
+<p>在 GitHub 上创建一个名为 <code>XXX.github.io</code> 的项目（<code>XXX</code> 为你的 GitHub 用户名）。</p>
+<p><strong>修改 <code>_config.yml</code> 配置</strong></p>
+<p>编辑 <code>_config.yml</code> 文件中的 <code>deploy</code> 部分：</p>
+<pre><code class="yaml">deploy:
+  type: git
+  repository: https://github.com/your-name/your-name.github.io.git
+  branch: main
+</code></pre>
+<p><img src="/2024-12-20-14-25-15-image.png"></p>
+<p><strong>安装 Hexo 部署插件</strong></p>
+<pre><code class="cpp">npm install hexo-deployer-git --save
+</code></pre>
+<hr>
+<h5 id="7-配置域名"><a href="#7-配置域名" class="headerlink" title="7. 配置域名"></a>7. 配置域名</h5><p><strong>购买域名</strong></p>
+<p>前往 <a href="https://www.namesilo.com/">NameSilo</a>购买域名，并填写个人信息。</p>
+<p><strong>设置域名解析</strong></p>
+<ul>
+<li>进入 Domain Manager，点击蓝色球进行域名解析设置。</li>
+</ul>
+<p><img src="/2024-12-20-14-00-07-image.png"></p>
+<ul>
+<li>删除所有已存在的解析记录。</li>
+<li>添加 4 条 A 记录和 1 条 CNAME 记录。</li>
+</ul>
+<p><img src="/2024-12-20-14-11-55-image.png"></p>
+<p><strong>添加 CNAME 文件</strong></p>
+<p>在 <code>source</code> 目录下新建一个名为 <code>CNAME</code> 的文件，写入购买的域名。</p>
+<p><img src="/2024-12-20-14-05-30-image.png"></p>
+<p><strong>配置 GitHub Pages</strong></p>
+<ul>
+<li>进入 GitHub，导航到 <code>XXX.github.io</code> 仓库。</li>
+<li>进入 <code>Settings</code> 页面，找到 <code>Pages</code> 选项。</li>
+<li>在 <code>Custom domain</code> 栏中填写你的域名并保存。</li>
+</ul>
+<p><img src="/2024-12-20-14-13-47-image.png"></p>
+<p><strong>部署博客</strong></p>
+<pre><code class="bash">hexo g
+hexo d
+</code></pre>
+<p><img src="/2024-12-20-14-55-20-image.png"></p>
+<hr>
+<h5 id="8-发布新文章"><a href="#8-发布新文章" class="headerlink" title="8. 发布新文章"></a>8. 发布新文章</h5><p>使用 <code>hexo new</code> 命令创建新文章。该命令将在 <code>source/_posts</code> 文件夹中生成一个 <code>.md</code> 文件。修改该文件后，执行以下命令生成并部署博客。</p>
+<pre><code class="bash">hexo new &quot;文章名&quot;
+</code></pre>
+<p>编辑生成的 Markdown 文件，然后运行：</p>
+<pre><code class="bash">hexo g
+hexo d
+</code></pre>
+<hr>
+<h5 id="9-无法显示图片"><a href="#9-无法显示图片" class="headerlink" title="9. 无法显示图片"></a>9. 无法显示图片</h5><p><img src="/2024-12-20-15-17-10-image.png"></p>
+<p>如果在博客中无法显示图片，请按照以下步骤操作：</p>
+<ul>
+<li><p><strong>创建图片文件夹</strong>：在博客根目录下的 <code>source</code> 文件夹内创建 <code>images</code> 文件夹。</p>
+</li>
+<li><p><strong>添加图片</strong>：将你要使用的图片复制到 <code>source/images</code> 文件夹中。</p>
+</li>
+<li><p><strong>在文章中引用图片</strong>：使用相对路径在 Markdown 文件中引用图片：</p>
+</li>
+</ul>
+<pre><code class="markdown">![描述文字](my-photo.jpg)
+</code></pre>
+<p><img src="/2024-12-20-15-41-05-image.png"></p>
+<hr>
+<h5 id="10-参考资料"><a href="#10-参考资料" class="headerlink" title="10. 参考资料"></a>10. 参考资料</h5><ul>
+<li><a href="https://www.philoli.com/building-a-blog-from-scratch/">从零开始搭建 Hexo 博客简明教程（2024版） | 未知的世界</a></li>
+<li><a href="https://blog.csdn.net/weixin_40425640/article/details/129999245">在GitHub中绑定自己的域名，并实现https访问_github域名-CSDN博客</a></li>
+</ul>
