@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Hexo搭建Blog以下是使用 Hexo 搭建个人博客的详细步骤。  1. 安装 Hexo CLI 并初始化项目1234npm install -g hexo-clihexo initnpm installhexo server  在浏览器中输入 http:&#x2F;&#x2F;localhost:4000 查看效果。   2. 更换主题克隆主题仓库 1git clone https:&#x2F;&#x2F;github.com&#x2F;th">
+  <meta name="description" content="Hexo搭建Blog以下是使用 Hexo 搭建个人博客的详细步骤。  1. 参考资料 从零开始搭建 Hexo 博客简明教程（2024版） | 未知的世界 在GitHub中绑定自己的域名，并实现https访问_github域名-CSDN博客 Hexo-博客无法显示图片解决方法   2. 更换 npm 镜像源默认的 npm 源可能会因为网络问题导致连接失败。可以尝试切换到其他镜像源，如淘宝的 npm">
 <meta property="og:type" content="article">
 <meta property="og:title" content="0-Hexo搭建Blog">
 <meta property="og:url" content="http://example.com/2024/12/20/0-Hexo%E6%90%AD%E5%BB%BABlog/index.html">
 <meta property="og:site_name" content="睿智的ljw侠">
-<meta property="og:description" content="Hexo搭建Blog以下是使用 Hexo 搭建个人博客的详细步骤。  1. 安装 Hexo CLI 并初始化项目1234npm install -g hexo-clihexo initnpm installhexo server  在浏览器中输入 http:&#x2F;&#x2F;localhost:4000 查看效果。   2. 更换主题克隆主题仓库 1git clone https:&#x2F;&#x2F;github.com&#x2F;th">
+<meta property="og:description" content="Hexo搭建Blog以下是使用 Hexo 搭建个人博客的详细步骤。  1. 参考资料 从零开始搭建 Hexo 博客简明教程（2024版） | 未知的世界 在GitHub中绑定自己的域名，并实现https访问_github域名-CSDN博客 Hexo-博客无法显示图片解决方法   2. 更换 npm 镜像源默认的 npm 源可能会因为网络问题导致连接失败。可以尝试切换到其他镜像源，如淘宝的 npm">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2024/12/20/0-Hexo%E6%90%AD%E5%BB%BABlog/2024-12-20-12-48-38-image.png">
 <meta property="og:image" content="http://example.com/2024/12/20/0-Hexo%E6%90%AD%E5%BB%BABlog/2024-12-20-12-56-10-image.png">
@@ -45,7 +45,7 @@
 <meta property="og:image" content="http://example.com/2024/12/20/0-Hexo%E6%90%AD%E5%BB%BABlog/2024-12-20-16-21-33-129b96acbacb83afbfddf263841b3cb8.png">
 <meta property="og:image" content="http://example.com/2024/12/20/0-Hexo%E6%90%AD%E5%BB%BABlog/2024-12-20-16-26-53-image.png">
 <meta property="article:published_time" content="2024-12-20T07:10:11.000Z">
-<meta property="article:modified_time" content="2024-12-20T09:37:45.025Z">
+<meta property="article:modified_time" content="2024-12-23T04:02:16.043Z">
 <meta property="article:author" content="Jiawei Li">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/2024/12/20/0-Hexo%E6%90%AD%E5%BB%BABlog/2024-12-20-12-48-38-image.png">
@@ -190,10 +190,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-12-20 15:10:11 / 修改时间：17:37:45" itemprop="dateCreated datePublished" datetime="2024-12-20T15:10:11+08:00">2024-12-20</time>
+              <time title="创建时间：2024-12-20 15:10:11" itemprop="dateCreated datePublished" datetime="2024-12-20T15:10:11+08:00">2024-12-20</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-12-23 12:02:16" itemprop="dateModified" datetime="2024-12-23T12:02:16+08:00">2024-12-23</time>
+              </span>
 
           
 
@@ -208,12 +214,22 @@
       
         <h3 id="Hexo搭建Blog"><a href="#Hexo搭建Blog" class="headerlink" title="Hexo搭建Blog"></a>Hexo搭建Blog</h3><p>以下是使用 Hexo 搭建个人博客的详细步骤。</p>
 <hr>
-<h5 id="1-安装-Hexo-CLI-并初始化项目"><a href="#1-安装-Hexo-CLI-并初始化项目" class="headerlink" title="1. 安装 Hexo CLI 并初始化项目"></a>1. 安装 Hexo CLI 并初始化项目</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br><span class="line">hexo init</span><br><span class="line">npm install</span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure>
+<h5 id="1-参考资料"><a href="#1-参考资料" class="headerlink" title="1. 参考资料"></a>1. 参考资料</h5><ul>
+<li><a target="_blank" rel="noopener" href="https://www.philoli.com/building-a-blog-from-scratch/">从零开始搭建 Hexo 博客简明教程（2024版） | 未知的世界</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_40425640/article/details/129999245">在GitHub中绑定自己的域名，并实现https访问_github域名-CSDN博客</a></li>
+<li><a target="_blank" rel="noopener" href="https://arcsin2.cloud/2023/02/23/Hexo-%E5%8D%9A%E5%AE%A2%E6%97%A0%E6%B3%95%E6%98%BE%E7%A4%BA%E5%9B%BE%E7%89%87%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">Hexo-博客无法显示图片解决方法</a></li>
+</ul>
+<hr>
+<h5 id="2-更换-npm-镜像源"><a href="#2-更换-npm-镜像源" class="headerlink" title="2. 更换 npm 镜像源"></a>2. 更换 npm 镜像源</h5><p>默认的 npm 源可能会因为网络问题导致连接失败。可以尝试切换到其他镜像源，如淘宝的 npm 镜像（npmmirror.com）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm config <span class="built_in">set</span> registry https://registry.npmmirror.com/</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="3-安装-Hexo-CLI-并初始化项目"><a href="#3-安装-Hexo-CLI-并初始化项目" class="headerlink" title="3. 安装 Hexo CLI 并初始化项目"></a>3. 安装 Hexo CLI 并初始化项目</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br><span class="line">hexo init</span><br><span class="line">npm install</span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure>
 
 <p>在浏览器中输入 <code>http://localhost:4000</code> 查看效果。</p>
 <p><img src="/2024/12/20/0-Hexo%E6%90%AD%E5%BB%BABlog/2024-12-20-12-48-38-image.png"></p>
 <hr>
-<h5 id="2-更换主题"><a href="#2-更换主题" class="headerlink" title="2. 更换主题"></a>2. 更换主题</h5><p><strong>克隆主题仓库</strong></p>
+<h5 id="4-更换主题"><a href="#4-更换主题" class="headerlink" title="4. 更换主题"></a>4. 更换主题</h5><p><strong>克隆主题仓库</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
 
 <p><strong>修改主题配置</strong></p>
@@ -227,20 +243,20 @@
 <p><img src="/2024/12/20/0-Hexo%E6%90%AD%E5%BB%BABlog/2024-12-20-13-01-15-image.png"></p>
 <p>在浏览器中刷新页面查看新主题效果。</p>
 <hr>
-<h5 id="3-站点配置"><a href="#3-站点配置" class="headerlink" title="3. 站点配置"></a>3. 站点配置</h5><p>编辑根目录下的 <code>_config.yml</code> 文件，根据个人需求修改站点配置。</p>
+<h5 id="5-站点配置"><a href="#5-站点配置" class="headerlink" title="5. 站点配置"></a>5. 站点配置</h5><p>编辑根目录下的 <code>_config.yml</code> 文件，根据个人需求修改站点配置。</p>
 <p><img src="/2024/12/20/0-Hexo%E6%90%AD%E5%BB%BABlog/2024-12-20-13-21-04-image.png"></p>
 <hr>
-<h5 id="4-设置头像"><a href="#4-设置头像" class="headerlink" title="4. 设置头像"></a>4. 设置头像</h5><ul>
+<h5 id="6-设置头像"><a href="#6-设置头像" class="headerlink" title="6. 设置头像"></a>6. 设置头像</h5><ul>
 <li>在 <code>/source</code> 目录下新建文件夹 <code>uploads</code>，并将头像图片 <code>avatar.jpg</code> 放入该文件夹内。</li>
 <li>修改 <code>/themes/next/_config.yml</code> 中 <code>avatar</code> 下的 <code>url</code>，指向刚才上传的头像图片。</li>
 </ul>
 <p><img src="/2024/12/20/0-Hexo%E6%90%AD%E5%BB%BABlog/2024-12-20-13-22-50-image.png"></p>
 <hr>
-<h5 id="5-解决乱码问题"><a href="#5-解决乱码问题" class="headerlink" title="5.  解决乱码问题"></a>5.  解决乱码问题</h5><p><img src="/2024/12/20/0-Hexo%E6%90%AD%E5%BB%BABlog/2024-12-20-13-13-16-image.png"></p>
+<h5 id="7-解决乱码问题"><a href="#7-解决乱码问题" class="headerlink" title="7.  解决乱码问题"></a>7.  解决乱码问题</h5><p><img src="/2024/12/20/0-Hexo%E6%90%AD%E5%BB%BABlog/2024-12-20-13-13-16-image.png"></p>
 <p>如果遇到乱码问题，需将 <code>_config.yml</code> 文件另存为 UTF-8 编码。</p>
 <p><img src="/2024/12/20/0-Hexo%E6%90%AD%E5%BB%BABlog/2024-12-20-13-23-37-image.png"></p>
 <hr>
-<h5 id="6-与Git关联"><a href="#6-与Git关联" class="headerlink" title="6. 与Git关联"></a>6. 与Git关联</h5><p><strong>在 GitHub 上新建仓库</strong></p>
+<h5 id="8-与Git关联"><a href="#8-与Git关联" class="headerlink" title="8. 与Git关联"></a>8. 与Git关联</h5><p><strong>在 GitHub 上新建仓库</strong></p>
 <p>在 GitHub 上创建一个名为 <code>XXX.github.io</code> 的项目（<code>XXX</code> 为你的 GitHub 用户名）。</p>
 <p><strong>修改 <code>_config.yml</code> 配置</strong></p>
 <p>编辑 <code>_config.yml</code> 文件中的 <code>deploy</code> 部分：</p>
@@ -251,7 +267,7 @@
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
 
 <hr>
-<h5 id="7-配置域名"><a href="#7-配置域名" class="headerlink" title="7. 配置域名"></a>7. 配置域名</h5><p><strong>购买域名</strong></p>
+<h5 id="9-配置域名"><a href="#9-配置域名" class="headerlink" title="9. 配置域名"></a>9. 配置域名</h5><p><strong>购买域名</strong></p>
 <p>前往 <a target="_blank" rel="noopener" href="https://www.namesilo.com/">NameSilo</a>购买域名，并填写个人信息。</p>
 <p><strong>设置域名解析</strong></p>
 <ul>
@@ -278,14 +294,14 @@
 
 <p><img src="/2024/12/20/0-Hexo%E6%90%AD%E5%BB%BABlog/2024-12-20-14-55-20-image.png"></p>
 <hr>
-<h5 id="8-发布新文章"><a href="#8-发布新文章" class="headerlink" title="8. 发布新文章"></a>8. 发布新文章</h5><p>使用 <code>hexo new</code> 命令创建新文章。该命令将在 <code>source/_posts</code> 文件夹中生成一个 <code>.md</code> 文件。修改该文件后，执行以下命令生成并部署博客。</p>
+<h5 id="10-发布新文章"><a href="#10-发布新文章" class="headerlink" title="10. 发布新文章"></a>10. 发布新文章</h5><p>使用 <code>hexo new</code> 命令创建新文章。该命令将在 <code>source/_posts</code> 文件夹中生成一个 <code>.md</code> 文件。修改该文件后，执行以下命令生成并部署博客。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new <span class="string">&quot;文章名&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p>编辑生成的 Markdown 文件，然后运行：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
 
 <hr>
-<h5 id="9-显示图片"><a href="#9-显示图片" class="headerlink" title="9. 显示图片"></a>9. 显示图片</h5><p><img src="/2024/12/20/0-Hexo%E6%90%AD%E5%BB%BABlog/2024-12-20-15-17-10-image.png"></p>
+<h5 id="11-显示图片"><a href="#11-显示图片" class="headerlink" title="11. 显示图片"></a>11. 显示图片</h5><p><img src="/2024/12/20/0-Hexo%E6%90%AD%E5%BB%BABlog/2024-12-20-15-17-10-image.png"></p>
 <p><strong>启用 <code>post_asset_folder</code></strong></p>
 <p>在 Hexo 项目的根目录下，找到并打开 <code>_config.yml</code> 文件，设置 <code>post_asset_folder</code> 为 <code>true</code>。</p>
 <p><img src="/2024/12/20/0-Hexo%E6%90%AD%E5%BB%BABlog/2024-12-20-16-21-33-129b96acbacb83afbfddf263841b3cb8.png"></p>
@@ -298,11 +314,9 @@
 <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">{% asset_img "span>" "<span class="string">描述文字</span>" %}</span><br></pre></td></tr></table></figure>
 
 <p><img src="/2024/12/20/0-Hexo%E6%90%AD%E5%BB%BABlog/2024-12-20-16-26-53-image.png"></p>
-<hr>
-<h5 id="10-参考资料"><a href="#10-参考资料" class="headerlink" title="10. 参考资料"></a>10. 参考资料</h5><ul>
-<li><a target="_blank" rel="noopener" href="https://www.philoli.com/building-a-blog-from-scratch/">从零开始搭建 Hexo 博客简明教程（2024版） | 未知的世界</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_40425640/article/details/129999245">在GitHub中绑定自己的域名，并实现https访问_github域名-CSDN博客</a></li>
-</ul>
+<p>发现还是无法显示，通过以下方法解决：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall --save hexo-asset-img</span><br><span class="line">npm install hexo-image-link --save</span><br></pre></td></tr></table></figure>
+
 
     </div>
 
@@ -380,7 +394,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Hexo%E6%90%AD%E5%BB%BABlog"><span class="nav-number">1.</span> <span class="nav-text">Hexo搭建Blog</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85-Hexo-CLI-%E5%B9%B6%E5%88%9D%E5%A7%8B%E5%8C%96%E9%A1%B9%E7%9B%AE"><span class="nav-number">1.0.1.</span> <span class="nav-text">1. 安装 Hexo CLI 并初始化项目</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E6%9B%B4%E6%8D%A2%E4%B8%BB%E9%A2%98"><span class="nav-number">1.0.2.</span> <span class="nav-text">2. 更换主题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-%E7%AB%99%E7%82%B9%E9%85%8D%E7%BD%AE"><span class="nav-number">1.0.3.</span> <span class="nav-text">3. 站点配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-%E8%AE%BE%E7%BD%AE%E5%A4%B4%E5%83%8F"><span class="nav-number">1.0.4.</span> <span class="nav-text">4. 设置头像</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-%E8%A7%A3%E5%86%B3%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98"><span class="nav-number">1.0.5.</span> <span class="nav-text">5.  解决乱码问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-%E4%B8%8EGit%E5%85%B3%E8%81%94"><span class="nav-number">1.0.6.</span> <span class="nav-text">6. 与Git关联</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-%E9%85%8D%E7%BD%AE%E5%9F%9F%E5%90%8D"><span class="nav-number">1.0.7.</span> <span class="nav-text">7. 配置域名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#8-%E5%8F%91%E5%B8%83%E6%96%B0%E6%96%87%E7%AB%A0"><span class="nav-number">1.0.8.</span> <span class="nav-text">8. 发布新文章</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#9-%E6%98%BE%E7%A4%BA%E5%9B%BE%E7%89%87"><span class="nav-number">1.0.9.</span> <span class="nav-text">9. 显示图片</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#10-%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">1.0.10.</span> <span class="nav-text">10. 参考资料</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Hexo%E6%90%AD%E5%BB%BABlog"><span class="nav-number">1.</span> <span class="nav-text">Hexo搭建Blog</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">1.0.1.</span> <span class="nav-text">1. 参考资料</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E6%9B%B4%E6%8D%A2-npm-%E9%95%9C%E5%83%8F%E6%BA%90"><span class="nav-number">1.0.2.</span> <span class="nav-text">2. 更换 npm 镜像源</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-%E5%AE%89%E8%A3%85-Hexo-CLI-%E5%B9%B6%E5%88%9D%E5%A7%8B%E5%8C%96%E9%A1%B9%E7%9B%AE"><span class="nav-number">1.0.3.</span> <span class="nav-text">3. 安装 Hexo CLI 并初始化项目</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-%E6%9B%B4%E6%8D%A2%E4%B8%BB%E9%A2%98"><span class="nav-number">1.0.4.</span> <span class="nav-text">4. 更换主题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-%E7%AB%99%E7%82%B9%E9%85%8D%E7%BD%AE"><span class="nav-number">1.0.5.</span> <span class="nav-text">5. 站点配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-%E8%AE%BE%E7%BD%AE%E5%A4%B4%E5%83%8F"><span class="nav-number">1.0.6.</span> <span class="nav-text">6. 设置头像</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-%E8%A7%A3%E5%86%B3%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98"><span class="nav-number">1.0.7.</span> <span class="nav-text">7.  解决乱码问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#8-%E4%B8%8EGit%E5%85%B3%E8%81%94"><span class="nav-number">1.0.8.</span> <span class="nav-text">8. 与Git关联</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#9-%E9%85%8D%E7%BD%AE%E5%9F%9F%E5%90%8D"><span class="nav-number">1.0.9.</span> <span class="nav-text">9. 配置域名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#10-%E5%8F%91%E5%B8%83%E6%96%B0%E6%96%87%E7%AB%A0"><span class="nav-number">1.0.10.</span> <span class="nav-text">10. 发布新文章</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#11-%E6%98%BE%E7%A4%BA%E5%9B%BE%E7%89%87"><span class="nav-number">1.0.11.</span> <span class="nav-text">11. 显示图片</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
