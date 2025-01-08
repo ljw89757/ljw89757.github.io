@@ -147,6 +147,96 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/08/5-%E5%AE%9E%E7%8E%B0%E5%BE%AE%E4%BF%A1%E6%9C%BA%E5%99%A8%E4%BA%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="Jiawei Li">
+      <meta itemprop="description" content="愚蠢的zzz侠">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="睿智的ljw侠">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/08/5-%E5%AE%9E%E7%8E%B0%E5%BE%AE%E4%BF%A1%E6%9C%BA%E5%99%A8%E4%BA%BA/" class="post-title-link" itemprop="url">5-实现微信机器人</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-08 14:44:40 / 修改时间：14:29:06" itemprop="dateCreated datePublished" datetime="2025-01-08T14:44:40+08:00">2025-01-08</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>使用开源代码在服务器上部署微信小机器人。该机器人基于大模型构建，支持微信公众号、企业微信、飞书、钉钉等多平台接入，并且可以处理文本、语音和图片等多种输入。</p>
+<hr>
+<h5 id="1-参考资料"><a href="#1-参考资料" class="headerlink" title="1. 参考资料"></a>1. 参考资料</h5><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/zhayujie/chatgpt-on-wechat">GitHub - zhayujie&#x2F;chatgpt-on-wechat: 基于大模型搭建的聊天机器人，同时支持 微信公众号、企业微信应用、飞书、钉钉 等接入，可选择GPT3.5&#x2F;GPT-4o&#x2F;GPT-o1&#x2F; Claude&#x2F;文心一言&#x2F;讯飞星火&#x2F;通义千问&#x2F; Gemini&#x2F;GLM-4&#x2F;Claude&#x2F;Kimi&#x2F;LinkAI，能处理文本、语音和图片，访问操作系统和互联网，支持基于自有知识库进行定制企业智能客服。</a></li>
+</ul>
+<hr>
+<h5 id="2-运行环境"><a href="#2-运行环境" class="headerlink" title="2. 运行环境"></a>2. 运行环境</h5><p>需准备服务器、OpenAI接口的API Key。按照该项目ReadMe准备环境：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/zhayujie/chatgpt-on-wechat</span><br><span class="line"><span class="built_in">cd</span> chatgpt-on-wechat</span><br><span class="line">pip3 install -r requirements.txt/</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/08/5-%E5%AE%9E%E7%8E%B0%E5%BE%AE%E4%BF%A1%E6%9C%BA%E5%99%A8%E4%BA%BA/2025-01-08-14-03-04-image.png"></p>
+<hr>
+<h5 id="3-配置"><a href="#3-配置" class="headerlink" title="3. 配置"></a>3. 配置</h5><p><img src="/2025/01/08/5-%E5%AE%9E%E7%8E%B0%E5%BE%AE%E4%BF%A1%E6%9C%BA%E5%99%A8%E4%BA%BA/2025-01-08-14-07-13-image.png"></p>
+<p>将open_ai_api_key、open_ai_api_base改成自己的API Key。示例：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;model&quot;</span><span class="punctuation">:</span> <span class="string">&quot;gpt-4o&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;open_ai_api_key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ZZZXXX7dAYOURKEY&quot;</span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;open_ai_api_base&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://api.openai.com/v1&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;single_chat_prefix&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;single_chat_reply_prefix&quot;</span><span class="punctuation">:</span> <span class="string">&quot;[来自泽泽的回复] &quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;group_chat_prefix&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;@泽泽&quot;</span><span class="punctuation">,</span> <span class="string">&quot;泽泽&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;group_name_white_list&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;泽泽&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;group_chat_in_one_session&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;泽泽&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;image_create_prefix&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;看&quot;</span><span class="punctuation">,</span> <span class="string">&quot;画&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span>  </span><br><span class="line">  <span class="attr">&quot;speech_recognition&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;group_speech_recognition&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;voice_reply_voice&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;character_desc&quot;</span><span class="punctuation">:</span> <span class="string">&quot;你的名字是泽泽，是一只毛茸茸的可爱狗狗，你可以用各国语言交流，正常用中文对话&quot;</span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;use_linkai&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;linkai_api_key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;linkai_app_code&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span> </span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/08/5-%E5%AE%9E%E7%8E%B0%E5%BE%AE%E4%BF%A1%E6%9C%BA%E5%99%A8%E4%BA%BA/2025-01-08-14-08-29-image.png"></p>
+<hr>
+<h5 id="4-运行"><a href="#4-运行" class="headerlink" title="4. 运行"></a>4. 运行</h5><p><img src="/2025/01/08/5-%E5%AE%9E%E7%8E%B0%E5%BE%AE%E4%BF%A1%E6%9C%BA%E5%99%A8%E4%BA%BA/2025-01-08-14-12-59-image.png"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">nohup</span> python3 app.py &amp; <span class="built_in">tail</span> -f nohup.out</span><br><span class="line"><span class="comment"># ps -ef | grep app.py | grep -v grep # 查看进程</span></span><br><span class="line"><span class="comment"># 重新启动 kill 进程</span></span><br><span class="line"><span class="comment"># tail -f nohup.out # 打开日志</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="5-查看效果"><a href="#5-查看效果" class="headerlink" title="5. 查看效果"></a>5. 查看效果</h5><ul>
+<li>群聊效果：</li>
+</ul>
+<p><img src="/2025/01/08/5-%E5%AE%9E%E7%8E%B0%E5%BE%AE%E4%BF%A1%E6%9C%BA%E5%99%A8%E4%BA%BA/2025-01-08-14-16-02-image.png"></p>
+<ul>
+<li>私聊效果</li>
+</ul>
+<p><img src="/2025/01/08/5-%E5%AE%9E%E7%8E%B0%E5%BE%AE%E4%BF%A1%E6%9C%BA%E5%99%A8%E4%BA%BA/2025-01-08-14-19-06-image.png"></p>
+<p><img src="/2025/01/08/5-%E5%AE%9E%E7%8E%B0%E5%BE%AE%E4%BF%A1%E6%9C%BA%E5%99%A8%E4%BA%BA/2025-01-08-14-19-47-image.png"></p>
+<p>嘿嘿！</p>
+<hr>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/06/4-%E4%B8%8B%E8%BD%BD%E5%B9%B6%E4%BD%BF%E7%94%A8MindIE%E6%B5%8B%E8%AF%95GLM-4-9B-Chat%E6%A8%A1%E5%9E%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -822,7 +912,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
