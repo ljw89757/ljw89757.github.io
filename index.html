@@ -228,6 +228,211 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/22/9-GirdSample%E7%AE%97%E5%AD%90%E9%A2%84%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="Jiawei Li">
+      <meta itemprop="description" content="愚蠢的zzz侠">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="睿智的ljw侠">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/22/9-GirdSample%E7%AE%97%E5%AD%90%E9%A2%84%E5%88%86%E6%9E%90/" class="post-title-link" itemprop="url">9-GirdSample算子预分析</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-22 15:10:11 / 修改时间：14:28:15" itemprop="dateCreated datePublished" datetime="2025-01-22T15:10:11+08:00">2025-01-22</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>整理了从环境安装、ONNX 导出、OM 模型转换、推理验证到算子支持查询的完整流程，并针对 GridSampler2D&#x2F;3D 的关键问题和解决思路进行了说明。</p>
+<hr>
+<h5 id="1-参考资料"><a href="#1-参考资料" class="headerlink" title="1. 参考资料"></a>1. 参考资料</h5><ul>
+<li><p><a target="_blank" rel="noopener" href="https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/800alpha003/apiref/aolapi/atlasoxol_09_0071.html">GridSample-支持ONNX算子清单-AI框架算子支持清单-算子加速库接口-CANN社区版8.0.0.alpha003开发文档-昇腾社区</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/800alpha003/devaids/devtools/atc/atlasatc_16_0003.html#ZH-CN_TOPIC_0000002115847872__section1645421681020">快速入门-ATC工具-训练&amp;推理开发-CANN社区版8.0.0.alpha003开发文档-昇腾社区</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/800alpha003/apiref/aolapi/operatorlist_00095.html">规格清单-CANN算子规格说明-算子加速库接口-CANN社区版8.0.0.alpha003开发文档-昇腾社区</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://gitee.com/ascend/tools/tree/master/ais-bench_workload/tool/ais_bench">tools: Ascend tools - Gitee.com</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/800alpha003/devaids/devtools/opmodelquery/atlasopmodelquery_16_0003.html">操作指南-算子及模型速查工具-训练&amp;推理开发-CANN社区版8.0.0.alpha003开发文档-昇腾社区</a></p>
+</li>
+</ul>
+<hr>
+<h5 id="2-安装环境"><a href="#2-安装环境" class="headerlink" title="2. 安装环境"></a>2. 安装环境</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install torch&gt;=<span class="number">1.9</span> onnx==<span class="number">1.12</span><span class="number">.0</span> onnxruntime==<span class="number">1.14</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Opset v16</li>
+</ul>
+<hr>
+<h5 id="3-导出-2D-GridSample-的-ONNX-模型"><a href="#3-导出-2D-GridSample-的-ONNX-模型" class="headerlink" title="3. 导出 2D GridSample 的 ONNX 模型"></a>3. 导出 2D GridSample 的 ONNX 模型</h5><ul>
+<li>编写导出脚本 <code>export_grid_sample_onnx.py</code></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim export_grid_sample_onnx.py</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> onnx</span><br><span class="line"><span class="keyword">import</span> onnxruntime <span class="keyword">as</span> ort</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">GridSampleModel</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>(GridSampleModel, <span class="variable language_">self</span>).__init__()</span><br><span class="line">        <span class="variable language_">self</span>.conv = nn.Conv2d(in_channels=<span class="number">1</span>, out_channels=<span class="number">1</span>, </span><br><span class="line">                              kernel_size=<span class="number">3</span>, padding=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, grid</span>):</span><br><span class="line">        x = <span class="variable language_">self</span>.conv(x)</span><br><span class="line"></span><br><span class="line">        out = F.grid_sample(</span><br><span class="line">            x, </span><br><span class="line">            grid, </span><br><span class="line">            mode=<span class="string">&#x27;bilinear&#x27;</span>, </span><br><span class="line">            padding_mode=<span class="string">&#x27;zeros&#x27;</span>, </span><br><span class="line">            align_corners=<span class="literal">True</span></span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">return</span> out</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    torch.manual_seed(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    model = GridSampleModel().<span class="built_in">eval</span>()</span><br><span class="line"></span><br><span class="line">    N, C, H, W = <span class="number">1</span>, <span class="number">1</span>, <span class="number">64</span>, <span class="number">64</span></span><br><span class="line">    x = torch.randn(N, C, H, W)</span><br><span class="line"></span><br><span class="line">    theta = torch.tensor([</span><br><span class="line">        [[<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>],</span><br><span class="line">         [<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>]]</span><br><span class="line">    ], dtype=torch.float32)</span><br><span class="line"></span><br><span class="line">    grid = F.affine_grid(theta, size=(N, C, H, W), align_corners=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        out = model(x, grid)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;PyTorch output shape:&quot;</span>, out.shape)</span><br><span class="line"></span><br><span class="line">    onnx_model_path = <span class="string">&quot;grid_sample_model.onnx&quot;</span></span><br><span class="line">    torch.onnx.export(</span><br><span class="line">        model,</span><br><span class="line">        (x, grid),</span><br><span class="line">        onnx_model_path,</span><br><span class="line">        export_params=<span class="literal">True</span>,</span><br><span class="line">        opset_version=<span class="number">16</span>,</span><br><span class="line">        do_constant_folding=<span class="literal">True</span>,</span><br><span class="line">        input_names=[<span class="string">&quot;input_x&quot;</span>, <span class="string">&quot;input_grid&quot;</span>],</span><br><span class="line">        output_names=[<span class="string">&quot;output&quot;</span>],</span><br><span class="line">        dynamic_axes=&#123;</span><br><span class="line">            <span class="string">&quot;input_x&quot;</span>: &#123;<span class="number">0</span>: <span class="string">&quot;batch_size&quot;</span>, <span class="number">2</span>: <span class="string">&quot;height&quot;</span>, <span class="number">3</span>: <span class="string">&quot;width&quot;</span>&#125;,</span><br><span class="line">            <span class="string">&quot;input_grid&quot;</span>: &#123;<span class="number">0</span>: <span class="string">&quot;batch_size&quot;</span>, <span class="number">1</span>: <span class="string">&quot;grid_height&quot;</span>, <span class="number">2</span>: <span class="string">&quot;grid_width&quot;</span>&#125;,</span><br><span class="line">            <span class="string">&quot;output&quot;</span>: &#123;<span class="number">0</span>: <span class="string">&quot;batch_size&quot;</span>, <span class="number">2</span>: <span class="string">&quot;out_height&quot;</span>, <span class="number">3</span>: <span class="string">&quot;out_width&quot;</span>&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;ONNX model saved to: <span class="subst">&#123;onnx_model_path&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    onnx_model = onnx.load(onnx_model_path)</span><br><span class="line">    onnx.checker.check_model(onnx_model)</span><br><span class="line"></span><br><span class="line">    ort_sess = ort.InferenceSession(onnx_model_path)</span><br><span class="line"></span><br><span class="line">    x_np = x.cpu().numpy()</span><br><span class="line">    grid_np = grid.cpu().numpy()</span><br><span class="line"></span><br><span class="line">    onnx_out = ort_sess.run(</span><br><span class="line">        <span class="literal">None</span>,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">&quot;input_x&quot;</span>: x_np,</span><br><span class="line">            <span class="string">&quot;input_grid&quot;</span>: grid_np</span><br><span class="line">        &#125;</span><br><span class="line">    )[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;ONNX Runtime output shape:&quot;</span>, onnx_out.shape)</span><br><span class="line"></span><br><span class="line">    diff = np.mean(np.<span class="built_in">abs</span>(out.cpu().numpy() - onnx_out))</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Mean absolute difference between PyTorch and ONNX outputs: <span class="subst">&#123;diff:<span class="number">.6</span>f&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>运行导出脚本</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 export_grid_sample.py</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/22/9-GirdSample%E7%AE%97%E5%AD%90%E9%A2%84%E5%88%86%E6%9E%90/2025-01-20-12-06-25-image.png"></p>
+<hr>
+<h5 id="4-转换成om模型"><a href="#4-转换成om模型" class="headerlink" title="4. 转换成om模型"></a>4. 转换成om模型</h5><p><img src="/2025/01/22/9-GirdSample%E7%AE%97%E5%AD%90%E9%A2%84%E5%88%86%E6%9E%90/2025-01-20-12-54-10-image.png"></p>
+<ul>
+<li>使用 ATC 工具将 ONNX 模型转换为 OM 模型：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">atc --model=grid_sample_model.onnx --framework=5 --output=grid_sample_model --input_shape=<span class="string">&quot;input_x:1,1,64,64;input_grid:1,64,64,2&quot;</span> --soc_version=Ascend910B3</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/22/9-GirdSample%E7%AE%97%E5%AD%90%E9%A2%84%E5%88%86%E6%9E%90/2025-01-20-12-21-45-image.png"></p>
+<hr>
+<h5 id="5-开始推理验证"><a href="#5-开始推理验证" class="headerlink" title="5. 开始推理验证"></a>5. 开始推理验证</h5><ul>
+<li>安装ais_bench推理工具：从<a target="_blank" rel="noopener" href="https://gitee.com/ascend/tools/tree/master/ais-bench_workload/tool/ais_bench">tools: Ascend tools - Gitee.com</a>，通过源代码编译安装</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> tools-master/ais-bench_workload/tool/ais_bench</span><br><span class="line">pip3 wheel ./backend/ -v</span><br><span class="line">pip3 wheel ./ -v</span><br><span class="line">pip3 install ./aclruntime-0.0.2-cp311-cp311-linux_aarch64.whl --force-reinstall</span><br><span class="line">pip3 install --force-reinstall <span class="string">&quot;numpy&lt;2.0&quot;</span></span><br><span class="line">pip3 install --no-deps ./ais_bench-0.0.2-py3-none-any.whl --force-reinstall</span><br><span class="line">pip3 install ./ais_bench-0.0.2-py3-none-any.whl --force-reinstall</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>生成输入数据<code>generate_bin.py</code></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> prep_dataset</span><br><span class="line"><span class="built_in">cd</span> prep_dataset</span><br><span class="line">vim generate_bin.py</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    torch.manual_seed(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    N, C, H, W = <span class="number">1</span>, <span class="number">1</span>, <span class="number">64</span>, <span class="number">64</span></span><br><span class="line">    x = torch.randn(N, C, H, W, dtype=torch.float32)</span><br><span class="line"></span><br><span class="line">    theta = torch.tensor([</span><br><span class="line">        [[<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>],</span><br><span class="line">         [<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>]]</span><br><span class="line">    ], dtype=torch.float32)</span><br><span class="line"></span><br><span class="line">    grid = F.affine_grid(theta, size=(N, C, H, W), align_corners=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    x_np = x.cpu().numpy()</span><br><span class="line">    grid_np = grid.cpu().numpy()</span><br><span class="line"></span><br><span class="line">    x_np.tofile(<span class="string">&quot;input_x.bin&quot;</span>)</span><br><span class="line">    grid_np.tofile(<span class="string">&quot;input_grid.bin&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Generated two .bin files:&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot; - input_x.bin    : shape <span class="subst">&#123;x_np.shape&#125;</span>, dtype <span class="subst">&#123;x_np.dtype&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot; - input_grid.bin : shape <span class="subst">&#123;grid_np.shape&#125;</span>, dtype <span class="subst">&#123;grid_np.dtype&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<p>运行脚本生成二进制输入文件，并创建相应目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">python3 generate_bin.py</span><br><span class="line"><span class="built_in">mkdir</span> input_x_dir</span><br><span class="line"><span class="built_in">mkdir</span> input_grid_dir</span><br><span class="line"><span class="built_in">mv</span> input_x.bin input_x_dir/</span><br><span class="line"><span class="built_in">mv</span> input_grid.bin input_grid_dir/</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/22/9-GirdSample%E7%AE%97%E5%AD%90%E9%A2%84%E5%88%86%E6%9E%90/2025-01-20-13-40-43-image.png"></p>
+<ul>
+<li>使用 ais_bench 进行推理</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line"><span class="built_in">source</span> /usr/local/Ascend/ascend-toolkit/set_env.sh</span><br><span class="line">python -m ais_bench --model grid_sample_model.om</span><br><span class="line"><span class="built_in">mkdir</span> output</span><br><span class="line">python3 -m ais_bench --model ./grid_sample_model.om --input ./prep_dataset/input_x_dir,./prep_dataset/input_grid_dir --output ./output/ --output_dirname result --outfmt TXT</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/22/9-GirdSample%E7%AE%97%E5%AD%90%E9%A2%84%E5%88%86%E6%9E%90/2025-01-20-13-32-18-image.png"></p>
+<p><img src="/2025/01/22/9-GirdSample%E7%AE%97%E5%AD%90%E9%A2%84%E5%88%86%E6%9E%90/2025-01-20-13-58-11-image.png"></p>
+<hr>
+<h5 id="6-更多性能数据"><a href="#6-更多性能数据" class="headerlink" title="6. 更多性能数据"></a>6. 更多性能数据</h5><p>创建或编辑 <code>acl.json</code> 文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim acl.json</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line"><span class="attr">&quot;profiler&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;switch&quot;</span><span class="punctuation">:</span> <span class="string">&quot;on&quot;</span><span class="punctuation">,</span></span><br><span class="line">              <span class="attr">&quot;output&quot;</span><span class="punctuation">:</span> <span class="string">&quot;./result/profiler&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>执行推理并采集性能数据：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 -m ais_bench --model ./grid_sample_model.om --acl_json_path ./acl.json</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/22/9-GirdSample%E7%AE%97%E5%AD%90%E9%A2%84%E5%88%86%E6%9E%90/2025-01-20-14-03-38-image.png"></p>
+<p><img src="/2025/01/22/9-GirdSample%E7%AE%97%E5%AD%90%E9%A2%84%E5%88%86%E6%9E%90/2025-01-20-14-03-57-image.png"></p>
+<p><img src="/2025/01/22/9-GirdSample%E7%AE%97%E5%AD%90%E9%A2%84%E5%88%86%E6%9E%90/2025-01-20-14-53-31-0fe95443ce374c44f2a10a4e775a91a.png"></p>
+<hr>
+<h5 id="7-算子支持与注意事项"><a href="#7-算子支持与注意事项" class="headerlink" title="7. 算子支持与注意事项"></a>7. 算子支持与注意事项</h5><ul>
+<li>查看CANN算子规格</li>
+</ul>
+<p><img src="/2025/01/22/9-GirdSample%E7%AE%97%E5%AD%90%E9%A2%84%E5%88%86%E6%9E%90/2025-01-21-01-15-31-image.png"></p>
+<p><img src="/2025/01/22/9-GirdSample%E7%AE%97%E5%AD%90%E9%A2%84%E5%88%86%E6%9E%90/2025-01-21-01-14-58-image.png"></p>
+<p><img src="/2025/01/22/9-GirdSample%E7%AE%97%E5%AD%90%E9%A2%84%E5%88%86%E6%9E%90/2025-01-20-20-16-11-image.png"></p>
+<p><img src="/2025/01/22/9-GirdSample%E7%AE%97%E5%AD%90%E9%A2%84%E5%88%86%E6%9E%90/2025-01-20-20-16-26-image.png"></p>
+<p>如果使用GridSampler3D：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim export_grid_sample_3D.py</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"><span class="keyword">import</span> onnx</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">GridSample3DModel</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>(GridSample3DModel, <span class="variable language_">self</span>).__init__()</span><br><span class="line">        <span class="variable language_">self</span>.conv3d = nn.Conv3d(in_channels=<span class="number">1</span>, out_channels=<span class="number">1</span>, </span><br><span class="line">                                kernel_size=<span class="number">3</span>, padding=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, grid</span>):</span><br><span class="line">        x = <span class="variable language_">self</span>.conv3d(x)</span><br><span class="line">        out = F.grid_sample(</span><br><span class="line">            x, </span><br><span class="line">            grid, </span><br><span class="line">            mode=<span class="string">&#x27;bilinear&#x27;</span>,</span><br><span class="line">            padding_mode=<span class="string">&#x27;zeros&#x27;</span>,</span><br><span class="line">            align_corners=<span class="literal">True</span></span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">return</span> out</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    torch.manual_seed(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    model = GridSample3DModel().<span class="built_in">eval</span>()</span><br><span class="line"></span><br><span class="line">    N, C, D, H, W = <span class="number">1</span>, <span class="number">1</span>, <span class="number">8</span>, <span class="number">640</span>, <span class="number">640</span></span><br><span class="line">    x = torch.randn(N, C, D, H, W, dtype=torch.float32)</span><br><span class="line"></span><br><span class="line">    theta = torch.tensor([[</span><br><span class="line">        [<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>],</span><br><span class="line">        [<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>],</span><br><span class="line">        [<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>],</span><br><span class="line">    ]], dtype=torch.float32)</span><br><span class="line"></span><br><span class="line">    grid = F.affine_grid(theta, size=(N, C, D, H, W), align_corners=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        out = model(x, grid)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;PyTorch output shape:&quot;</span>, out.shape)</span><br><span class="line"></span><br><span class="line">    onnx_model_path = <span class="string">&quot;grid_sample_3d_model.onnx&quot;</span></span><br><span class="line">    torch.onnx.export(</span><br><span class="line">        model,</span><br><span class="line">        (x, grid),</span><br><span class="line">        onnx_model_path,</span><br><span class="line">        export_params=<span class="literal">True</span>,</span><br><span class="line">        opset_version=<span class="number">16</span>,</span><br><span class="line">        do_constant_folding=<span class="literal">True</span>,</span><br><span class="line">        input_names=[<span class="string">&quot;input_x&quot;</span>, <span class="string">&quot;input_grid&quot;</span>],</span><br><span class="line">        output_names=[<span class="string">&quot;output&quot;</span>],</span><br><span class="line">        <span class="comment"># dynamic_axes=&#123;</span></span><br><span class="line">        <span class="comment">#   &quot;input_x&quot;: &#123;0: &quot;batch_size&quot;, 2: &quot;depth&quot;, 3: &quot;height&quot;, 4: &quot;width&quot;&#125;,</span></span><br><span class="line">        <span class="comment">#   &quot;input_grid&quot;: &#123;0: &quot;batch_size&quot;, 1: &quot;grid_depth&quot;, 2: &quot;grid_height&quot;, 3: &quot;grid_width&quot;&#125;,</span></span><br><span class="line">        <span class="comment">#   &quot;output&quot;: &#123;0: &quot;batch_size&quot;, 2: &quot;out_depth&quot;, 3: &quot;out_height&quot;, 4: &quot;out_width&quot;&#125;</span></span><br><span class="line">        <span class="comment"># &#125;</span></span><br><span class="line">    )</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;ONNX model saved to: <span class="subst">&#123;onnx_model_path&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 export_grid_sample_3D.py</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/22/9-GirdSample%E7%AE%97%E5%AD%90%E9%A2%84%E5%88%86%E6%9E%90/2025-01-20-20-28-05-image.png"></p>
+<ul>
+<li><p>GridSampler2D 与 GridSampler3D 的限制</p>
+<ul>
+<li><p><strong>PyTorch ONNX 导出限制</strong>：目前 <code>torch.onnx.export</code> 仅支持 2D GridSample（4D 输入），不支持 3D（5D）输入，会报错。</p>
+</li>
+<li><p><strong>Ascend AI Core 支持</strong>：</p>
+<ul>
+<li>GridSampler3D 有 AI Core Kernel 实现，需 float32 前向；</li>
+<li>GridSampler2D 目前仅支持在 AICPU 上执行，无法使用 AI Core。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>3D grid_sample 的计算量通常远大于 2D，如果本来只是个 2D 任务，用 3D 人工加一维度可能并不能带来真正的功能收益，只是为了能够在 AI Core上执行。</p>
+</li>
+<li><p>这是一个前向支持 &#x2F; 后向不支持的状况。如果要在 Ascend AI Core 上做推理，又通过 ONNX&#x2F;OM 流程，目前<strong>没有官方开箱可行的方案</strong>。</p>
+</li>
+</ul>
+<hr>
+<h5 id="8-解决思路："><a href="#8-解决思路：" class="headerlink" title="8. 解决思路："></a>8. 解决思路：</h5><p>面对上述限制，以下是可能的应对思路：</p>
+<ul>
+<li><p><strong>使用 2D GridSample</strong>：如果不强制使用 AI Core 加速，可使用 2D GridSample，会在 AICPU 上运行，性能较低但流程简单。</p>
+</li>
+<li><p><strong>直接在 PyTorch + Ascend NPU 上推理</strong>：跳过 ONNX&#x2F;OM 转换，使用 <code>torch_npu</code> 在 Ascend NPU 上直接运行模型。</p>
+</li>
+<li><p><strong>使用 GridSampler3D</strong>：</p>
+<ul>
+<li><p>构造 5D 输入 <code>x</code>（形状 <code>[N, C, D, H, W]</code>，dtype float32）和 5D 网格 <code>grid</code>（形状 <code>[N, D, H, W, 3]</code>，dtype float32）。</p>
+</li>
+<li><p>在计算图中添加 GridSampler3D 节点，并设置相关属性。</p>
+</li>
+<li><p>使用 ATC 或其他编译器，将计算图编译为 <code>.om</code> 文件，在 AI Core 上执行。注意这种方式需要深入了解 Ascend 图编译流程。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>自定义实现</strong>：自行实现 3D GridSample 的 ONNX symbolic 函数或 Ascend 自定义算子，但工作量较大。</p>
+</li>
+</ul>
+<hr>
+<h5 id="9-查询算子支持"><a href="#9-查询算子支持" class="headerlink" title="9. 查询算子支持"></a>9. 查询算子支持</h5><ul>
+<li>使用 <code>ms_fast_query</code> 工具查询算子支持情况：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/local/Ascend/ascend-toolkit/latest/tools/ms_fast_query</span><br><span class="line">python3 ms_fast_query.py -t op --opp_path /usr/local/Ascend/ascend-toolkit/latest/opp -o /home/ljw/op.json</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/22/9-GirdSample%E7%AE%97%E5%AD%90%E9%A2%84%E5%88%86%E6%9E%90/2025-01-20-21-11-05-image.png"></p>
+<p><img src="/2025/01/22/9-GirdSample%E7%AE%97%E5%AD%90%E9%A2%84%E5%88%86%E6%9E%90/2025-01-20-21-11-20-image.png"></p>
+<p>查询结果会生成在指定的 <code>op.json</code> 文件中，可用于查看算子支持详情。</p>
+<hr>
+<h5 id="10-查看算子原型"><a href="#10-查看算子原型" class="headerlink" title="10. 查看算子原型"></a>10. 查看算子原型</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/local/Ascend/ascend-toolkit/latest/opp/built-in/op_proto/</span><br><span class="line"><span class="built_in">cat</span> image_ops.h</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/22/9-GirdSample%E7%AE%97%E5%AD%90%E9%A2%84%E5%88%86%E6%9E%90/2025-01-21-01-04-19-image.png"></p>
+<p><img src="/2025/01/22/9-GirdSample%E7%AE%97%E5%AD%90%E9%A2%84%E5%88%86%E6%9E%90/2025-01-21-01-06-12-image.png"></p>
+<hr>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/21/7-ResNet50%E6%A8%A1%E5%9E%8B%E5%9C%A8%E6%98%87%E8%85%BE%E5%B9%B3%E5%8F%B0%E4%B8%8A%E7%9A%84%E8%AE%AD%E7%BB%83%E4%B8%8E%E9%83%A8%E7%BD%B2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1283,7 +1488,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
