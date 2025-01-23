@@ -172,7 +172,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2025-01-23 11:49:05 / 修改时间：11:53:19" itemprop="dateCreated datePublished" datetime="2025-01-23T11:49:05+08:00">2025-01-23</time>
+              <time title="创建时间：2025-01-23 11:49:05 / 修改时间：11:57:40" itemprop="dateCreated datePublished" datetime="2025-01-23T11:49:05+08:00">2025-01-23</time>
             </span>
 
           
@@ -188,7 +188,7 @@
       
           <p>下面是一份对「Ascend C」环境下常用调试手段的总结，涵盖从主机侧（Host）到核函数（Kernel）内的不同调试方法，以及日志排查与编译期调试信息输出等维度。可以根据实际需求自由组合使用。</p>
 <hr>
-<h5 id="host侧"><a href="#host侧" class="headerlink" title="host侧"></a>host侧</h5><ul>
+<h5 id="1-host侧"><a href="#1-host侧" class="headerlink" title="1. host侧"></a>1. host侧</h5><ul>
 <li>打印简单变量：直接使用 C++ <code>std::cout</code> 输出变量值，便于观察在 Host 端的数值变化：</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::cout &lt;&lt; &quot;kernelHeight: &quot; &lt;&lt; kernelHeight &lt;&lt; std::endl;</span><br></pre></td></tr></table></figure>

@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="下面是一份对「Ascend C」环境下常用调试手段的总结，涵盖从主机侧（Host）到核函数（Kernel）内的不同调试方法，以及日志排查与编译期调试信息输出等维度。可以根据实际需求自由组合使用。  host侧 打印简单变量：直接使用 C++ std::cout 输出变量值，便于观察在 Host 端的数值变化：  1std::cout &lt;&lt; &quot;kernelHeight: &amp;qu">
+  <meta name="description" content="下面是一份对「Ascend C」环境下常用调试手段的总结，涵盖从主机侧（Host）到核函数（Kernel）内的不同调试方法，以及日志排查与编译期调试信息输出等维度。可以根据实际需求自由组合使用。  1. host侧 打印简单变量：直接使用 C++ std::cout 输出变量值，便于观察在 Host 端的数值变化：  1std::cout &lt;&lt; &quot;kernelHeight:">
 <meta property="og:type" content="article">
 <meta property="og:title" content="10-Ascend C环境下调试手段">
 <meta property="og:url" content="http://example.com/2025/01/23/10-AscendC%E7%8E%AF%E5%A2%83%E4%B8%8B%E8%B0%83%E8%AF%95%E6%89%8B%E6%AE%B5/index.html">
 <meta property="og:site_name" content="睿智的ljw侠">
-<meta property="og:description" content="下面是一份对「Ascend C」环境下常用调试手段的总结，涵盖从主机侧（Host）到核函数（Kernel）内的不同调试方法，以及日志排查与编译期调试信息输出等维度。可以根据实际需求自由组合使用。  host侧 打印简单变量：直接使用 C++ std::cout 输出变量值，便于观察在 Host 端的数值变化：  1std::cout &lt;&lt; &quot;kernelHeight: &amp;qu">
+<meta property="og:description" content="下面是一份对「Ascend C」环境下常用调试手段的总结，涵盖从主机侧（Host）到核函数（Kernel）内的不同调试方法，以及日志排查与编译期调试信息输出等维度。可以根据实际需求自由组合使用。  1. host侧 打印简单变量：直接使用 C++ std::cout 输出变量值，便于观察在 Host 端的数值变化：  1std::cout &lt;&lt; &quot;kernelHeight:">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-01-23T03:49:05.000Z">
-<meta property="article:modified_time" content="2025-01-23T03:53:19.301Z">
+<meta property="article:modified_time" content="2025-01-23T03:57:40.790Z">
 <meta property="article:author" content="Jiawei Li">
 <meta property="article:tag" content="AscendC">
 <meta name="twitter:card" content="summary">
@@ -175,7 +175,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2025-01-23 11:49:05 / 修改时间：11:53:19" itemprop="dateCreated datePublished" datetime="2025-01-23T11:49:05+08:00">2025-01-23</time>
+              <time title="创建时间：2025-01-23 11:49:05 / 修改时间：11:57:40" itemprop="dateCreated datePublished" datetime="2025-01-23T11:49:05+08:00">2025-01-23</time>
             </span>
 
           
@@ -191,7 +191,7 @@
       
         <p>下面是一份对「Ascend C」环境下常用调试手段的总结，涵盖从主机侧（Host）到核函数（Kernel）内的不同调试方法，以及日志排查与编译期调试信息输出等维度。可以根据实际需求自由组合使用。</p>
 <hr>
-<h5 id="host侧"><a href="#host侧" class="headerlink" title="host侧"></a>host侧</h5><ul>
+<h5 id="1-host侧"><a href="#1-host侧" class="headerlink" title="1. host侧"></a>1. host侧</h5><ul>
 <li>打印简单变量：直接使用 C++ <code>std::cout</code> 输出变量值，便于观察在 Host 端的数值变化：</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::cout &lt;&lt; &quot;kernelHeight: &quot; &lt;&lt; kernelHeight &lt;&lt; std::endl;</span><br></pre></td></tr></table></figure>
@@ -313,7 +313,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#host%E4%BE%A7"><span class="nav-number">1.</span> <span class="nav-text">host侧</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-Kernel-%E4%BE%A7%E6%89%93%E5%8D%B0"><span class="nav-number">2.</span> <span class="nav-text">2. Kernel 侧打印</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-Kernel-%E4%BE%A7-DumpTensor"><span class="nav-number">3.</span> <span class="nav-text">3. Kernel 侧 DumpTensor</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-%E6%9F%A5%E7%9C%8B%E6%97%A5%E5%BF%97"><span class="nav-number">4.</span> <span class="nav-text">4. 查看日志</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-%E7%BC%96%E8%AF%91%E6%9C%9F%E8%BE%93%E5%87%BA%E7%B1%BB%E5%9E%8B%E4%BF%A1%E6%81%AF"><span class="nav-number">5.</span> <span class="nav-text">5. 编译期输出类型信息</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-host%E4%BE%A7"><span class="nav-number">1.</span> <span class="nav-text">1. host侧</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-Kernel-%E4%BE%A7%E6%89%93%E5%8D%B0"><span class="nav-number">2.</span> <span class="nav-text">2. Kernel 侧打印</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-Kernel-%E4%BE%A7-DumpTensor"><span class="nav-number">3.</span> <span class="nav-text">3. Kernel 侧 DumpTensor</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-%E6%9F%A5%E7%9C%8B%E6%97%A5%E5%BF%97"><span class="nav-number">4.</span> <span class="nav-text">4. 查看日志</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-%E7%BC%96%E8%AF%91%E6%9C%9F%E8%BE%93%E5%87%BA%E7%B1%BB%E5%9E%8B%E4%BF%A1%E6%81%AF"><span class="nav-number">5.</span> <span class="nav-text">5. 编译期输出类型信息</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
