@@ -147,7 +147,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/23/11-GridSample/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/23/11-%E7%90%86%E8%A7%A3GridSample/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.jpg">
@@ -161,7 +161,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2025/01/23/11-GridSample/" class="post-title-link" itemprop="url">11-理解GridSample</a>
+            <a href="/2025/01/23/11-%E7%90%86%E8%A7%A3GridSample/" class="post-title-link" itemprop="url">11-理解GridSample</a>
         </h2>
 
         <div class="post-meta">
@@ -383,7 +383,7 @@
 </ul>
 </li>
 </ul>
-<p><img src="/2025/01/23/11-GridSample/2025-01-22-17-47-29-image.png"></p>
+<p><img src="/2025/01/23/11-%E7%90%86%E8%A7%A3GridSample/2025-01-22-17-47-29-image.png"></p>
 <blockquote>
 <p>函数整体流程：</p>
 <p><strong>affine_grid(theta, size, align_corners)</strong></p>
@@ -415,8 +415,8 @@
 <li><code>aten/src/ATen/native/cuda/GridSampler.cu</code>（CUDA 逻辑）</li>
 <li>以及一些与调度、类型分发相关的文件。</li>
 </ul>
-<p><img src="/2025/01/23/11-GridSample/2025-01-23-14-32-34-image.png"></p>
-<p><img src="/2025/01/23/11-GridSample/2025-01-23-14-33-27-image.png"></p>
+<p><img src="/2025/01/23/11-%E7%90%86%E8%A7%A3GridSample/2025-01-23-14-32-34-image.png"></p>
+<p><img src="/2025/01/23/11-%E7%90%86%E8%A7%A3GridSample/2025-01-23-14-33-27-image.png"></p>
 <p><strong>forward&#x2F;backward 内核（kernel）</strong></p>
 <ul>
 <li><strong>Forward</strong>：在 GridSampler.cpp &#x2F; GridSampler.cu中，会分别实现 grid_sampler_2d_fwd_kernel、grid_sampler_3d_fwd_kernel 等（对应 2D、3D 输入）</li>
@@ -431,7 +431,7 @@
 <li><p>PyTorch 会根据这里的信息生成对外暴露的 C++&#x2F;Python 绑定。</p>
 </li>
 </ul>
-<p><img src="/2025/01/23/11-GridSample/2025-01-23-14-51-40-image.png"></p>
+<p><img src="/2025/01/23/11-%E7%90%86%E8%A7%A3GridSample/2025-01-23-14-51-40-image.png"></p>
 <blockquote>
 <p>主要流程：</p>
 <p><strong>参数校验与维度检查</strong>：</p>
