@@ -147,6 +147,382 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/23/11-GridSample/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="Jiawei Li">
+      <meta itemprop="description" content="愚蠢的zzz侠">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="睿智的ljw侠">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/23/11-GridSample/" class="post-title-link" itemprop="url">11-理解GridSample</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-23 15:10:11 / 修改时间：15:44:53" itemprop="dateCreated datePublished" datetime="2025-01-23T15:10:11+08:00">2025-01-23</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在 PyTorch 中，&#96;&#96;torch.nn.functional.grid_sample&#96; 用于基于给定的“采样网格”（grid）对输入图像或特征图进行插值采样，从而实现对输入数据的空间变换。</p>
+<hr>
+<h5 id="1-参考"><a href="#1-参考" class="headerlink" title="1. 参考"></a>1. 参考</h5><ul>
+<li><p><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/generated/torch.nn.functional.grid_sample.html">torch.nn.functional.grid_sample &mdash; PyTorch 2.5 documentation</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.hiascend.com/document/detail/zh/canncommercial/800/developmentguide/opdevg/Ascendcopdevg/atlas_ascendc_10_0001.html">Ascend C简介-Ascend C算子开发-算子开发-CANN商用版8.0.0开发文档-昇腾社区</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/pytorch/pytorch/blob/main/torch/nn/functional.py">pytorch&#x2F;torch&#x2F;nn&#x2F;functional.py at main · pytorch&#x2F;pytorch · GitHub</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://gitee.com/ascend/DrivingSDK/blob/master/docs/api/context/grid_sampler2d_v2%5Bbeta%5D.md">docs&#x2F;api&#x2F;context&#x2F;grid_sampler2d_v2[beta].md · Ascend&#x2F;DrivingSDK - Gitee.com</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://gitee.com/ascend/DrivingSDK/blob/master/kernels/op_host/grid_sampler2d_v2.cpp">kernels&#x2F;op_host&#x2F;grid_sampler2d_v2.cpp · Ascend&#x2F;DrivingSDK - Gitee.com</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://gitee.com/ascend/DrivingSDK/blob/master/kernels/op_host/grid_sampler2d_v2_tiling.h">kernels&#x2F;op_host&#x2F;grid_sampler2d_v2_tiling.h · Ascend&#x2F;DrivingSDK - Gitee.com</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://gitee.com/ascend/DrivingSDK/blob/master/kernels/op_kernel/grid_sampler2d_v2.cpp">kernels&#x2F;op_kernel&#x2F;grid_sampler2d_v2.cpp · Ascend&#x2F;DrivingSDK - Gitee.com</a></p>
+</li>
+</ul>
+<hr>
+<h5 id="2-功能概述"><a href="#2-功能概述" class="headerlink" title="2. 功能概述"></a>2. 功能概述</h5><ul>
+<li>核心逻辑：</li>
+</ul>
+<blockquote>
+<p>根据输入的采样网格（grid），对输入特征图（input）进行插值操作，得到变换后的输出特征图（output）。</p>
+</blockquote>
+<ul>
+<li>常见应用场景：</li>
+</ul>
+<blockquote>
+<p><strong>空间变换网络（Spatial Transformer Networks, STN）</strong>：配合 <code>affine_grid</code>，构建端到端可微分的空间变换模块。</p>
+<p><strong>图像变换和对齐</strong>：对输入图像进行旋转、缩放、平移等操作。</p>
+<p><strong>任意插值采样</strong>：基于自定义网格从输入中提取特征。</p>
+</blockquote>
+<hr>
+<h5 id="3-GradSample2D算子设计规格"><a href="#3-GradSample2D算子设计规格" class="headerlink" title="3. GradSample2D算子设计规格"></a>3. GradSample2D算子设计规格</h5><table>
+<thead>
+<tr>
+<th>Classify</th>
+<th>Name</th>
+<th>Type</th>
+<th>TypeRangeAll</th>
+<th>Attr_Default_value</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>INPUT</td>
+<td>input</td>
+<td>tensor</td>
+<td>fp32,fp16</td>
+<td>-</td>
+<td>ND</td>
+</tr>
+<tr>
+<td>INPUT</td>
+<td>grid</td>
+<td>tensor</td>
+<td>fp32,fp16</td>
+<td>-</td>
+<td>ND</td>
+</tr>
+<tr>
+<td>INPUT</td>
+<td>mode</td>
+<td>string</td>
+<td>-</td>
+<td>bilinear</td>
+<td></td>
+</tr>
+<tr>
+<td>INPUT</td>
+<td>padding_mode</td>
+<td>string</td>
+<td>-</td>
+<td>zeros</td>
+<td></td>
+</tr>
+<tr>
+<td>INPUT</td>
+<td>align_corners</td>
+<td>bool</td>
+<td>bool</td>
+<td>FALSE</td>
+<td></td>
+</tr>
+<tr>
+<td>OUTPUT</td>
+<td>output</td>
+<td>tensor</td>
+<td>fp32,fp16</td>
+<td>-</td>
+<td>ND</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p><strong>输入与输出</strong>：</p>
+<ul>
+<li><p><code>input</code>：输入张量，形状为 (N, C, Hin, Win)</p>
+</li>
+<li><p><code>grid</code>：采样网格，形状为 (N, Hout, Wout, 2)，其中最后一个维度表示网格的二维坐标 (x, y)</p>
+</li>
+<li><p><code>mode</code>：插值方式，默认使用双线性插值。</p>
+<ul>
+<li>‘bilinear’：双线性插值（常用于大多数需要平滑变换的情景）。</li>
+<li>‘nearest’：最邻近插值。</li>
+<li>‘bicubic&#96;：双三次插值（仅支持 4D 输入）。</li>
+</ul>
+</li>
+<li><p><code>padding_mode</code>：当网格坐标超出 [−1,1] 范围时的填充方式，默认用 0 填充。</p>
+<ul>
+<li>‘zeros’：超出范围的点直接赋 0。</li>
+<li>‘border’：使用边界像素进行填充。</li>
+<li>‘reflection’：将超出边界的坐标点“反射”回图像内部。</li>
+</ul>
+</li>
+<li><p><code>align_corners</code>：控制 [−1,1] 坐标是否对齐到像素中心，默认为False。</p>
+<ul>
+<li>True：对齐到中心，适用于对某些几何变换有严格对齐需求的场景，但会带来分辨率依赖性。</li>
+<li>False：对齐到边界，分辨率无关</li>
+</ul>
+</li>
+<li><p><code>output</code>：输出采样之后的特征图，形状为 (N,C,Hout​,Wout​)。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>核函数名称</strong>：grad_sample_2D_custom</p>
+</li>
+<li><p><strong>使用的主要接口</strong></p>
+<ul>
+<li>DataCopy：数据搬移接口</li>
+<li>AllocTensor、FreeTensor：内存管理接口</li>
+<li>EnQue、DeQue接口：Queue队列管理接口</li>
+</ul>
+</li>
+<li><p><strong>算子实现文件名称</strong>：grad_sample_2D_custom.cpp</p>
+</li>
+<li><p>此函数通常与<code>affine_grid</code>一起使用以构建空间变换网络</p>
+</li>
+</ul>
+<hr>
+<h5 id="4-工作原理"><a href="#4-工作原理" class="headerlink" title="4. 工作原理"></a>4. 工作原理</h5><p>PyTorch 的 <code>grid_sample</code> 在 Forward 和 Backward 两个方向上都有清晰的实现逻辑。</p>
+<ul>
+<li><strong>Forward 过程</strong>：</li>
+</ul>
+<blockquote>
+<p><strong>网格生成</strong>（配合 affine_grid）：</p>
+<ul>
+<li>将标准化网格坐标 [−1,1] 映射到输入图像坐标系。</li>
+</ul>
+<p><strong>采样</strong>：</p>
+<ul>
+<li><p>遍历输出图像的每个像素，根据 grid 提供的坐标从输入图像中插值。</p>
+</li>
+<li><p>插值方式由 mode 决定，支持双线性插值（bilinear）、最近邻插值（nearest）和双三次插值（bicubic）。</p>
+</li>
+</ul>
+<p><strong>越界处理</strong>：</p>
+<ul>
+<li><p>对超出输入范围的坐标，根据 padding_mode 的设置进行填充。</p>
+</li>
+<li><p>常见的填充方式包括填充 0、使用边界值或反射回输入区域。</p>
+</li>
+</ul>
+<p><strong>输出生成</strong>：</p>
+<ul>
+<li>按照采样结果生成新的特征图。</li>
+</ul>
+</blockquote>
+<ul>
+<li><strong>Backward 过程</strong>：</li>
+</ul>
+<blockquote>
+<p><strong>对输入特征图的梯度计算</strong>：</p>
+<ul>
+<li>输出梯度根据插值权重反向传播到输入特征图。</li>
+</ul>
+<p><strong>对采样网格的梯度计算</strong>：</p>
+<ul>
+<li>输出梯度中的坐标相关部分反向传播到 grid，从而更新控制网格生成的参数。</li>
+</ul>
+</blockquote>
+<hr>
+<h5 id="5-代码实现细节-Python-前端接口"><a href="#5-代码实现细节-Python-前端接口" class="headerlink" title="5. 代码实现细节-Python 前端接口"></a>5. 代码实现细节-Python 前端接口</h5><p><strong>Python 前端 API</strong> (torch.nn.functional.grid_sample)</p>
+<ul>
+<li><p>位于<code>pytorch-main\torch\nn\functional.py</code>中</p>
+</li>
+<li><p>这是在 Python 里调用的函数接口，实际上会转到 C++&#x2F;CUDA 端去执行，参数检查、文档字符串等都在这里完成。</p>
+</li>
+<li><p>核心函数：</p>
+<ul>
+<li><p><strong>affine_grid</strong> 负责“创建”变换后每个输出像素在输入图像&#x2F;特征图中对应的坐标</p>
+</li>
+<li><p><strong>grid_sample</strong> 则根据这些坐标，在输入中插值得到最终变换后的输出。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2025/01/23/11-GridSample/2025-01-22-17-47-29-image.png"></p>
+<blockquote>
+<p>函数整体流程：</p>
+<p><strong>affine_grid(theta, size, align_corners)</strong></p>
+<ol>
+<li><p>首先根据 size 计算输出网格的每个坐标点，其范围是 [−1,1]。</p>
+</li>
+<li><p>用仿射矩阵 θ 把这些标准坐标映射到输入图像坐标系中。</p>
+</li>
+<li><p>结果就是网格张量，每个位置告诉你“输出图像的这个像素，对应输入图像中的哪一点”。</p>
+</li>
+</ol>
+<p><strong>grid_sample(input, grid, mode, padding_mode, align_corners)</strong></p>
+<ol>
+<li><p>遍历输出图像上的每个像素位置，从 grid 取到对应输入图上的坐标点。</p>
+</li>
+<li><p>根据 mode 所指定的插值方法，去输入图 input 中拿到像素值并插值。</p>
+</li>
+<li><p>如果坐标越界，就根据 padding_mode 做处理（填零、取边界或镜像）。</p>
+</li>
+<li><p>逐像素拼出采样后的输出图。</p>
+</li>
+</ol>
+</blockquote>
+<hr>
+<h5 id="6-代码实现细节-C-CUDA-层实现"><a href="#6-代码实现细节-C-CUDA-层实现" class="headerlink" title="6. 代码实现细节-C++ &#x2F; CUDA 层实现"></a>6. 代码实现细节-C++ &#x2F; CUDA 层实现</h5><p><strong>C++&#x2F;ATen 层</strong>（主要逻辑入口）</p>
+<p>在 <a target="_blank" rel="noopener" href="https://github.com/pytorch/pytorch">PyTorch GitHub 仓库</a> 中，核心的 grid_sample C++ 入口主要位于</p>
+<ul>
+<li><code>aten/src/ATen/native/GridSampler.cpp</code>（CPU 逻辑）</li>
+<li><code>aten/src/ATen/native/cuda/GridSampler.cu</code>（CUDA 逻辑）</li>
+<li>以及一些与调度、类型分发相关的文件。</li>
+</ul>
+<p><img src="/2025/01/23/11-GridSample/2025-01-23-14-32-34-image.png"></p>
+<p><img src="/2025/01/23/11-GridSample/2025-01-23-14-33-27-image.png"></p>
+<p><strong>forward&#x2F;backward 内核（kernel）</strong></p>
+<ul>
+<li><strong>Forward</strong>：在 GridSampler.cpp &#x2F; GridSampler.cu中，会分别实现 grid_sampler_2d_fwd_kernel、grid_sampler_3d_fwd_kernel 等（对应 2D、3D 输入）</li>
+<li><strong>Backward</strong>：相应地，也会有 grid_sampler_2d_bwd_kernel、grid_sampler_3d_bwd_kernel 来计算反向传播时对输入图像及 grid 的梯度。</li>
+</ul>
+<p><strong>grid_sampler 在 ATen 层的函数签名</strong></p>
+<ul>
+<li><p>位于<code>aten\src\ATen\native\native_functions.yaml</code></p>
+</li>
+<li><p>声明了 grid_sampler 在 ATen 层的函数签名。</p>
+</li>
+<li><p>PyTorch 会根据这里的信息生成对外暴露的 C++&#x2F;Python 绑定。</p>
+</li>
+</ul>
+<p><img src="/2025/01/23/11-GridSample/2025-01-23-14-51-40-image.png"></p>
+<blockquote>
+<p>主要流程：</p>
+<p><strong>参数校验与维度检查</strong>：</p>
+<ul>
+<li><p>确保输入和网格的维度匹配。</p>
+</li>
+<li><p>检查 mode和 padding_mode 的合法性。</p>
+</li>
+</ul>
+<p><strong>网格遍历与插值</strong>：</p>
+<ul>
+<li><p>遍历输出图像的每个像素，从网格中获取对应的输入坐标。</p>
+</li>
+<li><p>根据 mode 插值并生成输出像素值。</p>
+</li>
+</ul>
+<p><strong>GPU 加速</strong>：</p>
+<ul>
+<li>根据输出尺寸，动态计算线程块和线程布局，调用 CUDA 内核实现并行处理。</li>
+</ul>
+</blockquote>
+<hr>
+<h5 id="7-主要逻辑"><a href="#7-主要逻辑" class="headerlink" title="7. 主要逻辑"></a>7. 主要逻辑</h5><p>PyTorch 在 C++&#x2F;CUDA 层的 grid_sample 实现大致可拆分为以下步骤：</p>
+<ul>
+<li><p><strong>维度解析与参数检查</strong></p>
+<ul>
+<li><p>检查输入 input 和 grid 的维度是否匹配（如 4D vs. 4D 网格，5D vs. 5D 网格等）。</p>
+</li>
+<li><p>检查插值模式（bilinear, nearest, bicubic）和边界模式（zeros, border, reflection）是否合法。</p>
+</li>
+<li><p>解析 align_corners 标志，后续计算插值坐标时需要用到。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>确定并行策略</strong></p>
+<ul>
+<li><p>在 CPU 端通常使用 OpenMP 或者其他多线程方式并行遍历输出像素；</p>
+</li>
+<li><p>在 GPU（CUDA）端，会依据输出的尺寸，计算合适的线程块（block）和线程（thread）布局，并发起 kernel 调用。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>在内核中遍历输出像素</strong></p>
+<ul>
+<li><p><strong>核心思路</strong>：对输出空间中的每个像素 (n,c,h,w)（或 3D 时 (n,c,d,h,w)）来说，先从 grid[n, h, w] 读取到输入特征图上的坐标 (x,y)，然后：</p>
+<ol>
+<li>根据插值模式 (mode) 计算该坐标对应的输入像素值。</li>
+<li>如果坐标超出 [−1,1]，则按照 padding_mode（如 zeros&#x2F;border&#x2F;reflection）处理。</li>
+<li>将得到的插值结果写入输出张量的相应位置。</li>
+</ol>
+</li>
+<li><p>对于插值模式，“bilinear” 在 2D 场景下需要对 4 个邻近像素（左上、右上、左下、右下）做双线性加权，而 “nearest” 则直接取最近的像素，“bicubic” 做 4x4 neighborhood 的三次插值，3D 时思路类似，只是变为三线性、最邻近或三次插值。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>反向传播</strong>（Backward）</p>
+<ul>
+<li><p>如果在计算梯度（即调用 .backward()），grid_sample 还需对输入 input 和 grid 计算梯度：</p>
+<ol>
+<li>对 input 的梯度：将来自输出像素的梯度<strong>按照插值权重</strong>反向加到输入对应像素上。</li>
+<li>对 grid 的梯度：同样使用插值的偏导（∂x^&#x2F;∂x 等）将输出梯度中与坐标相关的部分累加到 grid。</li>
+</ol>
+</li>
+<li><p>这就保证了在训练基于 grid_sample 的网络（例如空间变换网络 STN）时，θ（或任何定义 grid 的参数）可以通过可微分插值把梯度传回来。</p>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>核心算法</strong>就是<strong>对输出像素进行遍历</strong>，从网格中取到输入坐标，根据插值模式去输入张量读值并插值，然后写回输出；反向传播还要计算对输入和网格的梯度。</p>
+</blockquote>
+<hr>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/23/10-AscendC%E7%8E%AF%E5%A2%83%E4%B8%8B%E8%B0%83%E8%AF%95%E6%89%8B%E6%AE%B5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -521,6 +897,388 @@
 <h5 id="4-编译与运行"><a href="#4-编译与运行" class="headerlink" title="4. 编译与运行"></a>4. 编译与运行</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">apt-get update</span><br><span class="line">apt-get install -y cmake</span><br><span class="line"><span class="built_in">source</span> /usr/local/Ascend/ascend-toolkit/set_env.sh</span><br><span class="line"><span class="built_in">mkdir</span> -p build </span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line">cmake ../ -DCMAKE_CXX_COMPILER=g++ -DCMAKE_SKIP_RPATH=TRUE</span><br><span class="line">make</span><br><span class="line"><span class="built_in">cd</span> bin</span><br><span class="line">./opapi_test</span><br></pre></td></tr></table></figure>
 
 <p><img src="/2025/01/22/8-%E4%BD%BF%E7%94%A8CANN%E7%AE%97%E5%AD%90%E5%BA%93%E8%BF%9B%E8%A1%8C%E4%B8%A4%E6%AE%B5%E5%BC%8F%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8/2025-01-22-09-59-42-image.png"></p>
+<hr>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/21/11-%E7%90%86%E8%A7%A3GridSample/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="Jiawei Li">
+      <meta itemprop="description" content="愚蠢的zzz侠">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="睿智的ljw侠">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/21/11-%E7%90%86%E8%A7%A3GridSample/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-01-21 16:26:52" itemprop="dateCreated datePublished" datetime="2025-01-21T16:26:52+08:00">2025-01-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-01-23 15:38:33" itemprop="dateModified" datetime="2025-01-23T15:38:33+08:00">2025-01-23</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="深入理解-torch-nn-functional-grid-sample"><a href="#深入理解-torch-nn-functional-grid-sample" class="headerlink" title="深入理解 torch.nn.functional.grid_sample"></a>深入理解 <code>torch.nn.functional.grid_sample</code></h3><p>在 PyTorch 中，&#96;&#96;torch.nn.functional.grid_sample&#96; 用于基于给定的“采样网格”（grid）对输入图像或特征图进行插值采样，从而实现对输入数据的空间变换。</p>
+<hr>
+<h5 id="1-参考"><a href="#1-参考" class="headerlink" title="1. 参考"></a>1. 参考</h5><ul>
+<li><p><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/generated/torch.nn.functional.grid_sample.html">torch.nn.functional.grid_sample &mdash; PyTorch 2.5 documentation</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.hiascend.com/document/detail/zh/canncommercial/800/developmentguide/opdevg/Ascendcopdevg/atlas_ascendc_10_0001.html">Ascend C简介-Ascend C算子开发-算子开发-CANN商用版8.0.0开发文档-昇腾社区</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/pytorch/pytorch/blob/main/torch/nn/functional.py">pytorch&#x2F;torch&#x2F;nn&#x2F;functional.py at main · pytorch&#x2F;pytorch · GitHub</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://gitee.com/ascend/DrivingSDK/blob/master/docs/api/context/grid_sampler2d_v2%5Bbeta%5D.md">docs&#x2F;api&#x2F;context&#x2F;grid_sampler2d_v2[beta].md · Ascend&#x2F;DrivingSDK - Gitee.com</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://gitee.com/ascend/DrivingSDK/blob/master/kernels/op_host/grid_sampler2d_v2.cpp">kernels&#x2F;op_host&#x2F;grid_sampler2d_v2.cpp · Ascend&#x2F;DrivingSDK - Gitee.com</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://gitee.com/ascend/DrivingSDK/blob/master/kernels/op_host/grid_sampler2d_v2_tiling.h">kernels&#x2F;op_host&#x2F;grid_sampler2d_v2_tiling.h · Ascend&#x2F;DrivingSDK - Gitee.com</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://gitee.com/ascend/DrivingSDK/blob/master/kernels/op_kernel/grid_sampler2d_v2.cpp">kernels&#x2F;op_kernel&#x2F;grid_sampler2d_v2.cpp · Ascend&#x2F;DrivingSDK - Gitee.com</a></p>
+</li>
+</ul>
+<hr>
+<h5 id="2-功能概述"><a href="#2-功能概述" class="headerlink" title="2. 功能概述"></a>2. 功能概述</h5><ul>
+<li>核心逻辑：</li>
+</ul>
+<blockquote>
+<p>根据输入的采样网格（grid），对输入特征图（input）进行插值操作，得到变换后的输出特征图（output）。</p>
+</blockquote>
+<ul>
+<li>常见应用场景：</li>
+</ul>
+<blockquote>
+<p><strong>空间变换网络（Spatial Transformer Networks, STN）</strong>：配合 <code>affine_grid</code>，构建端到端可微分的空间变换模块。</p>
+<p><strong>图像变换和对齐</strong>：对输入图像进行旋转、缩放、平移等操作。</p>
+<p><strong>任意插值采样</strong>：基于自定义网格从输入中提取特征。</p>
+</blockquote>
+<hr>
+<h5 id="3-GradSample2D算子设计规格"><a href="#3-GradSample2D算子设计规格" class="headerlink" title="3. GradSample2D算子设计规格"></a>3. GradSample2D算子设计规格</h5><table>
+<thead>
+<tr>
+<th>Classify</th>
+<th>Name</th>
+<th>Type</th>
+<th>TypeRangeAll</th>
+<th>Attr_Default_value</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>INPUT</td>
+<td>input</td>
+<td>tensor</td>
+<td>fp32,fp16</td>
+<td>-</td>
+<td>ND</td>
+</tr>
+<tr>
+<td>INPUT</td>
+<td>grid</td>
+<td>tensor</td>
+<td>fp32,fp16</td>
+<td>-</td>
+<td>ND</td>
+</tr>
+<tr>
+<td>INPUT</td>
+<td>mode</td>
+<td>string</td>
+<td>-</td>
+<td>bilinear</td>
+<td></td>
+</tr>
+<tr>
+<td>INPUT</td>
+<td>padding_mode</td>
+<td>string</td>
+<td>-</td>
+<td>zeros</td>
+<td></td>
+</tr>
+<tr>
+<td>INPUT</td>
+<td>align_corners</td>
+<td>bool</td>
+<td>bool</td>
+<td>FALSE</td>
+<td></td>
+</tr>
+<tr>
+<td>OUTPUT</td>
+<td>output</td>
+<td>tensor</td>
+<td>fp32,fp16</td>
+<td>-</td>
+<td>ND</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p><strong>输入与输出</strong>：</p>
+<ul>
+<li><p><code>input</code>：输入张量，形状为 (N, C, Hin, Win)</p>
+</li>
+<li><p><code>grid</code>：采样网格，形状为 (N, Hout, Wout, 2)，其中最后一个维度表示网格的二维坐标 (x, y)</p>
+</li>
+<li><p><code>mode</code>：插值方式，默认使用双线性插值。</p>
+<ul>
+<li>‘bilinear’：双线性插值（常用于大多数需要平滑变换的情景）。</li>
+<li>‘nearest’：最邻近插值。</li>
+<li>‘bicubic&#96;：双三次插值（仅支持 4D 输入）。</li>
+</ul>
+</li>
+<li><p><code>padding_mode</code>：当网格坐标超出 [−1,1] 范围时的填充方式，默认用 0 填充。</p>
+<ul>
+<li>‘zeros’：超出范围的点直接赋 0。</li>
+<li>‘border’：使用边界像素进行填充。</li>
+<li>‘reflection’：将超出边界的坐标点“反射”回图像内部。</li>
+</ul>
+</li>
+<li><p><code>align_corners</code>：控制 [−1,1] 坐标是否对齐到像素中心，默认为False。</p>
+<ul>
+<li>True：对齐到中心，适用于对某些几何变换有严格对齐需求的场景，但会带来分辨率依赖性。</li>
+<li>False：对齐到边界，分辨率无关</li>
+</ul>
+</li>
+<li><p><code>output</code>：输出采样之后的特征图，形状为 (N,C,Hout​,Wout​)。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>核函数名称</strong>：grad_sample_2D_custom</p>
+</li>
+<li><p><strong>使用的主要接口</strong></p>
+<ul>
+<li>DataCopy：数据搬移接口</li>
+<li>AllocTensor、FreeTensor：内存管理接口</li>
+<li>EnQue、DeQue接口：Queue队列管理接口</li>
+</ul>
+</li>
+<li><p><strong>算子实现文件名称</strong>：grad_sample_2D_custom.cpp</p>
+</li>
+<li><p>此函数通常与<code>affine_grid</code>一起使用以构建空间变换网络</p>
+</li>
+</ul>
+<hr>
+<h5 id="4-工作原理"><a href="#4-工作原理" class="headerlink" title="4. 工作原理"></a>4. 工作原理</h5><p>PyTorch 的 <code>grid_sample</code> 在 Forward 和 Backward 两个方向上都有清晰的实现逻辑。</p>
+<ul>
+<li><strong>Forward 过程</strong>：</li>
+</ul>
+<blockquote>
+<p><strong>网格生成</strong>（配合 affine_grid）：</p>
+<ul>
+<li>将标准化网格坐标 [−1,1] 映射到输入图像坐标系。</li>
+</ul>
+<p><strong>采样</strong>：</p>
+<ul>
+<li><p>遍历输出图像的每个像素，根据 grid 提供的坐标从输入图像中插值。</p>
+</li>
+<li><p>插值方式由 mode 决定，支持双线性插值（bilinear）、最近邻插值（nearest）和双三次插值（bicubic）。</p>
+</li>
+</ul>
+<p><strong>越界处理</strong>：</p>
+<ul>
+<li><p>对超出输入范围的坐标，根据 padding_mode 的设置进行填充。</p>
+</li>
+<li><p>常见的填充方式包括填充 0、使用边界值或反射回输入区域。</p>
+</li>
+</ul>
+<p><strong>输出生成</strong>：</p>
+<ul>
+<li>按照采样结果生成新的特征图。</li>
+</ul>
+</blockquote>
+<ul>
+<li><strong>Backward 过程</strong>：</li>
+</ul>
+<blockquote>
+<p><strong>对输入特征图的梯度计算</strong>：</p>
+<ul>
+<li>输出梯度根据插值权重反向传播到输入特征图。</li>
+</ul>
+<p><strong>对采样网格的梯度计算</strong>：</p>
+<ul>
+<li>输出梯度中的坐标相关部分反向传播到 grid，从而更新控制网格生成的参数。</li>
+</ul>
+</blockquote>
+<hr>
+<h5 id="5-代码实现细节-Python-前端接口"><a href="#5-代码实现细节-Python-前端接口" class="headerlink" title="5. 代码实现细节-Python 前端接口"></a>5. 代码实现细节-Python 前端接口</h5><p><strong>Python 前端 API</strong> (torch.nn.functional.grid_sample)</p>
+<ul>
+<li><p>位于<code>pytorch-main\torch\nn\functional.py</code>中</p>
+</li>
+<li><p>这是在 Python 里调用的函数接口，实际上会转到 C++&#x2F;CUDA 端去执行，参数检查、文档字符串等都在这里完成。</p>
+</li>
+<li><p>核心函数：</p>
+<ul>
+<li><p><strong>affine_grid</strong> 负责“创建”变换后每个输出像素在输入图像&#x2F;特征图中对应的坐标</p>
+</li>
+<li><p><strong>grid_sample</strong> 则根据这些坐标，在输入中插值得到最终变换后的输出。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2025/01/21/11-%E7%90%86%E8%A7%A3GridSample/Users\LJW\AppData\Roaming\marktext\images\2025-01-22-17-47-29-image.png"></p>
+<blockquote>
+<p>函数整体流程：</p>
+<p><strong>affine_grid(theta, size, align_corners)</strong></p>
+<ol>
+<li><p>首先根据 size 计算输出网格的每个坐标点，其范围是 [−1,1]。</p>
+</li>
+<li><p>用仿射矩阵 θ 把这些标准坐标映射到输入图像坐标系中。</p>
+</li>
+<li><p>结果就是网格张量，每个位置告诉你“输出图像的这个像素，对应输入图像中的哪一点”。</p>
+</li>
+</ol>
+<p><strong>grid_sample(input, grid, mode, padding_mode, align_corners)</strong></p>
+<ol>
+<li><p>遍历输出图像上的每个像素位置，从 grid 取到对应输入图上的坐标点。</p>
+</li>
+<li><p>根据 mode 所指定的插值方法，去输入图 input 中拿到像素值并插值。</p>
+</li>
+<li><p>如果坐标越界，就根据 padding_mode 做处理（填零、取边界或镜像）。</p>
+</li>
+<li><p>逐像素拼出采样后的输出图。</p>
+</li>
+</ol>
+</blockquote>
+<hr>
+<h5 id="6-代码实现细节-C-CUDA-层实现"><a href="#6-代码实现细节-C-CUDA-层实现" class="headerlink" title="6. 代码实现细节-C++ &#x2F; CUDA 层实现"></a>6. 代码实现细节-C++ &#x2F; CUDA 层实现</h5><p><strong>C++&#x2F;ATen 层</strong>（主要逻辑入口）</p>
+<p>在 <a target="_blank" rel="noopener" href="https://github.com/pytorch/pytorch">PyTorch GitHub 仓库</a> 中，核心的 grid_sample C++ 入口主要位于</p>
+<ul>
+<li><code>aten/src/ATen/native/GridSampler.cpp</code>（CPU 逻辑）</li>
+<li><code>aten/src/ATen/native/cuda/GridSampler.cu</code>（CUDA 逻辑）</li>
+<li>以及一些与调度、类型分发相关的文件。</li>
+</ul>
+<p><img src="/2025/01/21/11-%E7%90%86%E8%A7%A3GridSample/Users\LJW\AppData\Roaming\marktext\images\2025-01-23-14-32-34-image.png"></p>
+<p><img src="/2025/01/21/11-%E7%90%86%E8%A7%A3GridSample/Users\LJW\AppData\Roaming\marktext\images\2025-01-23-14-33-27-image.png"></p>
+<p><strong>forward&#x2F;backward 内核（kernel）</strong></p>
+<ul>
+<li><strong>Forward</strong>：在 GridSampler.cpp &#x2F; GridSampler.cu中，会分别实现 grid_sampler_2d_fwd_kernel、grid_sampler_3d_fwd_kernel 等（对应 2D、3D 输入）</li>
+<li><strong>Backward</strong>：相应地，也会有 grid_sampler_2d_bwd_kernel、grid_sampler_3d_bwd_kernel 来计算反向传播时对输入图像及 grid 的梯度。</li>
+</ul>
+<p><strong>grid_sampler 在 ATen 层的函数签名</strong></p>
+<ul>
+<li><p>位于<code>aten\src\ATen\native\native_functions.yaml</code></p>
+</li>
+<li><p>声明了 grid_sampler 在 ATen 层的函数签名。</p>
+</li>
+<li><p>PyTorch 会根据这里的信息生成对外暴露的 C++&#x2F;Python 绑定。</p>
+</li>
+</ul>
+<p><img src="/2025/01/21/11-%E7%90%86%E8%A7%A3GridSample/Users\LJW\AppData\Roaming\marktext\images\2025-01-23-14-51-40-image.png"></p>
+<blockquote>
+<p>主要流程：</p>
+<p><strong>参数校验与维度检查</strong>：</p>
+<ul>
+<li><p>确保输入和网格的维度匹配。</p>
+</li>
+<li><p>检查 mode和 padding_mode 的合法性。</p>
+</li>
+</ul>
+<p><strong>网格遍历与插值</strong>：</p>
+<ul>
+<li><p>遍历输出图像的每个像素，从网格中获取对应的输入坐标。</p>
+</li>
+<li><p>根据 mode 插值并生成输出像素值。</p>
+</li>
+</ul>
+<p><strong>GPU 加速</strong>：</p>
+<ul>
+<li>根据输出尺寸，动态计算线程块和线程布局，调用 CUDA 内核实现并行处理。</li>
+</ul>
+</blockquote>
+<hr>
+<h5 id="7-主要逻辑"><a href="#7-主要逻辑" class="headerlink" title="7. 主要逻辑"></a>7. 主要逻辑</h5><p>PyTorch 在 C++&#x2F;CUDA 层的 grid_sample 实现大致可拆分为以下步骤：</p>
+<ul>
+<li><p><strong>维度解析与参数检查</strong></p>
+<ul>
+<li><p>检查输入 input 和 grid 的维度是否匹配（如 4D vs. 4D 网格，5D vs. 5D 网格等）。</p>
+</li>
+<li><p>检查插值模式（bilinear, nearest, bicubic）和边界模式（zeros, border, reflection）是否合法。</p>
+</li>
+<li><p>解析 align_corners 标志，后续计算插值坐标时需要用到。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>确定并行策略</strong></p>
+<ul>
+<li><p>在 CPU 端通常使用 OpenMP 或者其他多线程方式并行遍历输出像素；</p>
+</li>
+<li><p>在 GPU（CUDA）端，会依据输出的尺寸，计算合适的线程块（block）和线程（thread）布局，并发起 kernel 调用。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>在内核中遍历输出像素</strong></p>
+<ul>
+<li><p><strong>核心思路</strong>：对输出空间中的每个像素 (n,c,h,w)（或 3D 时 (n,c,d,h,w)）来说，先从 grid[n, h, w] 读取到输入特征图上的坐标 (x,y)，然后：</p>
+<ol>
+<li>根据插值模式 (mode) 计算该坐标对应的输入像素值。</li>
+<li>如果坐标超出 [−1,1]，则按照 padding_mode（如 zeros&#x2F;border&#x2F;reflection）处理。</li>
+<li>将得到的插值结果写入输出张量的相应位置。</li>
+</ol>
+</li>
+<li><p>对于插值模式，“bilinear” 在 2D 场景下需要对 4 个邻近像素（左上、右上、左下、右下）做双线性加权，而 “nearest” 则直接取最近的像素，“bicubic” 做 4x4 neighborhood 的三次插值，3D 时思路类似，只是变为三线性、最邻近或三次插值。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>反向传播</strong>（Backward）</p>
+<ul>
+<li><p>如果在计算梯度（即调用 .backward()），grid_sample 还需对输入 input 和 grid 计算梯度：</p>
+<ol>
+<li>对 input 的梯度：将来自输出像素的梯度<strong>按照插值权重</strong>反向加到输入对应像素上。</li>
+<li>对 grid 的梯度：同样使用插值的偏导（∂x^&#x2F;∂x 等）将输出梯度中与坐标相关的部分累加到 grid。</li>
+</ol>
+</li>
+<li><p>这就保证了在训练基于 grid_sample 的网络（例如空间变换网络 STN）时，θ（或任何定义 grid 的参数）可以通过可微分插值把梯度传回来。</p>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>核心算法</strong>就是<strong>对输出像素进行遍历</strong>，从网格中取到输入坐标，根据插值模式去输入张量读值并插值，然后写回输出；反向传播还要计算对输入和网格的梯度。</p>
+</blockquote>
 <hr>
 
       
@@ -1120,245 +1878,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="Jiawei Li">
-      <meta itemprop="description" content="愚蠢的zzz侠">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="睿智的ljw侠">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/" class="post-title-link" itemprop="url">2-安装libtorch(VS2022+CUDA12.4)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-12-23 13:03:58" itemprop="dateCreated datePublished" datetime="2024-12-23T13:03:58+08:00">2024-12-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-12-25 14:55:30" itemprop="dateModified" datetime="2024-12-25T14:55:30+08:00">2024-12-25</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h5 id="1-参考资料"><a href="#1-参考资料" class="headerlink" title="1. 参考资料"></a>1. 参考资料</h5><ul>
-<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_43475606/article/details/138673348">【vs2022安装libtorch——gpu版本安装过程】_libtorch gpu-CSDN博客</a></p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_34910922/article/details/109344569">libtorch c++部署-使用GPU_libtorch gpu-CSDN博客</a></p>
-</li>
-</ul>
-<hr>
-<h5 id="2-安装cuda"><a href="#2-安装cuda" class="headerlink" title="2. 安装cuda"></a>2. 安装cuda</h5><p><strong>查看电脑的NVIDIA版本</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvidia-smi</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/2024-12-23-13-07-58-image.png"></p>
-<p><strong>注意</strong>：安装的CUDA版本小于等于12.5。</p>
-<p><strong>安装CUDA</strong></p>
-<ul>
-<li>前往 <a target="_blank" rel="noopener" href="https://developer.nvidia.com/cuda-toolkit-archive">CUDA Toolkit Archive | NVIDIA Developer</a> 下载页面。</li>
-<li>选择 <strong>CUDA 12.4.0</strong> 版本并下载安装包。</li>
-<li>按照安装向导完成 CUDA 的安装。</li>
-</ul>
-<p><strong>验证 CUDA 安装是否成功</strong></p>
-<p>安装完成后，运行以下命令以确认 <code>nvcc</code> 是否正确安装：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvcc --version</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/2024-12-23-13-06-32-image.png"></p>
-<hr>
-<h5 id="3-安装libtorch"><a href="#3-安装libtorch" class="headerlink" title="3. 安装libtorch"></a>3. 安装libtorch</h5><ul>
-<li>前往 <a target="_blank" rel="noopener" href="https://pytorch.org/">PyTorch 官方网站</a> 下载相应的 <strong>libtorch</strong> 版本。</li>
-</ul>
-<p><img src="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/2024-12-23-13-15-08-image.png"></p>
-<ul>
-<li><p>下载完成后，解压缩文件。</p>
-</li>
-<li><p>配置环境变量，将 <code>libtorch</code> 的 <code>lib</code> 和 <code>bin</code> 目录添加到系统路径中。例如：</p>
-</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">XXX\libtorch\lib</span><br><span class="line">XXX\libtorch\bin</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h5 id="4-配置-Visual-Studio-2022"><a href="#4-配置-Visual-Studio-2022" class="headerlink" title="4. 配置 Visual Studio 2022"></a>4. 配置 Visual Studio 2022</h5><p><strong>新建空项目</strong></p>
-<ul>
-<li>打开 <strong>Visual Studio 2022</strong>。</li>
-<li>创建一个新的 <strong>空项目</strong>（Empty Project）。</li>
-</ul>
-<p><strong>4.1 配置 x64 平台</strong></p>
-<p>在弹出的属性窗口中，确保 <strong>平台</strong>（Platform）设置为 <strong>x64</strong>。</p>
-<p><img src="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/2024-12-23-13-18-42-image.png"></p>
-<p><img src="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/2024-12-23-13-19-12-image.png"></p>
-<p>选中左侧项目名称，点击项目-&gt;属性</p>
-<p><img src="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/2024-12-23-13-20-54-image.png"></p>
-<p><img src="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/2024-12-23-13-21-09-image.png"></p>
-<p><strong>4.2 配置 VC++ 目录</strong></p>
-<p>在项目属性中，导航到 <strong>VC++ 目录</strong>（VC++ Directories），并配置以下内容：</p>
-<ul>
-<li><strong>包含目录</strong>（Include Directories）：</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">XXX\libtorch\include;</span><br><span class="line">XXX\libtorch\include\torch\csrc\api\include;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>库目录</strong>（Library Directories）：</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">XXX\LJW\libtorch\lib;</span><br><span class="line">C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\lib\x64\;</span><br><span class="line">C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\um\x64;</span><br><span class="line">C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\ucrt\x64</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/2024-12-23-13-24-10-image.png"></p>
-<p><strong>4.3 配置调试环境变量</strong></p>
-<p>导航到 <strong>调试</strong>（Debugging）选项卡，找到 <strong>环境</strong>（Environment）部分，并添加 <code>libtorch</code> 的 <code>bin</code> 目录到 <code>PATH</code> 环境变量：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PATH=C:\Users\LJW\libtorch\lib;%PATH%</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/2024-12-23-13-28-53-image.png"></p>
-<p><strong>4.4 配置链接器 - 常规 - 附加库目录</strong></p>
-<p>在 <strong>链接器</strong>（Linker） -&gt; <strong>常规</strong>（General） -&gt; <strong>附加库目录</strong>（Additional Library Directories）中，添加 <code>libtorch</code> 的 <code>lib</code> 目录：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">XXX\libtorch\lib</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/2024-12-23-13-30-30-image.png"></p>
-<p><strong>4.5 配置链接器 - 输入 - 附加依赖项</strong></p>
-<p>在 <strong>链接器</strong>（Linker） -&gt; <strong>输入</strong>（Input） -&gt; <strong>附加依赖项</strong>（Additional Dependencies）中，添加所有 <code>libtorch</code> 的 <code>.lib</code> 文件。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">XXX\libtorch\lib\*.lib</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/2024-12-23-13-34-21-image.png"></p>
-<p><strong>4.6 配置链接器 - 命令行 - 其他选项</strong></p>
-<p>在 <strong>链接器</strong>（Linker） -&gt; <strong>命令行</strong>（Command Line） -&gt; <strong>其他选项</strong>（Additional Options）中，添加以下内容以解决可能的链接问题：</p>
-<p>（添加前无法使用GPU）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/INCLUDE:?warp_size@cuda@at@@YAHXZ </span><br></pre></td></tr></table></figure>
-
-<p><img src="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/2024-12-23-13-36-50-image.png"></p>
-<hr>
-<h5 id="5-进行测试"><a href="#5-进行测试" class="headerlink" title="5. 进行测试"></a>5. 进行测试</h5><p>创建一个简单的 C++ 程序以测试 <code>libtorch</code> 和 CUDA 是否配置成功。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;torch/torch.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    torch::Tensor tensor = torch::<span class="built_in">rand</span>(&#123; <span class="number">2</span>, <span class="number">3</span> &#125;);</span><br><span class="line">    <span class="keyword">if</span> (torch::cuda::<span class="built_in">is_available</span>()) &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;CUDA is available! Training on GPU&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">        <span class="keyword">auto</span> tensor_cuda = tensor.<span class="built_in">cuda</span>();</span><br><span class="line">        std::cout &lt;&lt; tensor_cuda &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;CUDA is not available! Training on CPU&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">        std::cout &lt;&lt; tensor &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    std::cin.<span class="built_in">get</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>运行程序</strong></p>
-<h2 id><a href="#" class="headerlink" title></a><img src="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/2024-12-23-13-38-49-image.png"></h2>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/21/1-%E6%B8%85%E7%A9%BAgit/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="Jiawei Li">
-      <meta itemprop="description" content="愚蠢的zzz侠">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="睿智的ljw侠">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/12/21/1-%E6%B8%85%E7%A9%BAgit/" class="post-title-link" itemprop="url">1-清空git</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-12-21 13:03:58" itemprop="dateCreated datePublished" datetime="2024-12-21T13:03:58+08:00">2024-12-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-12-25 14:55:24" itemprop="dateModified" datetime="2024-12-25T14:55:24+08:00">2024-12-25</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h5 id="删除仓库中的所有文件，但保留-Git-历史记录"><a href="#删除仓库中的所有文件，但保留-Git-历史记录" class="headerlink" title="删除仓库中的所有文件，但保留 Git 历史记录"></a>删除仓库中的所有文件，但保留 Git 历史记录</h5><p>这种方法会将所有文件从当前分支中删除，但保留 Git 的提交历史记录。适用于希望清理项目文件但保留版本历史的情况。</p>
-<hr>
-<h5 id="1-克隆或进入现有仓库"><a href="#1-克隆或进入现有仓库" class="headerlink" title="1. 克隆或进入现有仓库"></a>1. 克隆或进入现有仓库</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/您的用户名/仓库名.git</span><br><span class="line"><span class="built_in">cd</span> 仓库名</span><br></pre></td></tr></table></figure>
-
-<h5 id="2-删除所有文件和文件夹"><a href="#2-删除所有文件和文件夹" class="headerlink" title="2. 删除所有文件和文件夹"></a>2. 删除所有文件和文件夹</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">rm</span> -r *</span><br><span class="line">git <span class="built_in">rm</span> -r .[^.] .??*</span><br></pre></td></tr></table></figure>
-
-<h5 id="3-提交更改"><a href="#3-提交更改" class="headerlink" title="3. 提交更改"></a>3. 提交更改</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m <span class="string">&quot;清空项目文件&quot;</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="4-推送到远程仓库"><a href="#4-推送到远程仓库" class="headerlink" title="4. 推送到远程仓库"></a>4. 推送到远程仓库</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin main</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h5 id="其他命令："><a href="#其他命令：" class="headerlink" title="其他命令："></a>其他命令：</h5><p><strong>查看分支</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch</span><br></pre></td></tr></table></figure>
-
-<p><strong>切换到主分支</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout main</span><br></pre></td></tr></table></figure>
-
-<p><strong>确保主分支与远程主分支同步</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull origin main</span><br></pre></td></tr></table></figure>
-
-<p><strong>查看状态</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
-<hr>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1430,7 +1949,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

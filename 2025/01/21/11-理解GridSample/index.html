@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="深入理解 torch.nn.functional.grid_sample在 PyTorch 中，&#96;&#96;torch.nn.functional.grid_sample&#96; 用于基于给定的“采样网格”（grid）对输入图像或特征图进行插值采样，从而实现对输入数据的空间变换。  1. 参考 torch.nn.functional.grid_sample &mdash; PyTorch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="睿智的ljw侠">
+<meta property="og:url" content="http://example.com/2025/01/21/11-%E7%90%86%E8%A7%A3GridSample/index.html">
+<meta property="og:site_name" content="睿智的ljw侠">
+<meta property="og:description" content="深入理解 torch.nn.functional.grid_sample在 PyTorch 中，&#96;&#96;torch.nn.functional.grid_sample&#96; 用于基于给定的“采样网格”（grid）对输入图像或特征图进行插值采样，从而实现对输入数据的空间变换。  1. 参考 torch.nn.functional.grid_sample &mdash; PyTorch">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2025/01/21/11-%E7%90%86%E8%A7%A3GridSample/Users/LJW/AppData/Roaming/marktext/images/2025-01-22-17-47-29-image.png">
+<meta property="og:image" content="http://example.com/2025/01/21/11-%E7%90%86%E8%A7%A3GridSample/Users/LJW/AppData/Roaming/marktext/images/2025-01-23-14-32-34-image.png">
+<meta property="og:image" content="http://example.com/2025/01/21/11-%E7%90%86%E8%A7%A3GridSample/Users/LJW/AppData/Roaming/marktext/images/2025-01-23-14-33-27-image.png">
+<meta property="og:image" content="http://example.com/2025/01/21/11-%E7%90%86%E8%A7%A3GridSample/Users/LJW/AppData/Roaming/marktext/images/2025-01-23-14-51-40-image.png">
+<meta property="article:published_time" content="2025-01-21T08:26:52.790Z">
+<meta property="article:modified_time" content="2025-01-23T07:38:33.460Z">
+<meta property="article:author" content="Jiawei Li">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2025/01/21/11-%E7%90%86%E8%A7%A3GridSample/Users/LJW/AppData/Roaming/marktext/images/2025-01-22-17-47-29-image.png">
+
+<link rel="canonical" href="http://example.com/2025/01/21/11-%E7%90%86%E8%A7%A3GridSample/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title> | 睿智的ljw侠</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">睿智的ljw侠</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/21/11-%E7%90%86%E8%A7%A3GridSample/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="Jiawei Li">
+      <meta itemprop="description" content="愚蠢的zzz侠">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="睿智的ljw侠">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-01-21 16:26:52" itemprop="dateCreated datePublished" datetime="2025-01-21T16:26:52+08:00">2025-01-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-01-23 15:38:33" itemprop="dateModified" datetime="2025-01-23T15:38:33+08:00">2025-01-23</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="深入理解-torch-nn-functional-grid-sample"><a href="#深入理解-torch-nn-functional-grid-sample" class="headerlink" title="深入理解 torch.nn.functional.grid_sample"></a>深入理解 <code>torch.nn.functional.grid_sample</code></h3><p>在 PyTorch 中，&#96;&#96;torch.nn.functional.grid_sample&#96; 用于基于给定的“采样网格”（grid）对输入图像或特征图进行插值采样，从而实现对输入数据的空间变换。</p>
+<hr>
+<h5 id="1-参考"><a href="#1-参考" class="headerlink" title="1. 参考"></a>1. 参考</h5><ul>
+<li><p><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/generated/torch.nn.functional.grid_sample.html">torch.nn.functional.grid_sample &mdash; PyTorch 2.5 documentation</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.hiascend.com/document/detail/zh/canncommercial/800/developmentguide/opdevg/Ascendcopdevg/atlas_ascendc_10_0001.html">Ascend C简介-Ascend C算子开发-算子开发-CANN商用版8.0.0开发文档-昇腾社区</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/pytorch/pytorch/blob/main/torch/nn/functional.py">pytorch&#x2F;torch&#x2F;nn&#x2F;functional.py at main · pytorch&#x2F;pytorch · GitHub</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://gitee.com/ascend/DrivingSDK/blob/master/docs/api/context/grid_sampler2d_v2%5Bbeta%5D.md">docs&#x2F;api&#x2F;context&#x2F;grid_sampler2d_v2[beta].md · Ascend&#x2F;DrivingSDK - Gitee.com</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://gitee.com/ascend/DrivingSDK/blob/master/kernels/op_host/grid_sampler2d_v2.cpp">kernels&#x2F;op_host&#x2F;grid_sampler2d_v2.cpp · Ascend&#x2F;DrivingSDK - Gitee.com</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://gitee.com/ascend/DrivingSDK/blob/master/kernels/op_host/grid_sampler2d_v2_tiling.h">kernels&#x2F;op_host&#x2F;grid_sampler2d_v2_tiling.h · Ascend&#x2F;DrivingSDK - Gitee.com</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://gitee.com/ascend/DrivingSDK/blob/master/kernels/op_kernel/grid_sampler2d_v2.cpp">kernels&#x2F;op_kernel&#x2F;grid_sampler2d_v2.cpp · Ascend&#x2F;DrivingSDK - Gitee.com</a></p>
+</li>
+</ul>
+<hr>
+<h5 id="2-功能概述"><a href="#2-功能概述" class="headerlink" title="2. 功能概述"></a>2. 功能概述</h5><ul>
+<li>核心逻辑：</li>
+</ul>
+<blockquote>
+<p>根据输入的采样网格（grid），对输入特征图（input）进行插值操作，得到变换后的输出特征图（output）。</p>
+</blockquote>
+<ul>
+<li>常见应用场景：</li>
+</ul>
+<blockquote>
+<p><strong>空间变换网络（Spatial Transformer Networks, STN）</strong>：配合 <code>affine_grid</code>，构建端到端可微分的空间变换模块。</p>
+<p><strong>图像变换和对齐</strong>：对输入图像进行旋转、缩放、平移等操作。</p>
+<p><strong>任意插值采样</strong>：基于自定义网格从输入中提取特征。</p>
+</blockquote>
+<hr>
+<h5 id="3-GradSample2D算子设计规格"><a href="#3-GradSample2D算子设计规格" class="headerlink" title="3. GradSample2D算子设计规格"></a>3. GradSample2D算子设计规格</h5><table>
+<thead>
+<tr>
+<th>Classify</th>
+<th>Name</th>
+<th>Type</th>
+<th>TypeRangeAll</th>
+<th>Attr_Default_value</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>INPUT</td>
+<td>input</td>
+<td>tensor</td>
+<td>fp32,fp16</td>
+<td>-</td>
+<td>ND</td>
+</tr>
+<tr>
+<td>INPUT</td>
+<td>grid</td>
+<td>tensor</td>
+<td>fp32,fp16</td>
+<td>-</td>
+<td>ND</td>
+</tr>
+<tr>
+<td>INPUT</td>
+<td>mode</td>
+<td>string</td>
+<td>-</td>
+<td>bilinear</td>
+<td></td>
+</tr>
+<tr>
+<td>INPUT</td>
+<td>padding_mode</td>
+<td>string</td>
+<td>-</td>
+<td>zeros</td>
+<td></td>
+</tr>
+<tr>
+<td>INPUT</td>
+<td>align_corners</td>
+<td>bool</td>
+<td>bool</td>
+<td>FALSE</td>
+<td></td>
+</tr>
+<tr>
+<td>OUTPUT</td>
+<td>output</td>
+<td>tensor</td>
+<td>fp32,fp16</td>
+<td>-</td>
+<td>ND</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p><strong>输入与输出</strong>：</p>
+<ul>
+<li><p><code>input</code>：输入张量，形状为 (N, C, Hin, Win)</p>
+</li>
+<li><p><code>grid</code>：采样网格，形状为 (N, Hout, Wout, 2)，其中最后一个维度表示网格的二维坐标 (x, y)</p>
+</li>
+<li><p><code>mode</code>：插值方式，默认使用双线性插值。</p>
+<ul>
+<li>‘bilinear’：双线性插值（常用于大多数需要平滑变换的情景）。</li>
+<li>‘nearest’：最邻近插值。</li>
+<li>‘bicubic&#96;：双三次插值（仅支持 4D 输入）。</li>
+</ul>
+</li>
+<li><p><code>padding_mode</code>：当网格坐标超出 [−1,1] 范围时的填充方式，默认用 0 填充。</p>
+<ul>
+<li>‘zeros’：超出范围的点直接赋 0。</li>
+<li>‘border’：使用边界像素进行填充。</li>
+<li>‘reflection’：将超出边界的坐标点“反射”回图像内部。</li>
+</ul>
+</li>
+<li><p><code>align_corners</code>：控制 [−1,1] 坐标是否对齐到像素中心，默认为False。</p>
+<ul>
+<li>True：对齐到中心，适用于对某些几何变换有严格对齐需求的场景，但会带来分辨率依赖性。</li>
+<li>False：对齐到边界，分辨率无关</li>
+</ul>
+</li>
+<li><p><code>output</code>：输出采样之后的特征图，形状为 (N,C,Hout​,Wout​)。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>核函数名称</strong>：grad_sample_2D_custom</p>
+</li>
+<li><p><strong>使用的主要接口</strong></p>
+<ul>
+<li>DataCopy：数据搬移接口</li>
+<li>AllocTensor、FreeTensor：内存管理接口</li>
+<li>EnQue、DeQue接口：Queue队列管理接口</li>
+</ul>
+</li>
+<li><p><strong>算子实现文件名称</strong>：grad_sample_2D_custom.cpp</p>
+</li>
+<li><p>此函数通常与<code>affine_grid</code>一起使用以构建空间变换网络</p>
+</li>
+</ul>
+<hr>
+<h5 id="4-工作原理"><a href="#4-工作原理" class="headerlink" title="4. 工作原理"></a>4. 工作原理</h5><p>PyTorch 的 <code>grid_sample</code> 在 Forward 和 Backward 两个方向上都有清晰的实现逻辑。</p>
+<ul>
+<li><strong>Forward 过程</strong>：</li>
+</ul>
+<blockquote>
+<p><strong>网格生成</strong>（配合 affine_grid）：</p>
+<ul>
+<li>将标准化网格坐标 [−1,1] 映射到输入图像坐标系。</li>
+</ul>
+<p><strong>采样</strong>：</p>
+<ul>
+<li><p>遍历输出图像的每个像素，根据 grid 提供的坐标从输入图像中插值。</p>
+</li>
+<li><p>插值方式由 mode 决定，支持双线性插值（bilinear）、最近邻插值（nearest）和双三次插值（bicubic）。</p>
+</li>
+</ul>
+<p><strong>越界处理</strong>：</p>
+<ul>
+<li><p>对超出输入范围的坐标，根据 padding_mode 的设置进行填充。</p>
+</li>
+<li><p>常见的填充方式包括填充 0、使用边界值或反射回输入区域。</p>
+</li>
+</ul>
+<p><strong>输出生成</strong>：</p>
+<ul>
+<li>按照采样结果生成新的特征图。</li>
+</ul>
+</blockquote>
+<ul>
+<li><strong>Backward 过程</strong>：</li>
+</ul>
+<blockquote>
+<p><strong>对输入特征图的梯度计算</strong>：</p>
+<ul>
+<li>输出梯度根据插值权重反向传播到输入特征图。</li>
+</ul>
+<p><strong>对采样网格的梯度计算</strong>：</p>
+<ul>
+<li>输出梯度中的坐标相关部分反向传播到 grid，从而更新控制网格生成的参数。</li>
+</ul>
+</blockquote>
+<hr>
+<h5 id="5-代码实现细节-Python-前端接口"><a href="#5-代码实现细节-Python-前端接口" class="headerlink" title="5. 代码实现细节-Python 前端接口"></a>5. 代码实现细节-Python 前端接口</h5><p><strong>Python 前端 API</strong> (torch.nn.functional.grid_sample)</p>
+<ul>
+<li><p>位于<code>pytorch-main\torch\nn\functional.py</code>中</p>
+</li>
+<li><p>这是在 Python 里调用的函数接口，实际上会转到 C++&#x2F;CUDA 端去执行，参数检查、文档字符串等都在这里完成。</p>
+</li>
+<li><p>核心函数：</p>
+<ul>
+<li><p><strong>affine_grid</strong> 负责“创建”变换后每个输出像素在输入图像&#x2F;特征图中对应的坐标</p>
+</li>
+<li><p><strong>grid_sample</strong> 则根据这些坐标，在输入中插值得到最终变换后的输出。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2025/01/21/11-%E7%90%86%E8%A7%A3GridSample/Users\LJW\AppData\Roaming\marktext\images\2025-01-22-17-47-29-image.png"></p>
+<blockquote>
+<p>函数整体流程：</p>
+<p><strong>affine_grid(theta, size, align_corners)</strong></p>
+<ol>
+<li><p>首先根据 size 计算输出网格的每个坐标点，其范围是 [−1,1]。</p>
+</li>
+<li><p>用仿射矩阵 θ 把这些标准坐标映射到输入图像坐标系中。</p>
+</li>
+<li><p>结果就是网格张量，每个位置告诉你“输出图像的这个像素，对应输入图像中的哪一点”。</p>
+</li>
+</ol>
+<p><strong>grid_sample(input, grid, mode, padding_mode, align_corners)</strong></p>
+<ol>
+<li><p>遍历输出图像上的每个像素位置，从 grid 取到对应输入图上的坐标点。</p>
+</li>
+<li><p>根据 mode 所指定的插值方法，去输入图 input 中拿到像素值并插值。</p>
+</li>
+<li><p>如果坐标越界，就根据 padding_mode 做处理（填零、取边界或镜像）。</p>
+</li>
+<li><p>逐像素拼出采样后的输出图。</p>
+</li>
+</ol>
+</blockquote>
+<hr>
+<h5 id="6-代码实现细节-C-CUDA-层实现"><a href="#6-代码实现细节-C-CUDA-层实现" class="headerlink" title="6. 代码实现细节-C++ &#x2F; CUDA 层实现"></a>6. 代码实现细节-C++ &#x2F; CUDA 层实现</h5><p><strong>C++&#x2F;ATen 层</strong>（主要逻辑入口）</p>
+<p>在 <a target="_blank" rel="noopener" href="https://github.com/pytorch/pytorch">PyTorch GitHub 仓库</a> 中，核心的 grid_sample C++ 入口主要位于</p>
+<ul>
+<li><code>aten/src/ATen/native/GridSampler.cpp</code>（CPU 逻辑）</li>
+<li><code>aten/src/ATen/native/cuda/GridSampler.cu</code>（CUDA 逻辑）</li>
+<li>以及一些与调度、类型分发相关的文件。</li>
+</ul>
+<p><img src="/2025/01/21/11-%E7%90%86%E8%A7%A3GridSample/Users\LJW\AppData\Roaming\marktext\images\2025-01-23-14-32-34-image.png"></p>
+<p><img src="/2025/01/21/11-%E7%90%86%E8%A7%A3GridSample/Users\LJW\AppData\Roaming\marktext\images\2025-01-23-14-33-27-image.png"></p>
+<p><strong>forward&#x2F;backward 内核（kernel）</strong></p>
+<ul>
+<li><strong>Forward</strong>：在 GridSampler.cpp &#x2F; GridSampler.cu中，会分别实现 grid_sampler_2d_fwd_kernel、grid_sampler_3d_fwd_kernel 等（对应 2D、3D 输入）</li>
+<li><strong>Backward</strong>：相应地，也会有 grid_sampler_2d_bwd_kernel、grid_sampler_3d_bwd_kernel 来计算反向传播时对输入图像及 grid 的梯度。</li>
+</ul>
+<p><strong>grid_sampler 在 ATen 层的函数签名</strong></p>
+<ul>
+<li><p>位于<code>aten\src\ATen\native\native_functions.yaml</code></p>
+</li>
+<li><p>声明了 grid_sampler 在 ATen 层的函数签名。</p>
+</li>
+<li><p>PyTorch 会根据这里的信息生成对外暴露的 C++&#x2F;Python 绑定。</p>
+</li>
+</ul>
+<p><img src="/2025/01/21/11-%E7%90%86%E8%A7%A3GridSample/Users\LJW\AppData\Roaming\marktext\images\2025-01-23-14-51-40-image.png"></p>
+<blockquote>
+<p>主要流程：</p>
+<p><strong>参数校验与维度检查</strong>：</p>
+<ul>
+<li><p>确保输入和网格的维度匹配。</p>
+</li>
+<li><p>检查 mode和 padding_mode 的合法性。</p>
+</li>
+</ul>
+<p><strong>网格遍历与插值</strong>：</p>
+<ul>
+<li><p>遍历输出图像的每个像素，从网格中获取对应的输入坐标。</p>
+</li>
+<li><p>根据 mode 插值并生成输出像素值。</p>
+</li>
+</ul>
+<p><strong>GPU 加速</strong>：</p>
+<ul>
+<li>根据输出尺寸，动态计算线程块和线程布局，调用 CUDA 内核实现并行处理。</li>
+</ul>
+</blockquote>
+<hr>
+<h5 id="7-主要逻辑"><a href="#7-主要逻辑" class="headerlink" title="7. 主要逻辑"></a>7. 主要逻辑</h5><p>PyTorch 在 C++&#x2F;CUDA 层的 grid_sample 实现大致可拆分为以下步骤：</p>
+<ul>
+<li><p><strong>维度解析与参数检查</strong></p>
+<ul>
+<li><p>检查输入 input 和 grid 的维度是否匹配（如 4D vs. 4D 网格，5D vs. 5D 网格等）。</p>
+</li>
+<li><p>检查插值模式（bilinear, nearest, bicubic）和边界模式（zeros, border, reflection）是否合法。</p>
+</li>
+<li><p>解析 align_corners 标志，后续计算插值坐标时需要用到。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>确定并行策略</strong></p>
+<ul>
+<li><p>在 CPU 端通常使用 OpenMP 或者其他多线程方式并行遍历输出像素；</p>
+</li>
+<li><p>在 GPU（CUDA）端，会依据输出的尺寸，计算合适的线程块（block）和线程（thread）布局，并发起 kernel 调用。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>在内核中遍历输出像素</strong></p>
+<ul>
+<li><p><strong>核心思路</strong>：对输出空间中的每个像素 (n,c,h,w)（或 3D 时 (n,c,d,h,w)）来说，先从 grid[n, h, w] 读取到输入特征图上的坐标 (x,y)，然后：</p>
+<ol>
+<li>根据插值模式 (mode) 计算该坐标对应的输入像素值。</li>
+<li>如果坐标超出 [−1,1]，则按照 padding_mode（如 zeros&#x2F;border&#x2F;reflection）处理。</li>
+<li>将得到的插值结果写入输出张量的相应位置。</li>
+</ol>
+</li>
+<li><p>对于插值模式，“bilinear” 在 2D 场景下需要对 4 个邻近像素（左上、右上、左下、右下）做双线性加权，而 “nearest” 则直接取最近的像素，“bicubic” 做 4x4 neighborhood 的三次插值，3D 时思路类似，只是变为三线性、最邻近或三次插值。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>反向传播</strong>（Backward）</p>
+<ul>
+<li><p>如果在计算梯度（即调用 .backward()），grid_sample 还需对输入 input 和 grid 计算梯度：</p>
+<ol>
+<li>对 input 的梯度：将来自输出像素的梯度<strong>按照插值权重</strong>反向加到输入对应像素上。</li>
+<li>对 grid 的梯度：同样使用插值的偏导（∂x^&#x2F;∂x 等）将输出梯度中与坐标相关的部分累加到 grid。</li>
+</ol>
+</li>
+<li><p>这就保证了在训练基于 grid_sample 的网络（例如空间变换网络 STN）时，θ（或任何定义 grid 的参数）可以通过可微分插值把梯度传回来。</p>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>核心算法</strong>就是<strong>对输出像素进行遍历</strong>，从网格中取到输入坐标，根据插值模式去输入张量读值并插值，然后写回输出；反向传播还要计算对输入和网格的梯度。</p>
+</blockquote>
+<hr>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/01/21/7-ResNet50%E6%A8%A1%E5%9E%8B%E5%9C%A8%E6%98%87%E8%85%BE%E5%B9%B3%E5%8F%B0%E4%B8%8A%E7%9A%84%E8%AE%AD%E7%BB%83%E4%B8%8E%E9%83%A8%E7%BD%B2/" rel="prev" title="7-ResNet50模型在华为昇腾平台上的训练与部署">
+      <i class="fa fa-chevron-left"></i> 7-ResNet50模型在华为昇腾平台上的训练与部署
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/01/22/8-%E4%BD%BF%E7%94%A8CANN%E7%AE%97%E5%AD%90%E5%BA%93%E8%BF%9B%E8%A1%8C%E4%B8%A4%E6%AE%B5%E5%BC%8F%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8/" rel="next" title="8-使用CANN算子库进行两段式接口调用">
+      8-使用CANN算子库进行两段式接口调用 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3-torch-nn-functional-grid-sample"><span class="nav-number">1.</span> <span class="nav-text">深入理解 torch.nn.functional.grid_sample</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E5%8F%82%E8%80%83"><span class="nav-number">1.0.1.</span> <span class="nav-text">1. 参考</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E5%8A%9F%E8%83%BD%E6%A6%82%E8%BF%B0"><span class="nav-number">1.0.2.</span> <span class="nav-text">2. 功能概述</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-GradSample2D%E7%AE%97%E5%AD%90%E8%AE%BE%E8%AE%A1%E8%A7%84%E6%A0%BC"><span class="nav-number">1.0.3.</span> <span class="nav-text">3. GradSample2D算子设计规格</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">1.0.4.</span> <span class="nav-text">4. 工作原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82-Python-%E5%89%8D%E7%AB%AF%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.0.5.</span> <span class="nav-text">5. 代码实现细节-Python 前端接口</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82-C-CUDA-%E5%B1%82%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.0.6.</span> <span class="nav-text">6. 代码实现细节-C++ &#x2F; CUDA 层实现</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-%E4%B8%BB%E8%A6%81%E9%80%BB%E8%BE%91"><span class="nav-number">1.0.7.</span> <span class="nav-text">7. 主要逻辑</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jiawei Li"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jiawei Li</p>
+  <div class="site-description" itemprop="description">愚蠢的zzz侠</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jiawei Li</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
