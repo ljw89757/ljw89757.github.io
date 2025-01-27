@@ -147,6 +147,106 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/27/12-Docker%E5%AE%B9%E5%99%A8%E4%B8%AD%E8%A7%A3%E5%86%B3SharedMemory%E4%B8%8D%E8%B6%B3%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="Jiawei Li">
+      <meta itemprop="description" content="愚蠢的zzz侠">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="睿智的ljw侠">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/27/12-Docker%E5%AE%B9%E5%99%A8%E4%B8%AD%E8%A7%A3%E5%86%B3SharedMemory%E4%B8%8D%E8%B6%B3%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">12-Docker容器中解决Shared Memory不足问题</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-27 11:49:05 / 修改时间：13:39:35" itemprop="dateCreated datePublished" datetime="2025-01-27T11:49:05+08:00">2025-01-27</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <hr>
+<h5 id="1-报错信息"><a href="#1-报错信息" class="headerlink" title="1. 报错信息"></a>1. 报错信息</h5><p>在使用 PyTorch 等深度学习框架时，可能会遇到以下错误：</p>
+<figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">RuntimeError:</span> DataLoader worker (pid X) <span class="built_in">is</span> killed <span class="keyword">by</span> signal: Bus <span class="keyword">error</span>. It <span class="built_in">is</span> possible that dataloader<span class="comment">&#x27;s workers are out of shared memory...</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>错误原因</strong></p>
+</blockquote>
+<blockquote>
+<p>这个错误通常是由于容器的共享内存（<code>/dev/shm</code>）不足引起的，尤其在处理大规模数据加载或多线程操作时容易出现。</p>
+</blockquote>
+<hr>
+<h5 id="2-解决方案"><a href="#2-解决方案" class="headerlink" title="2. 解决方案"></a>2. 解决方案</h5><p>增大共享内存大小 (<code>--shm-size</code>)</p>
+<p>在使用 Docker 启动容器时，通过 <code>--shm-size</code> 参数增大共享内存。例如，将共享内存设置为 8GB：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --shm-size=8g ...</span><br></pre></td></tr></table></figure>
+
+<p>可以使用以下命令查看容器的共享内存使用情况：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">df</span> -h /dev/shm</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="3-操作步骤"><a href="#3-操作步骤" class="headerlink" title="3. 操作步骤"></a>3. 操作步骤</h5><p><strong>针对现有容器修改共享内存大小</strong></p>
+<p>在 Docker 中，共享内存大小属于<strong>容器运行期配置</strong>，无法直接对已创建的容器进行修改。为了保存现有容器内容并重新配置共享内存，可以按照以下步骤进行。</p>
+<ul>
+<li>停止运行中的容器</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker ps</span><br><span class="line">docker stop &lt;容器ID&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用 <code>docker commit</code> 保存容器</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker commit &lt;容器ID&gt; &lt;new-image-name&gt;:&lt;tag&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>以新的共享内存大小启动容器</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -d --net=host --shm-size=8g \</span><br><span class="line">    --privileged \</span><br><span class="line">    --name &lt;new-container-name&gt; \</span><br><span class="line">    --device=/dev/davinci_manager \</span><br><span class="line">    --device=/dev/hisi_hdc \</span><br><span class="line">    --device=/dev/devmm_svm \</span><br><span class="line">    --device=/dev/davinciX \</span><br><span class="line">    -v /usr/local/Ascend/driver:/usr/local/Ascend/driver:ro \</span><br><span class="line">    -v /usr/local/sbin:/usr/local/sbin:ro \</span><br><span class="line">    -v /home/ljw:/home/ljw \</span><br><span class="line">    &lt;new-image-name&gt;:&lt;tag&gt; bash</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>验证共享内存大小</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">df</span> -h /dev/shm</span><br></pre></td></tr></table></figure>
+
+<hr>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/23/11-%E7%90%86%E8%A7%A3GridSample/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -548,7 +648,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2025-01-23 11:49:05 / 修改时间：11:57:40" itemprop="dateCreated datePublished" datetime="2025-01-23T11:49:05+08:00">2025-01-23</time>
+              <time title="创建时间：2025-01-23 11:49:05 / 修改时间：16:06:57" itemprop="dateCreated datePublished" datetime="2025-01-23T11:49:05+08:00">2025-01-23</time>
             </span>
 
           
@@ -601,7 +701,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/ascend/log/debug/plog</span><br><span class="line">grep -rn <span class="string">&quot;error&quot;</span></span><br><span class="line">grep -rn <span class="string">&quot;errorStr&quot;</span></span><br></pre></td></tr></table></figure>
 
 <hr>
-<h5 id="5-编译期输出类型信息"><a href="#5-编译期输出类型信息" class="headerlink" title="5. 编译期输出类型信息"></a>5. 编译期输出类型信息</h5><p>如果需要在编译阶段确认某个宏或类型的值（如 <code>DTYPE_X</code>），可以通过预处理器和编译器的警告信息来实现。例如：</p>
+<h5 id="5-编译器输出类型信息"><a href="#5-编译器输出类型信息" class="headerlink" title="5. 编译器输出类型信息"></a>5. 编译器输出类型信息</h5><p>如果需要在编译阶段确认某个宏或类型的值（如 <code>DTYPE_X</code>），可以通过预处理器和编译器的警告信息来实现。例如：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#define STRINGIZE(x) #x</span><br><span class="line">#define TOSTRING(x) STRINGIZE(x)</span><br><span class="line"></span><br><span class="line">#pragma message(&quot;DTYPE_X is &quot; TOSTRING(DTYPE_X))</span><br></pre></td></tr></table></figure>
 
 <p>编译器在编译时会在输出信息中提示 <code>DTYPE_X is xxx</code>，帮助我们在编译期确认类型或宏定义。</p>
@@ -1496,158 +1596,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="Jiawei Li">
-      <meta itemprop="description" content="愚蠢的zzz侠">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="睿智的ljw侠">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/" class="post-title-link" itemprop="url">2-安装libtorch(VS2022+CUDA12.4)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-12-23 13:03:58" itemprop="dateCreated datePublished" datetime="2024-12-23T13:03:58+08:00">2024-12-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-12-25 14:55:30" itemprop="dateModified" datetime="2024-12-25T14:55:30+08:00">2024-12-25</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h5 id="1-参考资料"><a href="#1-参考资料" class="headerlink" title="1. 参考资料"></a>1. 参考资料</h5><ul>
-<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_43475606/article/details/138673348">【vs2022安装libtorch——gpu版本安装过程】_libtorch gpu-CSDN博客</a></p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_34910922/article/details/109344569">libtorch c++部署-使用GPU_libtorch gpu-CSDN博客</a></p>
-</li>
-</ul>
-<hr>
-<h5 id="2-安装cuda"><a href="#2-安装cuda" class="headerlink" title="2. 安装cuda"></a>2. 安装cuda</h5><p><strong>查看电脑的NVIDIA版本</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvidia-smi</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/2024-12-23-13-07-58-image.png"></p>
-<p><strong>注意</strong>：安装的CUDA版本小于等于12.5。</p>
-<p><strong>安装CUDA</strong></p>
-<ul>
-<li>前往 <a target="_blank" rel="noopener" href="https://developer.nvidia.com/cuda-toolkit-archive">CUDA Toolkit Archive | NVIDIA Developer</a> 下载页面。</li>
-<li>选择 <strong>CUDA 12.4.0</strong> 版本并下载安装包。</li>
-<li>按照安装向导完成 CUDA 的安装。</li>
-</ul>
-<p><strong>验证 CUDA 安装是否成功</strong></p>
-<p>安装完成后，运行以下命令以确认 <code>nvcc</code> 是否正确安装：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvcc --version</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/2024-12-23-13-06-32-image.png"></p>
-<hr>
-<h5 id="3-安装libtorch"><a href="#3-安装libtorch" class="headerlink" title="3. 安装libtorch"></a>3. 安装libtorch</h5><ul>
-<li>前往 <a target="_blank" rel="noopener" href="https://pytorch.org/">PyTorch 官方网站</a> 下载相应的 <strong>libtorch</strong> 版本。</li>
-</ul>
-<p><img src="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/2024-12-23-13-15-08-image.png"></p>
-<ul>
-<li><p>下载完成后，解压缩文件。</p>
-</li>
-<li><p>配置环境变量，将 <code>libtorch</code> 的 <code>lib</code> 和 <code>bin</code> 目录添加到系统路径中。例如：</p>
-</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">XXX\libtorch\lib</span><br><span class="line">XXX\libtorch\bin</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h5 id="4-配置-Visual-Studio-2022"><a href="#4-配置-Visual-Studio-2022" class="headerlink" title="4. 配置 Visual Studio 2022"></a>4. 配置 Visual Studio 2022</h5><p><strong>新建空项目</strong></p>
-<ul>
-<li>打开 <strong>Visual Studio 2022</strong>。</li>
-<li>创建一个新的 <strong>空项目</strong>（Empty Project）。</li>
-</ul>
-<p><strong>4.1 配置 x64 平台</strong></p>
-<p>在弹出的属性窗口中，确保 <strong>平台</strong>（Platform）设置为 <strong>x64</strong>。</p>
-<p><img src="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/2024-12-23-13-18-42-image.png"></p>
-<p><img src="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/2024-12-23-13-19-12-image.png"></p>
-<p>选中左侧项目名称，点击项目-&gt;属性</p>
-<p><img src="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/2024-12-23-13-20-54-image.png"></p>
-<p><img src="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/2024-12-23-13-21-09-image.png"></p>
-<p><strong>4.2 配置 VC++ 目录</strong></p>
-<p>在项目属性中，导航到 <strong>VC++ 目录</strong>（VC++ Directories），并配置以下内容：</p>
-<ul>
-<li><strong>包含目录</strong>（Include Directories）：</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">XXX\libtorch\include;</span><br><span class="line">XXX\libtorch\include\torch\csrc\api\include;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>库目录</strong>（Library Directories）：</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">XXX\LJW\libtorch\lib;</span><br><span class="line">C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\lib\x64\;</span><br><span class="line">C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\um\x64;</span><br><span class="line">C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\ucrt\x64</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/2024-12-23-13-24-10-image.png"></p>
-<p><strong>4.3 配置调试环境变量</strong></p>
-<p>导航到 <strong>调试</strong>（Debugging）选项卡，找到 <strong>环境</strong>（Environment）部分，并添加 <code>libtorch</code> 的 <code>bin</code> 目录到 <code>PATH</code> 环境变量：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PATH=C:\Users\LJW\libtorch\lib;%PATH%</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/2024-12-23-13-28-53-image.png"></p>
-<p><strong>4.4 配置链接器 - 常规 - 附加库目录</strong></p>
-<p>在 <strong>链接器</strong>（Linker） -&gt; <strong>常规</strong>（General） -&gt; <strong>附加库目录</strong>（Additional Library Directories）中，添加 <code>libtorch</code> 的 <code>lib</code> 目录：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">XXX\libtorch\lib</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/2024-12-23-13-30-30-image.png"></p>
-<p><strong>4.5 配置链接器 - 输入 - 附加依赖项</strong></p>
-<p>在 <strong>链接器</strong>（Linker） -&gt; <strong>输入</strong>（Input） -&gt; <strong>附加依赖项</strong>（Additional Dependencies）中，添加所有 <code>libtorch</code> 的 <code>.lib</code> 文件。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">XXX\libtorch\lib\*.lib</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/2024-12-23-13-34-21-image.png"></p>
-<p><strong>4.6 配置链接器 - 命令行 - 其他选项</strong></p>
-<p>在 <strong>链接器</strong>（Linker） -&gt; <strong>命令行</strong>（Command Line） -&gt; <strong>其他选项</strong>（Additional Options）中，添加以下内容以解决可能的链接问题：</p>
-<p>（添加前无法使用GPU）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/INCLUDE:?warp_size@cuda@at@@YAHXZ </span><br></pre></td></tr></table></figure>
-
-<p><img src="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/2024-12-23-13-36-50-image.png"></p>
-<hr>
-<h5 id="5-进行测试"><a href="#5-进行测试" class="headerlink" title="5. 进行测试"></a>5. 进行测试</h5><p>创建一个简单的 C++ 程序以测试 <code>libtorch</code> 和 CUDA 是否配置成功。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;torch/torch.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    torch::Tensor tensor = torch::<span class="built_in">rand</span>(&#123; <span class="number">2</span>, <span class="number">3</span> &#125;);</span><br><span class="line">    <span class="keyword">if</span> (torch::cuda::<span class="built_in">is_available</span>()) &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;CUDA is available! Training on GPU&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">        <span class="keyword">auto</span> tensor_cuda = tensor.<span class="built_in">cuda</span>();</span><br><span class="line">        std::cout &lt;&lt; tensor_cuda &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;CUDA is not available! Training on CPU&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">        std::cout &lt;&lt; tensor &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    std::cin.<span class="built_in">get</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>运行程序</strong></p>
-<h2 id><a href="#" class="headerlink" title></a><img src="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/2024-12-23-13-38-49-image.png"></h2>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1719,7 +1667,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
