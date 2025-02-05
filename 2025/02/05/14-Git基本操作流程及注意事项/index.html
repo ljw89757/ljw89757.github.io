@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. 克隆仓库1git clone https:&#x2F;&#x2F;github.com&#x2F;ljw89757&#x2F;ops.git  2. 查看当前的状态在对文件做了修改后，可以随时查看工作区和暂存区的状态 1git status  3. 将新的内容添加到暂存区1git add .  . 表示将当前目录下所有有变动的文件添加到暂存区 4. 提交更改在完成对代码的编辑并将文件添加到暂存区后，需要进行提交（Commit），并">
+<meta property="og:type" content="article">
+<meta property="og:title" content="14-Git基本操作流程及注意事项">
+<meta property="og:url" content="http://example.com/2025/02/05/14-Git%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/index.html">
+<meta property="og:site_name" content="睿智的ljw侠">
+<meta property="og:description" content="1. 克隆仓库1git clone https:&#x2F;&#x2F;github.com&#x2F;ljw89757&#x2F;ops.git  2. 查看当前的状态在对文件做了修改后，可以随时查看工作区和暂存区的状态 1git status  3. 将新的内容添加到暂存区1git add .  . 表示将当前目录下所有有变动的文件添加到暂存区 4. 提交更改在完成对代码的编辑并将文件添加到暂存区后，需要进行提交（Commit），并">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2025/02/05/14-Git%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/2025-02-05-13-53-48-image.png">
+<meta property="og:image" content="http://example.com/2025/02/05/14-Git%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/2025-02-05-11-44-57-image.png">
+<meta property="og:image" content="http://example.com/2025/02/05/14-Git%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/2025-02-05-11-47-30-image.png">
+<meta property="article:published_time" content="2025-02-05T06:49:05.000Z">
+<meta property="article:modified_time" content="2025-02-05T06:51:09.292Z">
+<meta property="article:author" content="Jiawei Li">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2025/02/05/14-Git%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/2025-02-05-13-53-48-image.png">
+
+<link rel="canonical" href="http://example.com/2025/02/05/14-Git%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>14-Git基本操作流程及注意事项 | 睿智的ljw侠</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">睿智的ljw侠</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/05/14-Git%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="Jiawei Li">
+      <meta itemprop="description" content="愚蠢的zzz侠">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="睿智的ljw侠">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          14-Git基本操作流程及注意事项
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-02-05 14:49:05 / 修改时间：14:51:09" itemprop="dateCreated datePublished" datetime="2025-02-05T14:49:05+08:00">2025-02-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h5 id="1-克隆仓库"><a href="#1-克隆仓库" class="headerlink" title="1. 克隆仓库"></a>1. 克隆仓库</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/ljw89757/ops.git</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-查看当前的状态"><a href="#2-查看当前的状态" class="headerlink" title="2. 查看当前的状态"></a>2. 查看当前的状态</h5><p>在对文件做了修改后，可以随时查看工作区和暂存区的状态</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-将新的内容添加到暂存区"><a href="#3-将新的内容添加到暂存区" class="headerlink" title="3. 将新的内容添加到暂存区"></a>3. 将新的内容添加到暂存区</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br></pre></td></tr></table></figure>
+
+<p><code>.</code> 表示将当前目录下所有有变动的文件添加到暂存区</p>
+<h5 id="4-提交更改"><a href="#4-提交更改" class="headerlink" title="4. 提交更改"></a>4. 提交更改</h5><p>在完成对代码的编辑并将文件添加到暂存区后，需要进行提交（Commit），并为提交添加一条注释信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m <span class="string">&quot;Add new op GirdSample2D&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="5-推送到远程仓库"><a href="#5-推送到远程仓库" class="headerlink" title="5. 推送到远程仓库"></a>5. 推送到远程仓库</h5><p>如果已有远程仓库并希望将本地提交同步过去，需要先处理好分支，然后执行 <code>git push</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看本地分支列表</span></span><br><span class="line">git branch </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建并切换到 main 分支（假设远程仓库使用 main 作为主分支）</span></span><br><span class="line">git checkout -b main  </span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果本地仓库和远程仓库在历史上从未关联过，可以先拉取远程仓库的 main 分支</span></span><br><span class="line">git pull origin main --allow-unrelated-histories</span><br><span class="line"></span><br><span class="line"><span class="comment"># 然后再将本地代码推送到远程，并设置为跟踪分支</span></span><br><span class="line">git push -u origin main</span><br><span class="line"></span><br><span class="line"><span class="comment"># git push origin main --force</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="6-将远程仓库与本地仓库关联"><a href="#6-将远程仓库与本地仓库关联" class="headerlink" title="6. 将远程仓库与本地仓库关联"></a>6. 将远程仓库与本地仓库关联</h5><p>如果在一开始是从零创建的本地项目，需要先给仓库添加一个远程地址，以便后续进行推送。如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br><span class="line">git remote add origin https://github.com/ljw89757/ops.git</span><br></pre></td></tr></table></figure>
+
+<p>执行此命令后，<code>origin</code> 就代表了远程仓库的地址。</p>
+<h5 id="7-检查当前的远程仓库设置"><a href="#7-检查当前的远程仓库设置" class="headerlink" title="7. 检查当前的远程仓库设置"></a>7. 检查当前的远程仓库设置</h5><p>列出所有配置过的远程仓库的名称和对应地址</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote -v</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="8-移除历史中的大文件"><a href="#8-移除历史中的大文件" class="headerlink" title="8. 移除历史中的大文件"></a>8. 移除历史中的大文件</h5><p><img src="/2025/02/05/14-Git%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/2025-02-05-13-53-48-image.png"></p>
+<p>即使已经在本地已经删除了这些文件，它们仍然可能存在于 Git 的历史记录中，因此当你尝试推送到远程仓库时，GitHub 会识别出这些大文件并抛出错误。可以使用 <code>git filter-branch</code> 来从 Git 历史中删除指定的文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git filter-branch --force --index-filter \</span><br><span class="line">  <span class="string">&quot;git rm --cached --ignore-unmatch ops/GroupNormV2Sample/FrameworkLaunch/AclNNInvocation/GroupNormV2Case1/output/OPPROF_20241014030459_LBUSAYWGDMBXWHGR/simulator/visualize_data.bin&quot;</span> \</span><br><span class="line">  --prune-empty --tag-name-filter <span class="built_in">cat</span> -- --all</span><br></pre></td></tr></table></figure>
+
+<p>清理剩余的 Git 历史垃圾</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git reflog expire --expire=now --all</span><br><span class="line">git gc --prune=now</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="9-启用长路径支持"><a href="#9-启用长路径支持" class="headerlink" title="9. 启用长路径支持"></a>9. 启用长路径支持</h5><p><img src="/2025/02/05/14-Git%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/2025-02-05-11-44-57-image.png"></p>
+<p>这个错误 <code>Filename too long</code> 表示 Git 在克隆仓库时遇到文件路径过长的问题。Windows 系统有一个路径长度限制，默认最大路径为 260 个字符（包括文件夹和文件名）。因此，当文件或文件夹的路径超出这个限制时，就会出现这样的错误。</p>
+<p><strong>方法一：启用长路径支持（注册表修改）</strong></p>
+<p>使用注册表启用。按下 <code>Win + R</code>，然后输入 <code>regedit</code> 打开注册表编辑器。</p>
+<p>导航到以下路径：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem</span><br></pre></td></tr></table></figure>
+
+<p>找到名为 <strong>LongPathsEnabled</strong> 的键，设置该键的值为 <code>1</code>，然后重启计算机。</p>
+<p><img src="/2025/02/05/14-Git%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/2025-02-05-11-47-30-image.png"></p>
+<p><strong>方法二：配置 Git 启用长路径支持</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global core.longpaths <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="10-总结"><a href="#10-总结" class="headerlink" title="10. 总结"></a>10. 总结</h5><ol>
+<li>初始化或克隆仓库：本地要么用 <code>git clone</code> 从远程获取项目，要么用 <code>git init</code> + <code>git remote add</code> 自行创建并与远程仓库关联。</li>
+<li>日常开发：开发中频繁使用 <code>git status</code> 来查看状态，用 <code>git add</code> 暂存文件，用 <code>git commit</code> 提交改动。</li>
+<li>分支管理：切换或创建分支，最后通过 <code>git merge</code> 或者 <code>git pull</code> 同步远程分支的改动。</li>
+<li>推送与拉取：使用 <code>git push</code> 推送本地分支到远程，使用 <code>git pull</code> 获取远程更新并合并到本地分支。</li>
+<li>远程仓库关联：确认远程地址(<code>origin</code>)是否正确，并在需要时可以修改或添加新的远程地址。</li>
+</ol>
+<hr>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/02/03/13-DeepSeek%E6%80%BB%E7%BB%93/" rel="prev" title="13-DeepSeek总结">
+      <i class="fa fa-chevron-left"></i> 13-DeepSeek总结
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E5%85%8B%E9%9A%86%E4%BB%93%E5%BA%93"><span class="nav-number">1.</span> <span class="nav-text">1. 克隆仓库</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E7%9A%84%E7%8A%B6%E6%80%81"><span class="nav-number">2.</span> <span class="nav-text">2. 查看当前的状态</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-%E5%B0%86%E6%96%B0%E7%9A%84%E5%86%85%E5%AE%B9%E6%B7%BB%E5%8A%A0%E5%88%B0%E6%9A%82%E5%AD%98%E5%8C%BA"><span class="nav-number">3.</span> <span class="nav-text">3. 将新的内容添加到暂存区</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-%E6%8F%90%E4%BA%A4%E6%9B%B4%E6%94%B9"><span class="nav-number">4.</span> <span class="nav-text">4. 提交更改</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-%E6%8E%A8%E9%80%81%E5%88%B0%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93"><span class="nav-number">5.</span> <span class="nav-text">5. 推送到远程仓库</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-%E5%B0%86%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E4%B8%8E%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93%E5%85%B3%E8%81%94"><span class="nav-number">6.</span> <span class="nav-text">6. 将远程仓库与本地仓库关联</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-%E6%A3%80%E6%9F%A5%E5%BD%93%E5%89%8D%E7%9A%84%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E8%AE%BE%E7%BD%AE"><span class="nav-number">7.</span> <span class="nav-text">7. 检查当前的远程仓库设置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#8-%E7%A7%BB%E9%99%A4%E5%8E%86%E5%8F%B2%E4%B8%AD%E7%9A%84%E5%A4%A7%E6%96%87%E4%BB%B6"><span class="nav-number">8.</span> <span class="nav-text">8. 移除历史中的大文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#9-%E5%90%AF%E7%94%A8%E9%95%BF%E8%B7%AF%E5%BE%84%E6%94%AF%E6%8C%81"><span class="nav-number">9.</span> <span class="nav-text">9. 启用长路径支持</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#10-%E6%80%BB%E7%BB%93"><span class="nav-number">10.</span> <span class="nav-text">10. 总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jiawei Li"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jiawei Li</p>
+  <div class="site-description" itemprop="description">愚蠢的zzz侠</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jiawei Li</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

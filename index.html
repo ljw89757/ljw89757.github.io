@@ -147,7 +147,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/03/14-Git%E5%85%8B%E9%9A%86%E4%BB%93%E5%BA%93%E6%97%B6%E9%81%87%E5%88%B0%E2%80%9CFilename%20too%20long%E2%80%9D%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/05/14-Git%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.jpg">
@@ -161,7 +161,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2025/02/03/14-Git%E5%85%8B%E9%9A%86%E4%BB%93%E5%BA%93%E6%97%B6%E9%81%87%E5%88%B0%E2%80%9CFilename%20too%20long%E2%80%9D%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">14-Git克隆仓库时遇到“Filename too long”错误解决方法</a>
+            <a href="/2025/02/05/14-Git%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" class="post-title-link" itemprop="url">14-Git基本操作流程及注意事项</a>
         </h2>
 
         <div class="post-meta">
@@ -170,16 +170,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2025-02-03 12:32:05" itemprop="dateCreated datePublished" datetime="2025-02-03T12:32:05+08:00">2025-02-03</time>
+              <time title="创建时间：2025-02-05 14:49:05 / 修改时间：14:51:09" itemprop="dateCreated datePublished" datetime="2025-02-05T14:49:05+08:00">2025-02-05</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-05 12:34:23" itemprop="dateModified" datetime="2025-02-05T12:34:23+08:00">2025-02-05</time>
-              </span>
 
           
 
@@ -192,19 +186,57 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h5 id="1-错误原因"><a href="#1-错误原因" class="headerlink" title="1. 错误原因"></a>1. 错误原因</h5><p><img src="/2025/02/03/14-Git%E5%85%8B%E9%9A%86%E4%BB%93%E5%BA%93%E6%97%B6%E9%81%87%E5%88%B0%E2%80%9CFilename%20too%20long%E2%80%9D%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/2025-02-05-11-44-57-image.png"></p>
-<p>这个错误 <code>Filename too long</code> 表示 Git 在克隆仓库时遇到文件路径过长的问题。Windows 系统有一个路径长度限制，默认最大路径为 260 个字符（包括文件夹和文件名）。因此，当文件或文件夹的路径超出这个限制时，就会出现这样的错误。</p>
+          <h5 id="1-克隆仓库"><a href="#1-克隆仓库" class="headerlink" title="1. 克隆仓库"></a>1. 克隆仓库</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/ljw89757/ops.git</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-查看当前的状态"><a href="#2-查看当前的状态" class="headerlink" title="2. 查看当前的状态"></a>2. 查看当前的状态</h5><p>在对文件做了修改后，可以随时查看工作区和暂存区的状态</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-将新的内容添加到暂存区"><a href="#3-将新的内容添加到暂存区" class="headerlink" title="3. 将新的内容添加到暂存区"></a>3. 将新的内容添加到暂存区</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br></pre></td></tr></table></figure>
+
+<p><code>.</code> 表示将当前目录下所有有变动的文件添加到暂存区</p>
+<h5 id="4-提交更改"><a href="#4-提交更改" class="headerlink" title="4. 提交更改"></a>4. 提交更改</h5><p>在完成对代码的编辑并将文件添加到暂存区后，需要进行提交（Commit），并为提交添加一条注释信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m <span class="string">&quot;Add new op GirdSample2D&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="5-推送到远程仓库"><a href="#5-推送到远程仓库" class="headerlink" title="5. 推送到远程仓库"></a>5. 推送到远程仓库</h5><p>如果已有远程仓库并希望将本地提交同步过去，需要先处理好分支，然后执行 <code>git push</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看本地分支列表</span></span><br><span class="line">git branch </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建并切换到 main 分支（假设远程仓库使用 main 作为主分支）</span></span><br><span class="line">git checkout -b main  </span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果本地仓库和远程仓库在历史上从未关联过，可以先拉取远程仓库的 main 分支</span></span><br><span class="line">git pull origin main --allow-unrelated-histories</span><br><span class="line"></span><br><span class="line"><span class="comment"># 然后再将本地代码推送到远程，并设置为跟踪分支</span></span><br><span class="line">git push -u origin main</span><br><span class="line"></span><br><span class="line"><span class="comment"># git push origin main --force</span></span><br></pre></td></tr></table></figure>
+
 <hr>
-<h5 id="2-解决方法"><a href="#2-解决方法" class="headerlink" title="2. 解决方法"></a>2. 解决方法</h5><p><strong>方法一：启用长路径支持（注册表修改）</strong></p>
+<h5 id="6-将远程仓库与本地仓库关联"><a href="#6-将远程仓库与本地仓库关联" class="headerlink" title="6. 将远程仓库与本地仓库关联"></a>6. 将远程仓库与本地仓库关联</h5><p>如果在一开始是从零创建的本地项目，需要先给仓库添加一个远程地址，以便后续进行推送。如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br><span class="line">git remote add origin https://github.com/ljw89757/ops.git</span><br></pre></td></tr></table></figure>
+
+<p>执行此命令后，<code>origin</code> 就代表了远程仓库的地址。</p>
+<h5 id="7-检查当前的远程仓库设置"><a href="#7-检查当前的远程仓库设置" class="headerlink" title="7. 检查当前的远程仓库设置"></a>7. 检查当前的远程仓库设置</h5><p>列出所有配置过的远程仓库的名称和对应地址</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote -v</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="8-移除历史中的大文件"><a href="#8-移除历史中的大文件" class="headerlink" title="8. 移除历史中的大文件"></a>8. 移除历史中的大文件</h5><p><img src="/2025/02/05/14-Git%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/2025-02-05-13-53-48-image.png"></p>
+<p>即使已经在本地已经删除了这些文件，它们仍然可能存在于 Git 的历史记录中，因此当你尝试推送到远程仓库时，GitHub 会识别出这些大文件并抛出错误。可以使用 <code>git filter-branch</code> 来从 Git 历史中删除指定的文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git filter-branch --force --index-filter \</span><br><span class="line">  <span class="string">&quot;git rm --cached --ignore-unmatch ops/GroupNormV2Sample/FrameworkLaunch/AclNNInvocation/GroupNormV2Case1/output/OPPROF_20241014030459_LBUSAYWGDMBXWHGR/simulator/visualize_data.bin&quot;</span> \</span><br><span class="line">  --prune-empty --tag-name-filter <span class="built_in">cat</span> -- --all</span><br></pre></td></tr></table></figure>
+
+<p>清理剩余的 Git 历史垃圾</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git reflog expire --expire=now --all</span><br><span class="line">git gc --prune=now</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="9-启用长路径支持"><a href="#9-启用长路径支持" class="headerlink" title="9. 启用长路径支持"></a>9. 启用长路径支持</h5><p><img src="/2025/02/05/14-Git%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/2025-02-05-11-44-57-image.png"></p>
+<p>这个错误 <code>Filename too long</code> 表示 Git 在克隆仓库时遇到文件路径过长的问题。Windows 系统有一个路径长度限制，默认最大路径为 260 个字符（包括文件夹和文件名）。因此，当文件或文件夹的路径超出这个限制时，就会出现这样的错误。</p>
+<p><strong>方法一：启用长路径支持（注册表修改）</strong></p>
 <p>使用注册表启用。按下 <code>Win + R</code>，然后输入 <code>regedit</code> 打开注册表编辑器。</p>
 <p>导航到以下路径：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem</span><br></pre></td></tr></table></figure>
 
 <p>找到名为 <strong>LongPathsEnabled</strong> 的键，设置该键的值为 <code>1</code>，然后重启计算机。</p>
-<p><img src="/2025/02/03/14-Git%E5%85%8B%E9%9A%86%E4%BB%93%E5%BA%93%E6%97%B6%E9%81%87%E5%88%B0%E2%80%9CFilename%20too%20long%E2%80%9D%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/2025-02-05-11-47-30-image.png"></p>
+<p><img src="/2025/02/05/14-Git%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/2025-02-05-11-47-30-image.png"></p>
 <p><strong>方法二：配置 Git 启用长路径支持</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global core.longpaths <span class="literal">true</span></span><br></pre></td></tr></table></figure>
 
+<hr>
+<h5 id="10-总结"><a href="#10-总结" class="headerlink" title="10. 总结"></a>10. 总结</h5><ol>
+<li>初始化或克隆仓库：本地要么用 <code>git clone</code> 从远程获取项目，要么用 <code>git init</code> + <code>git remote add</code> 自行创建并与远程仓库关联。</li>
+<li>日常开发：开发中频繁使用 <code>git status</code> 来查看状态，用 <code>git add</code> 暂存文件，用 <code>git commit</code> 提交改动。</li>
+<li>分支管理：切换或创建分支，最后通过 <code>git merge</code> 或者 <code>git pull</code> 同步远程分支的改动。</li>
+<li>推送与拉取：使用 <code>git push</code> 推送本地分支到远程，使用 <code>git pull</code> 获取远程更新并合并到本地分支。</li>
+<li>远程仓库关联：确认远程地址(<code>origin</code>)是否正确，并在需要时可以修改或添加新的远程地址。</li>
+</ol>
 <hr>
 
       
