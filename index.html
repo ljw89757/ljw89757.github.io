@@ -147,6 +147,84 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/03/14-Git%E5%85%8B%E9%9A%86%E4%BB%93%E5%BA%93%E6%97%B6%E9%81%87%E5%88%B0%E2%80%9CFilename%20too%20long%E2%80%9D%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="Jiawei Li">
+      <meta itemprop="description" content="愚蠢的zzz侠">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="睿智的ljw侠">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/02/03/14-Git%E5%85%8B%E9%9A%86%E4%BB%93%E5%BA%93%E6%97%B6%E9%81%87%E5%88%B0%E2%80%9CFilename%20too%20long%E2%80%9D%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">14-Git克隆仓库时遇到“Filename too long”错误解决方法</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-02-03 12:32:05" itemprop="dateCreated datePublished" datetime="2025-02-03T12:32:05+08:00">2025-02-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-02-05 12:34:23" itemprop="dateModified" datetime="2025-02-05T12:34:23+08:00">2025-02-05</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h5 id="1-错误原因"><a href="#1-错误原因" class="headerlink" title="1. 错误原因"></a>1. 错误原因</h5><p><img src="/2025/02/03/14-Git%E5%85%8B%E9%9A%86%E4%BB%93%E5%BA%93%E6%97%B6%E9%81%87%E5%88%B0%E2%80%9CFilename%20too%20long%E2%80%9D%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/2025-02-05-11-44-57-image.png"></p>
+<p>这个错误 <code>Filename too long</code> 表示 Git 在克隆仓库时遇到文件路径过长的问题。Windows 系统有一个路径长度限制，默认最大路径为 260 个字符（包括文件夹和文件名）。因此，当文件或文件夹的路径超出这个限制时，就会出现这样的错误。</p>
+<hr>
+<h5 id="2-解决方法"><a href="#2-解决方法" class="headerlink" title="2. 解决方法"></a>2. 解决方法</h5><p><strong>方法一：启用长路径支持（注册表修改）</strong></p>
+<p>使用注册表启用。按下 <code>Win + R</code>，然后输入 <code>regedit</code> 打开注册表编辑器。</p>
+<p>导航到以下路径：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem</span><br></pre></td></tr></table></figure>
+
+<p>找到名为 <strong>LongPathsEnabled</strong> 的键，设置该键的值为 <code>1</code>，然后重启计算机。</p>
+<p><img src="/2025/02/03/14-Git%E5%85%8B%E9%9A%86%E4%BB%93%E5%BA%93%E6%97%B6%E9%81%87%E5%88%B0%E2%80%9CFilename%20too%20long%E2%80%9D%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/2025-02-05-11-47-30-image.png"></p>
+<p><strong>方法二：配置 Git 启用长路径支持</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global core.longpaths <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/03/13-DeepSeek%E6%80%BB%E7%BB%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -178,7 +256,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-05 10:15:40" itemprop="dateModified" datetime="2025-02-05T10:15:40+08:00">2025-02-05</time>
+                <time title="修改时间：2025-02-05 10:21:30" itemprop="dateModified" datetime="2025-02-05T10:21:30+08:00">2025-02-05</time>
               </span>
 
           
@@ -218,13 +296,13 @@
 <ul>
 <li><p>DeepSeek-V3 是一个通用模型，日常常见的问题，都可以尝试使用 V3。</p>
 </li>
-<li><p>DeepSeek - R1 是一个推理模型，擅长处理复杂、需要多步思考的问题，适合做深度研究、解决代码问题、数学问题。</p>
+<li><p>DeepSeek-R1 是一个推理模型，擅长处理复杂、需要多步思考的问题，适合做深度研究、解决代码问题、数学问题。</p>
 </li>
 </ul>
 <p><img src="https://inews.gtimg.com/news_bt/O4s96pmSE_kkUf1hUEIGG1-brd1j22JL7JaFKRTR84aeQAA/641"></p>
 <p>目前Web和APP均免费。</p>
 <ul>
-<li><p>Web 端直接通过访问网址（<a target="_blank" rel="noopener" href="https://chat.deepseek.com/%EF%BC%89%E5%AF%B9%E8%AF%9D%E3%80%82%E5%9C%A8%E5%AF%B9%E8%AF%9D%E6%A1%86%E7%9A%84%E5%B7%A6%E4%B8%8B%E8%A7%92%E4%BD%8D%E7%BD%AE%EF%BC%8C%E5%8F%AF%E4%BB%A5%E9%80%89%E6%8B%A9%E6%98%AF%E5%90%A6%E5%BC%80%E5%90%AF%E2%80%9C%E6%B7%B1%E5%BA%A6%E6%80%9D%E8%80%83%E2%80%9D%E6%A8%A1%E5%BC%8F%E3%80%82%E5%A6%82%E6%9E%9C%E5%8B%BE%E9%80%89%EF%BC%8C%E4%BC%9A%E4%BD%BF%E7%94%A8">https://chat.deepseek.com/）对话。在对话框的左下角位置，可以选择是否开启“深度思考”模式。如果勾选，会使用</a> DeepSeek-R1 模型；如不勾选，则默认使用 DeepSeek-V3 。</p>
+<li><p>Web 端直接通过访问<a target="_blank" rel="noopener" href="https://chat.deepseek.com/">网址</a>对话。在对话框的左下角位置，可以选择是否开启“深度思考”模式。如果勾选，会使用 DeepSeek-R1 模型；如不勾选，则默认使用 DeepSeek-V3 。</p>
 </li>
 <li><p>App 直接在应用商店中搜索“DeepSeek”即可。在APP端，可以选择同时使用联网和推理功能。</p>
 </li>
@@ -357,7 +435,7 @@
 <li>动态调整偏置项：在训练过程中，如果一个专家被过度使用，则减小其偏置项；如果一个专家被闲置，则增大其偏置项。这样，可以动态调整专家负载，使其达到均衡。</li>
 <li>不使用辅助损失：偏置项只用于路由，而不影响最终的门控值计算，从而避免了传统辅助损失对模型性能的损害。</li>
 </ol>
-<p>类比： 想象一下你在一个餐厅里，有多个厨师。如果顾客都点同样的菜，那么只有一个厨师会很忙，而其他厨师则没事做。为了解决这个问题，你可以告诉顾客：「今天点这道菜可以打折」，或者「点其他菜可以更快上菜」。这样，就可以引导顾客点不同的菜，让所有厨师都忙起来。DeepSeek-V3 的无辅助损失负载均衡策略就类似于这个引导顾客点不同菜的策略。</p>
+<p>类比： 想象在一个餐厅里，有多个厨师。如果顾客都点同样的菜，那么只有一个厨师会很忙，而其他厨师则没事做。为了解决这个问题，你可以告诉顾客：「今天点这道菜可以打折」，或者「点其他菜可以更快上菜」。这样，就可以引导顾客点不同的菜，让所有厨师都忙起来。DeepSeek-V3 的无辅助损失负载均衡策略就类似于这个引导顾客点不同菜的策略。</p>
 <hr>
 <h6 id="8-4-DeepSeek-V3-使用-Multi-Token-Prediction-MTP-提高模型性能"><a href="#8-4-DeepSeek-V3-使用-Multi-Token-Prediction-MTP-提高模型性能" class="headerlink" title="8.4 DeepSeek-V3 使用 Multi-Token Prediction (MTP) 提高模型性能"></a>8.4 DeepSeek-V3 使用 Multi-Token Prediction (MTP) 提高模型性能</h6><p>在传统的语言模型训练中，模型通常只预测下一个标记。MTP 则是在每个位置上，让模型预测多个未来的标记。</p>
 <ul>
@@ -1778,101 +1856,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/06/4-%E4%B8%8B%E8%BD%BD%E5%B9%B6%E4%BD%BF%E7%94%A8MindIE%E6%B5%8B%E8%AF%95GLM-4-9B-Chat%E6%A8%A1%E5%9E%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="Jiawei Li">
-      <meta itemprop="description" content="愚蠢的zzz侠">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="睿智的ljw侠">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/06/4-%E4%B8%8B%E8%BD%BD%E5%B9%B6%E4%BD%BF%E7%94%A8MindIE%E6%B5%8B%E8%AF%95GLM-4-9B-Chat%E6%A8%A1%E5%9E%8B/" class="post-title-link" itemprop="url">4-下载并使用MindIE测试GLM-4-9B-Chat模型</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-01-06 14:44:40" itemprop="dateCreated datePublished" datetime="2025-01-06T14:44:40+08:00">2025-01-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-01-08 13:53:23" itemprop="dateModified" datetime="2025-01-08T13:53:23+08:00">2025-01-08</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本教程介绍如何快速从 Hugging Face 下载 GLM-4-9B-Chat 模型的权重文件，并在 Ascend 平台上进行模型推理和性能测试。</p>
-<hr>
-<h5 id="1-参考资料"><a href="#1-参考资料" class="headerlink" title="1. 参考资料"></a>1. 参考资料</h5><ul>
-<li><p><a target="_blank" rel="noopener" href="https://padeoe.com/huggingface-large-models-downloader/">如何快速下载huggingface大模型 &#8211; padeoe的小站</a></p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://www.hiascend.com/document/detail/zh/mindie/10RC3/whatismindie/mindie_what_0011.html">模型推理测试-模型开箱-MindIE是什么-MindIE1.0.RC3开发文档-昇腾社区</a></p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://www.hiascend.com/document/detail/zh/mindie/10RC3/whatismindie/mindie_what_0012.html">模型性能测试-模型开箱-MindIE是什么-MindIE1.0.RC3开发文档-昇腾社区</a></p>
-</li>
-</ul>
-<hr>
-<h5 id="2-从Hugging-Face下载权重文件"><a href="#2-从Hugging-Face下载权重文件" class="headerlink" title="2. 从Hugging Face下载权重文件"></a>2. 从Hugging Face下载权重文件</h5><p>安装 Hugging Face Hub，并设置环境变量以禁用 HF 传输加速。可以选择使用 <code>huggingface-cli</code> 或编写 Python 脚本来下载模型。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip install -U huggingface_hub</span><br><span class="line"><span class="built_in">export</span> HF_HUB_ENABLE_HF_TRANSFER=<span class="literal">false</span></span><br><span class="line"><span class="comment"># huggingface-cli download --resume-download THUDM/glm-4-9b-chat --local-dir glm-4-9b-chat</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/2025/01/06/4-%E4%B8%8B%E8%BD%BD%E5%B9%B6%E4%BD%BF%E7%94%A8MindIE%E6%B5%8B%E8%AF%95GLM-4-9B-Chat%E6%A8%A1%E5%9E%8B/2025-01-06-10-41-25-d8c892e387bb942c6a4a863d3aa5bc8.png"></p>
-<p>使用 Python 脚本，创建<code>download_model.py</code> ，下载指定模型名称和 commit ID。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># download_model.py</span></span><br><span class="line"><span class="keyword">from</span> huggingface_hub <span class="keyword">import</span> snapshot_download</span><br><span class="line"></span><br><span class="line">model_name = <span class="string">&quot;THUDM/glm-4-9b-chat&quot;</span></span><br><span class="line">commit_id = <span class="string">&quot;e824789b14985787c181beaac940d103b2516cb0&quot;</span></span><br><span class="line"></span><br><span class="line">snapshot_download(repo_id=model_name, revision=commit_id, local_dir=<span class="string">&quot;glm-4-9b-chat&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<p>运行脚本以开始下载：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 download_model.py</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h5 id="3-模型推理测试"><a href="#3-模型推理测试" class="headerlink" title="3. 模型推理测试"></a>3. 模型推理测试</h5><p>下载完成后，在 Ascend 平台上进行模型推理测试。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/local/Ascend/llm_model</span><br><span class="line">bash examples/models/chatglm/v2_6b/run_800i_a2_pa.sh /home/ljw/glm-4-9b-chat</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2025/01/06/4-%E4%B8%8B%E8%BD%BD%E5%B9%B6%E4%BD%BF%E7%94%A8MindIE%E6%B5%8B%E8%AF%95GLM-4-9B-Chat%E6%A8%A1%E5%9E%8B/2025-01-06-10-39-19-image.png"></p>
-<hr>
-<h5 id="4-模型性能测试"><a href="#4-模型性能测试" class="headerlink" title="4. 模型性能测试"></a>4. 模型性能测试</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/local/Ascend/llm_model/tests/modeltest</span><br><span class="line">bash run.sh pa_bf16 performance [[2048,2048]] 16 chatglm /home/ljw/glm-4-9b-chat 1</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2025/01/06/4-%E4%B8%8B%E8%BD%BD%E5%B9%B6%E4%BD%BF%E7%94%A8MindIE%E6%B5%8B%E8%AF%95GLM-4-9B-Chat%E6%A8%A1%E5%9E%8B/2025-01-06-10-43-17-image.png"></p>
-<hr>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1944,7 +1927,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-count">15</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
