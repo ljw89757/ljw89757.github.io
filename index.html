@@ -147,6 +147,74 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/08/15-%E4%BD%BF%E7%94%A8Python%E8%AF%BB%E5%8F%96%E5%B9%B6%E6%89%93%E5%8D%B0bin%E6%96%87%E4%BB%B6%E6%B5%AE%E7%82%B9%E6%95%B0%E6%8D%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="Jiawei Li">
+      <meta itemprop="description" content="愚蠢的zzz侠">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="睿智的ljw侠">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/02/08/15-%E4%BD%BF%E7%94%A8Python%E8%AF%BB%E5%8F%96%E5%B9%B6%E6%89%93%E5%8D%B0bin%E6%96%87%E4%BB%B6%E6%B5%AE%E7%82%B9%E6%95%B0%E6%8D%AE/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-02-08 11:37:00 / 修改时间：11:37:38" itemprop="dateCreated datePublished" datetime="2025-02-08T11:37:00+08:00">2025-02-08</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>一个简单的 Python 脚本示例，展示了如何从文件加载 <code>float32</code> 数据，然后根据给定的形状进行重塑（reshape）并打印。</p>
+<hr>
+<h5 id="1-代码示例"><a href="#1-代码示例" class="headerlink" title="1. 代码示例"></a>1. 代码示例</h5><p>使用了 <code>numpy</code> 库的 <code>fromfile()</code> 函数来读取二进制文件中的数据，并指定其类型为 <code>float32</code>。由于默认读取得到的是一维数组（<code>shape</code> 为 <code>(n,)</code>），脚本会将其 <code>reshape</code> 到指定的输出形状。最后，脚本将重塑之后的结果打印出来。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">load_and_print_golden</span>(<span class="params">path=<span class="string">&quot;../output/golden.bin&quot;</span>, output_shape=(<span class="params"><span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">2</span></span>)</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    从指定路径读取二进制文件，并将其转为 float32 的 numpy 数组。</span></span><br><span class="line"><span class="string">    然后根据 output_shape 对数据进行 reshape 并打印。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param path: 二进制文件路径，默认为 &quot;../output/golden.bin&quot;</span></span><br><span class="line"><span class="string">    :param output_shape: 需要 reshape 到的目标形状，默认为 (1, 3, 2, 2)</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 1) 从文件读取所有 float32 类型的数据</span></span><br><span class="line">    data = np.fromfile(path, dtype=np.float32)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Read raw data:&quot;</span>, data)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Data shape before reshape:&quot;</span>, data.shape)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2) 将一维数组 reshape 成指定的形状</span></span><br><span class="line">    data_reshaped = data.reshape(output_shape)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Reshaped data:\n&quot;</span>, data_reshaped)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Reshaped data shape:&quot;</span>, data_reshaped.shape)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># 获取命令行传入的参数</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(sys.argv) &lt; <span class="number">3</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Usage: python printData.py &lt;path&gt; &lt;output_shape&gt;&quot;</span>)</span><br><span class="line">        sys.exit(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 从命令行参数中读取路径和形状</span></span><br><span class="line">    path = sys.argv[<span class="number">1</span>]  <span class="comment"># 第一个参数是文件路径</span></span><br><span class="line">    output_shape = <span class="built_in">tuple</span>(<span class="built_in">map</span>(<span class="built_in">int</span>, sys.argv[<span class="number">2</span>].strip(<span class="string">&#x27;()&#x27;</span>).split(<span class="string">&#x27;,&#x27;</span>)))  <span class="comment"># 第二个参数是目标形状，如 (1, 3, 2, 2)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 调用函数</span></span><br><span class="line">    load_and_print_golden(path, output_shape)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="2-运行方式"><a href="#2-运行方式" class="headerlink" title="2. 运行方式"></a>2. 运行方式</h5><p>运行脚本并传入参数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python3 printData.py</span><br><span class="line">python3 printData.py <span class="string">&quot;../output/output.bin&quot;</span> 12</span><br><span class="line">python3 printData.py <span class="string">&quot;../output/golden.bin&quot;</span> <span class="string">&quot;(1, 3, 2, 2)&quot;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/05/14-Git%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -170,10 +238,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2025-02-05 14:49:05 / 修改时间：14:51:09" itemprop="dateCreated datePublished" datetime="2025-02-05T14:49:05+08:00">2025-02-05</time>
+              <time title="创建时间：2025-02-05 14:49:05" itemprop="dateCreated datePublished" datetime="2025-02-05T14:49:05+08:00">2025-02-05</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-02-07 17:06:07" itemprop="dateModified" datetime="2025-02-07T17:06:07+08:00">2025-02-07</time>
+              </span>
 
           
 
@@ -198,7 +272,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m <span class="string">&quot;Add new op GirdSample2D&quot;</span></span><br></pre></td></tr></table></figure>
 
 <h5 id="5-推送到远程仓库"><a href="#5-推送到远程仓库" class="headerlink" title="5. 推送到远程仓库"></a>5. 推送到远程仓库</h5><p>如果已有远程仓库并希望将本地提交同步过去，需要先处理好分支，然后执行 <code>git push</code>。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看本地分支列表</span></span><br><span class="line">git branch </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建并切换到 main 分支（假设远程仓库使用 main 作为主分支）</span></span><br><span class="line">git checkout -b main  </span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果本地仓库和远程仓库在历史上从未关联过，可以先拉取远程仓库的 main 分支</span></span><br><span class="line">git pull origin main --allow-unrelated-histories</span><br><span class="line"></span><br><span class="line"><span class="comment"># 然后再将本地代码推送到远程，并设置为跟踪分支</span></span><br><span class="line">git push -u origin main</span><br><span class="line"></span><br><span class="line"><span class="comment"># git push origin main --force</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看本地分支列表</span></span><br><span class="line">git branch </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建并切换到 main 分支（假设远程仓库使用 main 作为主分支）</span></span><br><span class="line">git checkout -b main  </span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果本地仓库和远程仓库在历史上从未关联过，可以先拉取远程仓库的 main 分支</span></span><br><span class="line">git pull origin main --allow-unrelated-histories</span><br><span class="line"><span class="comment"># git reset --hard # 放弃本地修改</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 然后再将本地代码推送到远程，并设置为跟踪分支</span></span><br><span class="line">git push -u origin main</span><br><span class="line"></span><br><span class="line"><span class="comment"># git push origin main --force</span></span><br></pre></td></tr></table></figure>
 
 <hr>
 <h5 id="6-将远程仓库与本地仓库关联"><a href="#6-将远程仓库与本地仓库关联" class="headerlink" title="6. 将远程仓库与本地仓库关联"></a>6. 将远程仓库与本地仓库关联</h5><p>如果在一开始是从零创建的本地项目，需要先给仓库添加一个远程地址，以便后续进行推送。如：</p>
@@ -230,7 +304,11 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global core.longpaths <span class="literal">true</span></span><br></pre></td></tr></table></figure>
 
 <hr>
-<h5 id="10-总结"><a href="#10-总结" class="headerlink" title="10. 总结"></a>10. 总结</h5><ol>
+<h5 id="10-重置指针"><a href="#10-重置指针" class="headerlink" title="10. 重置指针"></a>10. 重置指针</h5><p>用于尚未把提交推送到远程仓库，想要直接把本地代码和分支指针都回退到上一次提交的状态</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看历史提交</span></span><br><span class="line">git <span class="built_in">log</span> --oneline</span><br><span class="line"><span class="comment"># 重置到上一个提交</span></span><br><span class="line">git reset --hard HEAD^</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="11-总结"><a href="#11-总结" class="headerlink" title="11. 总结"></a>11. 总结</h5><ol>
 <li>初始化或克隆仓库：本地要么用 <code>git clone</code> 从远程获取项目，要么用 <code>git init</code> + <code>git remote add</code> 自行创建并与远程仓库关联。</li>
 <li>日常开发：开发中频繁使用 <code>git status</code> 来查看状态，用 <code>git add</code> 暂存文件，用 <code>git commit</code> 提交改动。</li>
 <li>分支管理：切换或创建分支，最后通过 <code>git merge</code> 或者 <code>git pull</code> 同步远程分支的改动。</li>
@@ -1141,10 +1219,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2025-01-23 11:49:05 / 修改时间：16:06:57" itemprop="dateCreated datePublished" datetime="2025-01-23T11:49:05+08:00">2025-01-23</time>
+              <time title="创建时间：2025-01-23 11:49:05" itemprop="dateCreated datePublished" datetime="2025-01-23T11:49:05+08:00">2025-01-23</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-02-07 16:36:32" itemprop="dateModified" datetime="2025-02-07T16:36:32+08:00">2025-02-07</time>
+              </span>
 
           
 
@@ -1181,7 +1265,7 @@
 <figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">add_ops_compile_options(ALL OPTIONS -DASCENDC_DUMP)</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>配置文件：编辑 <code>/home/HwHiAiUser/FractionalMaxPool2dSample/FrameworkLaunch/AclNNInvocation/scripts/acl.json</code>，启用 <code>dump</code> 功能：</li>
+<li>配置文件：编辑 <code>AclNNInvocation/scripts/acl.json</code>，启用 <code>dump</code> 功能：</li>
 </ul>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;dump&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;dump_path&quot;</span><span class="punctuation">:</span><span class="string">&quot;/home/HwHiAiUser/dump&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;dump_mode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;all&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;dump_debug&quot;</span><span class="punctuation">:</span> <span class="string">&quot;off&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;dump_op_switch&quot;</span><span class="punctuation">:</span> <span class="string">&quot;on&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
 
@@ -1798,96 +1882,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/08/5-%E5%AE%9E%E7%8E%B0%E5%BE%AE%E4%BF%A1%E6%9C%BA%E5%99%A8%E4%BA%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="Jiawei Li">
-      <meta itemprop="description" content="愚蠢的zzz侠">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="睿智的ljw侠">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/08/5-%E5%AE%9E%E7%8E%B0%E5%BE%AE%E4%BF%A1%E6%9C%BA%E5%99%A8%E4%BA%BA/" class="post-title-link" itemprop="url">5-实现微信机器人</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-01-08 14:44:40 / 修改时间：14:35:44" itemprop="dateCreated datePublished" datetime="2025-01-08T14:44:40+08:00">2025-01-08</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>使用开源代码在服务器上部署微信小机器人。该机器人基于大模型构建，支持微信公众号、企业微信、飞书、钉钉等多平台接入，并且可以处理文本、语音和图片等多种输入。</p>
-<hr>
-<h5 id="1-参考资料"><a href="#1-参考资料" class="headerlink" title="1. 参考资料"></a>1. 参考资料</h5><ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/zhayujie/chatgpt-on-wechat">GitHub - zhayujie&#x2F;chatgpt-on-wechat: 基于大模型搭建的聊天机器人，同时支持 微信公众号、企业微信应用、飞书、钉钉 等接入，可选择GPT3.5&#x2F;GPT-4o&#x2F;GPT-o1&#x2F; Claude&#x2F;文心一言&#x2F;讯飞星火&#x2F;通义千问&#x2F; Gemini&#x2F;GLM-4&#x2F;Claude&#x2F;Kimi&#x2F;LinkAI，能处理文本、语音和图片，访问操作系统和互联网，支持基于自有知识库进行定制企业智能客服。</a></li>
-</ul>
-<hr>
-<h5 id="2-运行环境"><a href="#2-运行环境" class="headerlink" title="2. 运行环境"></a>2. 运行环境</h5><p>需准备服务器、OpenAI接口的API Key。按照该项目ReadMe准备环境：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/zhayujie/chatgpt-on-wechat</span><br><span class="line"><span class="built_in">cd</span> chatgpt-on-wechat</span><br><span class="line">pip3 install -r requirements.txt/</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2025/01/08/5-%E5%AE%9E%E7%8E%B0%E5%BE%AE%E4%BF%A1%E6%9C%BA%E5%99%A8%E4%BA%BA/2025-01-08-14-03-04-image.png"></p>
-<hr>
-<h5 id="3-配置"><a href="#3-配置" class="headerlink" title="3. 配置"></a>3. 配置</h5><p><img src="/2025/01/08/5-%E5%AE%9E%E7%8E%B0%E5%BE%AE%E4%BF%A1%E6%9C%BA%E5%99%A8%E4%BA%BA/2025-01-08-14-07-13-image.png"></p>
-<p>将open_ai_api_key、open_ai_api_base改成自己的API Key。示例：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;model&quot;</span><span class="punctuation">:</span> <span class="string">&quot;gpt-4o&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;open_ai_api_key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ZZZXXX7dAYOURKEY&quot;</span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;open_ai_api_base&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://api.openai.com/v1&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;single_chat_prefix&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;single_chat_reply_prefix&quot;</span><span class="punctuation">:</span> <span class="string">&quot;[来自泽泽的回复] &quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;group_chat_prefix&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;@泽泽&quot;</span><span class="punctuation">,</span> <span class="string">&quot;泽泽&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;group_name_white_list&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;泽泽&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;group_chat_in_one_session&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;泽泽&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;image_create_prefix&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;看&quot;</span><span class="punctuation">,</span> <span class="string">&quot;画&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span>  </span><br><span class="line">  <span class="attr">&quot;speech_recognition&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;group_speech_recognition&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;voice_reply_voice&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;character_desc&quot;</span><span class="punctuation">:</span> <span class="string">&quot;你的名字是泽泽，是一只毛茸茸的可爱狗狗，你可以用各国语言交流，正常用中文对话&quot;</span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;use_linkai&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;linkai_api_key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;linkai_app_code&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span> </span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/2025/01/08/5-%E5%AE%9E%E7%8E%B0%E5%BE%AE%E4%BF%A1%E6%9C%BA%E5%99%A8%E4%BA%BA/2025-01-08-14-08-29-image.png"></p>
-<hr>
-<h5 id="4-运行"><a href="#4-运行" class="headerlink" title="4. 运行"></a>4. 运行</h5><p><img src="/2025/01/08/5-%E5%AE%9E%E7%8E%B0%E5%BE%AE%E4%BF%A1%E6%9C%BA%E5%99%A8%E4%BA%BA/2025-01-08-14-12-59-image.png"></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">nohup</span> python3 app.py &amp; <span class="built_in">tail</span> -f nohup.out</span><br><span class="line"><span class="comment"># ps -ef | grep app.py | grep -v grep # 查看进程</span></span><br><span class="line"><span class="comment"># 重新启动 kill 进程</span></span><br><span class="line"><span class="comment"># tail -f nohup.out # 打开日志</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h5 id="5-查看效果"><a href="#5-查看效果" class="headerlink" title="5. 查看效果"></a>5. 查看效果</h5><ul>
-<li>群聊效果：</li>
-</ul>
-<p><img src="/2025/01/08/5-%E5%AE%9E%E7%8E%B0%E5%BE%AE%E4%BF%A1%E6%9C%BA%E5%99%A8%E4%BA%BA/2025-01-08-14-16-02-image.png"></p>
-<ul>
-<li>私聊效果</li>
-</ul>
-<p><img src="/2025/01/08/5-%E5%AE%9E%E7%8E%B0%E5%BE%AE%E4%BF%A1%E6%9C%BA%E5%99%A8%E4%BA%BA/2025-01-08-14-19-06-image.png"></p>
-<p><img src="/2025/01/08/5-%E5%AE%9E%E7%8E%B0%E5%BE%AE%E4%BF%A1%E6%9C%BA%E5%99%A8%E4%BA%BA/2025-01-08-14-19-47-image.png"></p>
-<p>嘿嘿！</p>
-<hr>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1959,7 +1953,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
