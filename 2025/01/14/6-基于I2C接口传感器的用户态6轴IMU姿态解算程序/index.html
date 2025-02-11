@@ -20,33 +20,17 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. 参考 https:&#x2F;&#x2F;gitee.com&#x2F;ascend&#x2F;ascend_community_projects&#x2F;tree&#x2F;310B&#x2F;A200IDKA2MPU6050PostureVisualization  使用串口登录-远程登录-硬件接口使用指南-硬件使用-Atlas 200I DK A2开发者套件23.0.RC3开发文档-昇腾社区    2. 环境准备硬件设备  昇腾 Atlas 200I">
+  <meta name="description" content="Here&#39;s something encrypted, password is required to continue reading.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="6-基于I2C接口传感器的用户态6轴IMU姿态解算程序">
 <meta property="og:url" content="http://example.com/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/index.html">
 <meta property="og:site_name" content="睿智的ljw侠">
-<meta property="og:description" content="1. 参考 https:&#x2F;&#x2F;gitee.com&#x2F;ascend&#x2F;ascend_community_projects&#x2F;tree&#x2F;310B&#x2F;A200IDKA2MPU6050PostureVisualization  使用串口登录-远程登录-硬件接口使用指南-硬件使用-Atlas 200I DK A2开发者套件23.0.RC3开发文档-昇腾社区    2. 环境准备硬件设备  昇腾 Atlas 200I">
+<meta property="og:description" content="Here&#39;s something encrypted, password is required to continue reading.">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-16-01-38-image.png">
-<meta property="og:image" content="http://example.com/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-15-45-06-image.png">
-<meta property="og:image" content="http://example.com/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-15-52-39-image.png">
-<meta property="og:image" content="http://example.com/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-15-53-12-image.png">
-<meta property="og:image" content="http://example.com/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-15-53-40-image.png">
-<meta property="og:image" content="http://example.com/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-15-54-39-image.png">
-<meta property="og:image" content="http://example.com/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-16-05-48-image.png">
-<meta property="og:image" content="http://example.com/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-16-54-29-image.png">
-<meta property="og:image" content="http://example.com/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-16-54-52-image.png">
-<meta property="og:image" content="http://example.com/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-16-55-16-image.png">
-<meta property="og:image" content="http://example.com/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-16-38-30-image.png">
-<meta property="og:image" content="http://example.com/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-16-39-55-image.png">
-<meta property="og:image" content="http://example.com/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-16-57-12-image.png">
-<meta property="og:image" content="http://example.com/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-16-57-50-image.png">
-<meta property="og:image" content="http://example.com/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/b4444eff814003cd77e9cf72a067354f.gif">
 <meta property="article:published_time" content="2025-01-14T07:10:11.000Z">
-<meta property="article:modified_time" content="2025-01-14T09:48:36.927Z">
+<meta property="article:modified_time" content="2025-02-11T08:36:06.286Z">
 <meta property="article:author" content="Jiawei Li">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-16-01-38-image.png">
 
 <link rel="canonical" href="http://example.com/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/">
 
@@ -188,10 +172,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2025-01-14 15:10:11 / 修改时间：17:48:36" itemprop="dateCreated datePublished" datetime="2025-01-14T15:10:11+08:00">2025-01-14</time>
+              <time title="创建时间：2025-01-14 15:10:11" itemprop="dateCreated datePublished" datetime="2025-01-14T15:10:11+08:00">2025-01-14</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-02-11 16:36:06" itemprop="dateModified" datetime="2025-02-11T16:36:06+08:00">2025-02-11</time>
+              </span>
 
           
 
@@ -204,66 +194,18 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h5 id="1-参考"><a href="#1-参考" class="headerlink" title="1. 参考"></a>1. 参考</h5><ul>
-<li><p><a target="_blank" rel="noopener" href="https://gitee.com/ascend/ascend_community_projects/tree/310B/A200IDKA2MPU6050PostureVisualization">https://gitee.com/ascend/ascend_community_projects/tree/310B/A200IDKA2MPU6050PostureVisualization</a></p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://www.hiascend.com/document/detail/zh/Atlas200IDKA2DeveloperKit/23.0.RC2/Hardware%20Interfaces/hiug/hiug_0006.html">使用串口登录-远程登录-硬件接口使用指南-硬件使用-Atlas 200I DK A2开发者套件23.0.RC3开发文档-昇腾社区</a></p>
-</li>
-</ul>
-<hr>
-<h5 id="2-环境准备"><a href="#2-环境准备" class="headerlink" title="2. 环境准备"></a>2. 环境准备</h5><p>硬件设备</p>
-<ul>
-<li>昇腾 Atlas 200I DK A2 开发者套件</li>
-<li>MPU6050 传感器模块</li>
-<li>USB 转串口模块</li>
-<li>Windows&#x2F;Linux PC（需安装对应 USB 转串口驱动）</li>
-</ul>
-<p>软件环境</p>
-<p><img src="/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-16-01-38-image.png"></p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://gitee.com/ascend/ascend_community_projects/tree/310B/A200IDKA2MPU6050PostureVisualization">https://gitee.com/ascend/ascend_community_projects/tree/310B/A200IDKA2MPU6050PostureVisualization</a></li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install pyserial</span><br><span class="line">conda install -c conda-forge smbus2</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h5 id="3-串口连接"><a href="#3-串口连接" class="headerlink" title="3. 串口连接"></a>3. 串口连接</h5><ul>
-<li>USB 转串口模块连接 A2 套件</li>
-</ul>
-<p><img src="/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-15-45-06-image.png"></p>
-<p>usb转串口CH340T</p>
-<p><img src="/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-15-52-39-image.png"></p>
-<p>将 USB 转串口线的一端与 A2 套件的串口接口连接</p>
-<ul>
-<li>TX 对 RX</li>
-<li>RX 对 TX</li>
-<li>GND 对 GND</li>
-</ul>
-<p><img src="/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-15-53-12-image.png"></p>
-<p>另一端连接电脑 USB 接口</p>
-<p><img src="/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-15-53-40-image.png"></p>
-<p>PC 上安装好 USB 转串口驱动后，可在“设备管理器”或相应工具中查看到新的端口（如 Windows 上显示 “COM7” 等）</p>
-<p><img src="/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-15-54-39-image.png"></p>
-<p>可通过Xshell等连接串口</p>
-<p><img src="/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-16-05-48-image.png"></p>
-<hr>
-<h5 id="4-MPU6050传感器连接"><a href="#4-MPU6050传感器连接" class="headerlink" title="4. MPU6050传感器连接"></a>4. MPU6050传感器连接</h5><p><img src="/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-16-54-29-image.png"></p>
-<p>根据表格，对应连接</p>
-<p><img src="/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-16-54-52-image.png"></p>
-<p><img src="/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-16-55-16-image.png"></p>
-<hr>
-<h5 id="5-运行示例"><a href="#5-运行示例" class="headerlink" title="5. 运行示例"></a>5. 运行示例</h5><p>下载 <a target="_blank" rel="noopener" href="https://processing.org/download">https://processing.org/download</a> 用以打开motion_display.pde文件</p>
-<p><img src="/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-16-38-30-image.png"></p>
-<p>将原代码中COM3改成自己端口对应名称（如COM7），未连接传感器时点击运行可看到一个长方体</p>
-<p><img src="/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-16-39-55-image.png"></p>
-<p>执行代码</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python mpu6050_motion.py</span><br></pre></td></tr></table></figure>
-
-<p>可看到打印输出姿态信息，以及模拟可视化状态</p>
-<p><img src="/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-16-57-12-image.png"></p>
-<p><img src="/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/2025-01-14-16-57-50-image.png"></p>
-<p><img src="/2025/01/14/6-%E5%9F%BA%E4%BA%8EI2C%E6%8E%A5%E5%8F%A3%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E7%94%A8%E6%88%B7%E6%80%816%E8%BD%B4IMU%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97%E7%A8%8B%E5%BA%8F/b4444eff814003cd77e9cf72a067354f.gif"></p>
-<hr>
-
+        <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="612959d95628ffae680d1284afd1b952357b57ef580038cb3dbaf7b9fef56b3d">bb000fca0cf586020ff1fe744d83f7d70b454b4e4870b3591e8c7d62e7a6361b6681ba27ac7bbd556b6e8802d2200a004caadd7da3961e85508153a111d60ab87a0f6165971185d9f564044ab1bf5e64a1c6f4b75d2f25ff42eb4f144311d3e224942c06ee8e646722b0f6080fb8bbad17a10563cf7ed093a733867737f5f1f733bbe0402ba38d7d8453f327865633bae2e9731455a9095096606cf36a657747c3953637ddbebc0de3799e6cc79e35835b412269efb3803e73cc470fba881f452ef26fbd541338214f921144b2a4e69551958f3989f00771e771708c9f04fec423f7d83c60de023af153a066d95c87e8da16c1b0305364ed8a4d374e838e61895e00899363abadf7e7ed9541c4917a9399c00754afca706b758343e51e14f736e5d5dee48ef0b4a5c5becfd6c4300b6bae9cf0c48227a1dd3cfb2664396a500588e1bc16dddbeace87cd45b35fb8022f4901122d8c06b50c451937e9b66a5d7cc7394f9544e7dcd5233c4ef20beef84aecece84fa1576475b102a69a31af9b98aaef2359534efa17335fb0b23d677374b86bba80378e80ae9885294d6844b06120d1d468913c7f7b6ebb8072ed07c93af51c9edfdb9c8c1eb29238ed876caed638ad50a0f8b07a496b03e693ee2b01364c475c74dafd844b75d6a7b3d22ddacbeb260a479c8121904efcc81ac5d64c34201dc07943c56381544e79882fdbf9b18f474d7246dd74eabacb91478c62dec0d2984e7daedc3ff3f75ad97b0e245f3cfbd9326e02c11380d4f17dd0ee2f42e2599a0fea5265fdbd1aaeb68810541d6b1b18df50e921198c9e02892c085666c501071762f6c09008b6a62570ae0b364e489d1b89a37b6ce2fa25607f991c4732bde544f7d81c54a716b187a66f72ae8f224dafd442eb9452c9b8cb35c0a54b8f4239295fb71e73b6c5789b965fd08e71886bb918aabedbc64b7686ebc9071c1af8bad9f7a78dc54254b8d2fd341a02945472f12a907cf581773b895b4c2ca2b53e714617b6a52d18c58e1ec8337f91852e9271d24d795787f2b95ac3475d642390c9c80c86a7e1cfbd30c71e8676fcc3ff4c9833f32a92e1e46e885fd17bc18925212a41adaf18d6d22bed6154bffa682bb746d7413a2008ccd37241d07e199f54956d2835dc60adb9494c127b387c66d28a367629c165adeb17e2db28f5e9476b41103362c2903118b8987c0ad66b104373df80d824faf6896a8efd658ced7543bf65dc83a56c18128f1bfc8e67e3c4588703064edacf28ecdcd6200ec67239d3dee8fd94d15607dcb477665c10c0fa28b87bec758e74875464dc6ed0653c22cce9673e8d73f571d1366d0aaae4599c317504084259fe711db7445f8700331fbc58c4a95c6f3c9bb95bd6eee55c7ec392477cf722782f4185ff73d6360484a2f784a6cc57ed1855f93a5ab8d3d7118727f3d2389d26fffe59f6f6f6c2a21135f952594df13e61c5e4e52c6988727702e8aafb8733ac85dc96bb7dc7cd1428bab015a3c3242bb1aa64d657480201118fd0e87c9f26d7011a456e36935cda4b772f6034e8478e82a79a955f63e1e870ebb8e77c377fe8c055e41b7ea6feb3c059aed9eb32d49e198aff2352c57a04606b05720e798784f49a9fec8622c2be490b99fb221ad3f7eee75a81f8878b0e26442746ba71f22e787d5193e410dbed652bb42077e2836576ae4887c16ccab760ce641b5264d5e48aa4a839d6bd459a6efe93e81789dbfb2482c6923725f8a7f35829a4ad6a50128f4967204287ad56be7adbf698d5ef22d8379860dfb42f04aea7869f2f45f6f6b7eb187d8cb7d3a3c3fa721907a50374545c7aef92f5183406d5962d8afb1853bb408d3898694b4e461b8186fd49b92b404ee5f303813ba0abcebfd337ce73ef49947bc150f72aa25dcc0528dc0b96b7df6aee6e5ee830e45b2e3d1bd9d10e7ed793cea225a1a16f0b7d6b2955917e4565fb1c2d891a6222c4c267bf01a9b93d02acef56bae58ae463b9728c3b43ec5a64afb7b68cd2b0a51964770be2c391a2940dbf078081b63226808d067b44c5230439138ba494b7d247cd7cdd8217a9bbfe01ec28f7deffda9c3b9215e5ca2e7dceec910c06708d6815420adb231db0b53e35b5c30d5c25ac494938f31e6d138839a03b58ac6d3e74900d7353adb8b217d2d1a47352ba4fbfee7cb3d564c4d1becd46cb996e02ad19f073727f78dc818d6abcac20b4b8be5019851fd08f32bfa376c2aec024948c99e52d06a3d6dbf2dad0ee27992d30031aed90d7235845fcbafabb287f6b91c39616392dc005d34e982bcd5872486d07175ecc6eaa654c4284c27dc021012ddb719ed5d6fd6a9d5cdc4d0f0fa6dbbd9e4122a34863a559f36e80422132d38caeaf7288c026e1d84eb44afdc79cf2fb39b3da207b9b338e26e3eb6dd9628adfb6cb856f8342c5eb47878d988b090dc135db347e261fb806ddfa80626f34723e3323b66a7270ce0300daaa219d3553b84b178b2210546ca62d516fbb9d069ea36fdcc52b589f9dcec3b8e1dceb6c1b4135d212a1a0aa47416070099978ad52c2515eaf5713527c7af67f59d6bb7bddd851d2e62ae0544fc54d4ea930bba43fc4d61cd38924160648249fc2d98f25b34fec878c1598a16010eb51efa1dc316b4444c9679176db7fbdb47a8dc0be726b4331083eab35e2778185e796f84b546e29d15b89aef80badea5c55e27a016d665dcca07086bd417281657d0c06c0bbf34334e0bfd1bb42c6b89c782482ec0ad356ed8c00fb31987efb6ccc126f46fb4d7bb096881c8d358d9b338115177ad29b796cd2f7a4cffa32202bcafbbcf061e9bf243cdecfd393b95c695d0a2a1fd93812e8bef0278835ea9b1c312f269e288ab168ee43782158f97556807176e732d4eb8da566fc9d6e7d3093d0f58d237b87b8d1e12f7fa4e9f6db588929311f02b031595b6e06872144e62c2928c7080414f50fddb38d3be5e5605d0fce5bc250370e7336b809859e6fe4210bf6db838c43a877df7c24bc711f8f8a80a167da05d0c76e4f0919304de6b04c7cd3eeaf94c29ca639d3d47f4712c545a63886b5b7bd903af9ace9fbbcadd8d97137ed46f85c791736371cf8672f93b6c8704d374f82ca08f359f26708fb8e9a23262c92b3139d4374136ba938c99f70a0e26783a9cc667e20f1e41fb5dc98d5b5df781ef27b184f03aef593d4a9f4e0bf681bdbec90652fe3eac42411ef7baf9ee2c9dd570807465166c70e4d95000fe795e220db001743e56f6a741baf320ccd117e242a6771173cb9d92581ea176cfbebcec96d04e4e663c606dff92ac9ef3a87e07e3ab6b8ff76b0f01247bcbcf2a5145eb5946d0e14ac389ca35e14a81331e70f53bd022ad3b7882bc034ceaf8afbb38114348789d940c24a3b3a38052f30fc9470afaf479149d4c8f7d17a9648c6e607978c47020aaa4dc195397664dbc9c81d84bd2155506fd0e177176d620acbe122927e382396fb85d9f4af9e40101fe9f91cbae39cf5ec7a5031d38f99ac8cc5921ed87a879c8a3898091d7d20b30533f19682759483ee405e34b9104a1c4e56a1944269f60ad39445d08cf23ed08b988e703c79820859df4f6c52f84455c63722ad32d61bb7efa2d01e2b906efd65efbfe204cb06b2a66e05b772c4e27c935611a2d548ecb1a44ee9caa25ef6e2423e994601d22674d3fcd691733bb232afaf5cd2e5bce24340d6fc7dabcff596ccd151ccf07b28bd349bf0585f42ccb36bc8f4529c3bec78e1ea969c4a06efdceba82dbbae9ec137d8b21b68e63666665fe5d52a5c60b88e99f03815e4f0aecb610e055f6b478f5fcb33e7f2882df57115753bde7162adaaaf853396872fa348ae8dc372eeea6767d5bd85b9c4d55cd0f943a77dab2cf16d01e260bcb0171355859c93c7d115cef769c4404b4979f3f4f873c36306214df8340c7888ebf725a4de0736835f696e9efd05ce65f6189d1f741b5eba93ca5268198dddb12dd30d196f9baf6d8e19e662ae73bf5b217d7eaba95f163899675bfe72e3b3fb4a0f40456a7a6b74c7dd22e85719b4a344ed365d7313f5fc15036384b5e1e9d64953451dd28f2fb723cb84beb66d105e8a1813077c2f50bdea5928845bd26529c224cb99c803eaa140fd91bf13bfee4bd0df53d81a6f13822285ff0a2599c3809b5447d68e887e50f104428d7085ea836ca0e66a2726f275ddbb74e577578784607810f7913dd3dfa68a2222e48737127c37b6056b4d2c4641f2e7f0a32c8d8dbc02531cb4d3d91558ab36521f09dc8e05528eaee87298b2dc046e04754dd36053009dbf0ab9b3a5743b04a2ecebe2153db3501eb1e7c067aa588b62214eae669c8f7f0dc5281e3f26fbbcea981a3b60a62fd0de852ce1270ad2b35bac9d8fe0ca7997db90f6551918f6f3fdc965f7013154761c4e50d4163468f2b91027a27ac591067c6e29411c09c00fad3a579d00ed3ba1f11eaad0feffa9f2f2b4fc7749b379c46287de85e1b4867c4e8c1bd10939874f4f7240e9cd38edb3e6b0259cb27097bc515bb1ff870d4131be50b379adff85b2165345b9eb5422845b085fe69267b3e9a8aa5717fa50208b1579b039e2b24bfb65184dc47f9d212e2d7a7ddb1de1bcc5e339144607d970e0af54853242b78f454237e131739d4757378683db331c3dca0b9b5097a35f899c5f86be6cf1efcdd0003537c4a5ea5f240ba715d2544c5fc04ce631fa63f99086f9314e2fedaba1f99ab535fb570e2382bf51b005e4ab03e1e71e984a11d0479e714268398d9b2b75c496cb736e2de356d181269acae70081e774ce52c1d05b84d1a3830cfdbefa6d2fe006e299ba87e5d2dab6713c1b65b39e14b4cc56b9c169f57129368b97829a36232411acf58be5a69d3d61387fb662ce9580a3de31c28fd8e3fb169a98a1e0eeae922063139de102f4e447bde2ec13b477f9b97fb950d90594be34b2f3c91e1d755bf3a370966cd8b9e95aa667e6e10c061ea2178ca965b3a0805d29b8f7a3c57183f1947ac4b968659846e0c22ba757f2e02dab926efcc68971df77fcd93fe9607ddb20a03b3b9649641289b14fdc038fe4dd943f6d1288c4f349695cd462a18847db3cb0f19bfe4a919b8f9acf79aa7eb54a9bde6e63d5917d8dc28826c127a8778fa94d7a3f6378798aad8320ced3734a806644060c80d26042cd2918f958c74ff1b1773fd41729aaa363d080fba6358e748a85e102ae6dec58ebb0df21d4f3431cbcac2561a66bd377a2b1a7879dcf410343807b915f285b1a9deebd27c5257f4bfe5fe4a80ebbf84d3fa0de5c3bb89275ee071b538a28f37ca8b4aca1c5b3db6150f21efe87e5e576d35a71b64d7c8a3a2765ccbb8a4ad371750c6341b657d8d5961796aeae72e45164ad57af7ab46642301aa512ab668b8606544105420116731f3ca1dbe8ec1e5f2e4bd6b2abbb083dabd84ab985529a59ee2e061f7053812f608a9b084609b43e8a301cd879feaa38d433d8989fdac9f2c3fb6ae963615955bd6fbbd5baa24aca0dcb76ef8eac7379b31d730eaf6ad1e941547bffa205f329a060d8e0225a60445861494ce0cc7d9cbd951510b2909ef50cd3e5ec9f90468a08b32e64815ee3bbfc47579ed30c91c0903ef0bf47478c950c44c691268187f4c95c8373c4e0a7099b99f2de21bff3142a512c3a0de9cde94e5ae4029e695aefd657a8d5752134a1ca8ccc00854f9826b9effae040dd74d5502d92ba8b3d769daa8b5096cc3e83022c222251c50a68115980ead619dab4f8d2d0ad05a7c6ae636ae927f47bfbbc232e77fee0ded0a8171419a70e2826c2b860f21db84ddc296c11e97efc426d16cf1bc8ccf282f4f62b628ac407a95084ad72fbc511cbbe7059e5ed8e0e7f08254b68e95e30fe74efc20b90292bf6099474bca2df497026a513665e72898e155d1d0e87e8232b2933ef15767d9db86e004c382ede7e94c8eace1ff9d295369f5c0f031aa33d41c53031b57b086e25572c588c46374a525fd4a9ceb635fc6ff8e213fe9949726ec06f07aa65767b0b1322457b9c889fb00abefbbf13c1e40384f13ef52408d769eb192865baed940aa2b75b4bada737d4772ed5848714999f79f383a5e7c7aa8611d3cfe0744c2c272c493721524b53dc3be8baac93dfafb2b98b191e267b3fa7ade987b6140e723973de8ff15aa806cff29c78ffb8b9c3c5a12cf9a2473ce4ac5ffe8f1bc8585d671d24fb6165055b2bb447119defb2e9fb5f1b3d0b635e5f92014fc27d4dfa184c8793ba2e46704bd480a1a007df2de09a2be2c392cd3ad610883bbd8d704fe5dec3abb2c0e49cc44c36f9b916201deb5ba37410678fb0fdf8a78ea1e0e32a5cd44c75b53fd796a52d332d16c6ce0a7e7919b1a13a696e02ba814f799ff3fde845f4a360f0beb964da1b268aed6007834ee25d65eb8eae4ca015e9464e578bf06ae653c03e38357c67dbc3afd3bc1f54f74a5b97df5768ee1c02bdb46d95ad20cc7fb968dc5e608201577059c9f4300c5e255da8c7479da7662c682e02c63d35881f43a25c8c0e57f8fd9f8bc10845cd23d6cb0f6e5e6b8d9de57e85cc15c4439a9bc94c98e1b8d10ccdf3d93331f372b0b8680efebf1773542a67a617952cff70e108d9e402fcdd6fba22d1c5ee2ac95fea4e33af59edece0110f53077cbc2e8b73522750d3b9e025d2076beda235ba9b4a6b9c6e9b78d2c85bba637bcea490653fa0a8204c4bbdf677e75117472bad558ad75fc298d0acbdacbe49a019c19e8a16585dd57948194dc5bf9ae6c803fb714ef64c598b7a8acaba0b380c3e5135e2c639e87db1a97ed9cdb926641c60f380e2758346f6aa2e7d2fd877f940af676bdeca1b5b59c44247e7becec57d8309fd4f72e4d72cd185623daab323c14ea4587c8cb9d5cbbec529ceb6610ec25b0330f2b5996b952f5813ac951564ead8764c4ce64d62d10f449b19d9871754616820dce526705bcd2857ae9c77e28c9816be906c285097b38bacc2aa42861b85fe749c0f3056086c5112ef91c7605472f41dd8d3397684cb615c33cd9c30919e4efacba02d86c6deff87610df08332c2e8fd83c66c21fe3ce79a8c958671f9e0f527bca8e5420004c6c4fb69d9f1677145393c05fac4744a4f3b1770777bc0d1763f4fd5848f0652d5f92b8cd2d66ae4fbf4070adfbd8c355aecc8f873b4c4da0750a69d2eacdc9f0d723d3385f4abaf03d178b2a009cf0a8c33a44ea93ac5e6224a748bc020f1cec9f4dfac1ada71afe3f6aeb851ceeeece439030fbf8cf9109e4fa6b2a38f0046f702746649e4a6f30a1b9d0e3dcb1bf999010dccefdfaf0b364c69f7f337557660398389bcacadbd0a7f5ede15bf635082c2df2192a77585ab2d8f1b7b25125cbcf16c81e057e8bf8f06df41cbf85503326008da57eeb3563ce18c0f01684a7aa4695c5066ae25cef9f38af7726a588994336edde27b0029055d9922717b02cef7613dc0f312d642fced747cad24a4c1e6c89d8bf09f866f7ee33a5a39c7048a25faead0e27580f09763370df87038fdceebe85345e0cbf4e29663001aff96a871559dd3e0ab86e459788814bd6906eebf963adeb3cd79a900fda82c9c4941d2029e01295527c5254db840bc1e636635e900795f532e35ef124bf393663c9d5b26569d3301129886918e40bedbd47cc2979be9337b8d96bf0dd83e5851daef79fae816eb788427c3e4deca1f2fde30231c854a77ef51b34ea264ddb6d2fc0115acc227e9716a6214d47324d9eea06f93c78171a4eb1e04f7788fd4f86c6a86a792e5a9359f7afa5355c501138ffebce90318c1d49de288f156498dd505f99484983dd73bebe43856dfe841985fe9c2f994cd05ed15e658ead3424344be86f09d4d70f1398df2b18def148582a334307f70d69c57a89d581f21a27393a9addbefa8f992108ab828779913b77647f7e797a7c7656ce86a68027dd34e3c9b6ab77d4e38c78f66835f4c78d6953cf76cbf1e7b0893179519d52cad46862b39b5e8fb593bf1ebc72964f22faebd8dfe05821b2996a9737181e71fe4c503c660fbe50e44897e206cee19e93fa645d92585659ff2ae46a5f68340a771267edff10898864c91fe295c5be21229c0a24bdbb95f8e35bd9dfb0cf6f7463f485439accc5db1eb83937dc585b88c17e8a7c899b682ca5c28e24aa415f49b2ff0ef4c42b8bf68674eeb0f4da7ed9fc71ad0471ac4c6fce46ab3aaff95321f2d6c054ed7cc43d80643c3360e68b96b2df489edb8820ac260af0409767c78e1d94e7414bee3b4735411a255d954c5fed5a5c675d5b7aebe5081b5a183da678b85336e2a0c016132fadb8e895116eb28156dd155cfc75c2b1d664b673351ff86f3b5914bd25499769667fd2f9ed56aaab434305df43e77835bdf0f6dc0075362002970d3a8dcbd3f05c7db26e9b6870b6abf9883d7d061f74f82f7642271d28d66012a7208776c8af41bb9528d4d0d170f5bb9d4bcb630f81452061ba95f64f2b2c9ea65c91f5bad12198d8e0bf1be5eba08e64ff1c451383b2f2c5b950f8452e6bda669ddd1ac8213d5ec73dfc394854a69c5844014bf454e4d56ce558d5f63574cc0572968eea280010ae2dbe20975c50ff3c3c7d2805cfc0444606cb815f89364dcdf61c929c3fc5b1831c3da49511ae14bd27e707158907d2581a239aebfbe944f199223617c20b05f2c89fb671f2fd04b0f347582701c970f9d6cdbe57be2b8c4027b8f558ff9cfb0a66a91832b6469a1870c087e593b99fc5799a45f47fa88ac6abaa030ac0c17e16777a4a9fa30dc8d39db482f7ff186547d7f6b3bcf5bf4b7aa7ab6c3e456ea30cebf6e71e82346e1c7e6279e4dbd1bb7258824ce8f632225ab1f1c6f97f4a5ed9378f9ec0312411faf9b965adb1631523fe7440bd977e73ef7d4e961e4856384ea28c23e91291733fa4b77c44efbfe440badca1c85197293e5cc892a7e0779be48fb900499caf9330048b053564f0ab35b66c41017d36dcad91af365daeaf793d1664297d701b020a7c15ba2ca86ed2d027315ea1d92523b89a8fb5e29065f2b647851a9002aa1203e8e81954c1f255c286c73683955c7a27cba25990a09bc41b7e037fdfcc2b6a4a0a4b02aae20ad1ffcaf05f3bd8aeaea7634574b987e561666aac59d18c29a2c392fba949db777623cd6fbfa1c48981851f797166b68e26487ffd39e5b716ceafd81</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">Hey, password is required here.</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
     </div>
 
     
@@ -343,7 +285,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E5%8F%82%E8%80%83"><span class="nav-number">1.</span> <span class="nav-text">1. 参考</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="nav-number">2.</span> <span class="nav-text">2. 环境准备</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-%E4%B8%B2%E5%8F%A3%E8%BF%9E%E6%8E%A5"><span class="nav-number">3.</span> <span class="nav-text">3. 串口连接</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-MPU6050%E4%BC%A0%E6%84%9F%E5%99%A8%E8%BF%9E%E6%8E%A5"><span class="nav-number">4.</span> <span class="nav-text">4. MPU6050传感器连接</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-%E8%BF%90%E8%A1%8C%E7%A4%BA%E4%BE%8B"><span class="nav-number">5.</span> <span class="nav-text">5. 运行示例</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -364,7 +305,7 @@
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">1</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>

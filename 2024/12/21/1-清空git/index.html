@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="删除仓库中的所有文件，但保留 Git 历史记录这种方法会将所有文件从当前分支中删除，但保留 Git 的提交历史记录。适用于希望清理项目文件但保留版本历史的情况。  1. 克隆或进入现有仓库12git clone https:&#x2F;&#x2F;github.com&#x2F;您的用户名&#x2F;仓库名.gitcd 仓库名  2. 删除所有文件和文件夹12git rm -r *git rm -r .[^.] .??*  3. 提交更">
+  <meta name="description" content="Here&#39;s something encrypted, password is required to continue reading.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="1-清空git">
 <meta property="og:url" content="http://example.com/2024/12/21/1-%E6%B8%85%E7%A9%BAgit/index.html">
 <meta property="og:site_name" content="睿智的ljw侠">
-<meta property="og:description" content="删除仓库中的所有文件，但保留 Git 历史记录这种方法会将所有文件从当前分支中删除，但保留 Git 的提交历史记录。适用于希望清理项目文件但保留版本历史的情况。  1. 克隆或进入现有仓库12git clone https:&#x2F;&#x2F;github.com&#x2F;您的用户名&#x2F;仓库名.gitcd 仓库名  2. 删除所有文件和文件夹12git rm -r *git rm -r .[^.] .??*  3. 提交更">
+<meta property="og:description" content="Here&#39;s something encrypted, password is required to continue reading.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-12-21T05:03:58.000Z">
-<meta property="article:modified_time" content="2024-12-25T06:55:24.358Z">
+<meta property="article:modified_time" content="2025-02-11T08:36:48.557Z">
 <meta property="article:author" content="Jiawei Li">
 <meta name="twitter:card" content="summary">
 
@@ -180,7 +180,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-12-25 14:55:24" itemprop="dateModified" datetime="2024-12-25T14:55:24+08:00">2024-12-25</time>
+                <time title="修改时间：2025-02-11 16:36:48" itemprop="dateModified" datetime="2025-02-11T16:36:48+08:00">2025-02-11</time>
               </span>
 
           
@@ -194,30 +194,18 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h5 id="删除仓库中的所有文件，但保留-Git-历史记录"><a href="#删除仓库中的所有文件，但保留-Git-历史记录" class="headerlink" title="删除仓库中的所有文件，但保留 Git 历史记录"></a>删除仓库中的所有文件，但保留 Git 历史记录</h5><p>这种方法会将所有文件从当前分支中删除，但保留 Git 的提交历史记录。适用于希望清理项目文件但保留版本历史的情况。</p>
-<hr>
-<h5 id="1-克隆或进入现有仓库"><a href="#1-克隆或进入现有仓库" class="headerlink" title="1. 克隆或进入现有仓库"></a>1. 克隆或进入现有仓库</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/您的用户名/仓库名.git</span><br><span class="line"><span class="built_in">cd</span> 仓库名</span><br></pre></td></tr></table></figure>
-
-<h5 id="2-删除所有文件和文件夹"><a href="#2-删除所有文件和文件夹" class="headerlink" title="2. 删除所有文件和文件夹"></a>2. 删除所有文件和文件夹</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">rm</span> -r *</span><br><span class="line">git <span class="built_in">rm</span> -r .[^.] .??*</span><br></pre></td></tr></table></figure>
-
-<h5 id="3-提交更改"><a href="#3-提交更改" class="headerlink" title="3. 提交更改"></a>3. 提交更改</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m <span class="string">&quot;清空项目文件&quot;</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="4-推送到远程仓库"><a href="#4-推送到远程仓库" class="headerlink" title="4. 推送到远程仓库"></a>4. 推送到远程仓库</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin main</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h5 id="其他命令："><a href="#其他命令：" class="headerlink" title="其他命令："></a>其他命令：</h5><p><strong>查看分支</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch</span><br></pre></td></tr></table></figure>
-
-<p><strong>切换到主分支</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout main</span><br></pre></td></tr></table></figure>
-
-<p><strong>确保主分支与远程主分支同步</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull origin main</span><br></pre></td></tr></table></figure>
-
-<p><strong>查看状态</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
-<hr>
-
+        <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="0272a00941d8db2077f9755e7281c07381d1e7f0f5880b52694c07efcd980fb1">bb000fca0cf586020ff1fe744d83f7d70b454b4e4870b3591e8c7d62e7a6361bc17000509386c427d8b7c0ccbce2f6d03924b7c8a72d4dc3740ffe15d9d1d6d330090ef48002234f4fd3fe1e92c4786db9eab469c19c44733d47054b90f9799f31f3c97aa37658dd2c3bd34821cf99c5b944463872bda5b545eed149d4b5a422927d785ad90af72c1a9f09a5e967add3fc0cbbf45b73fd2a508b7e1a9c014a85dd53a8c63b41a47e90048003cba11d2b8af6da15613c9f58ed0b51d3d6db3d59312ebb22d2bb01d1aaeb64ede17908d9dcbf2a5d71483973781dcc86f00ab431a2d620d94a3248bb9c4a1c892bbcd07a213609f8c01c8ad9fe5e874d71711324ab0eb336b7b6b52577885f1c502041e57635796460e566faa9f737b6377d77f8a60d0669f2ec11037442f81675b76f7d1abee0345e3d473f2b199171291c6ba495e286960dfc4acfb5689866bd49f8871091b15e98783b3b130eec7953715de726d33857298d585cb06d38e6fe426ab051e2ea1d7e74f9d56b0efec54840e8ea8b2bdc477b4728425920cae2aab85763ca62c2cc87d9544ce2be54760959680f7abbbf536f2f32db005c3a68e5753c0c2c45d26c4c8fdfffe1fe3d02b4a5c3d60770bd914076ab740d5938a057094c85af0d94dfb2bc483265209a0511b2b07a5acc51180d415b61bc9b253a32c355318131828936f7cb9fcdffa0fe813dd8af76732b8361707a353f21e066e7439204c93bf9845ebf497d04598b67f29dbc2d1cc61e04c23480e83b7ed34ccb29e9fd742db1ea31919bd60d628df5d503a0c9bb58da701d5712a356b3a6e87e581d34dc674fe066159c123757f69cd70a15fc94f685d9c9a22a0f19bd7975da4dadc0d1d1b69dc42e80d0b99ae3b73a8a5fcaa3c6e7cbe5f58b8b6dc3aa98e05d63c99c40efb509179d5d4728bfd6c3f5de298ca3e24fef085630d77f6770ea9b37f3406009255d3a6a8d39ef4995d8e4d8496e49b3caab48e4e8f100388e4e08fbe5f23877aa2ac70d4a5f834dc1423dc94fdd0dce524cd8180505b8d65a0ae590d321eaa3d77fe096d5c8d345e67c798ee62e6a5fd36d44239520581e93b912a64fcfec3f23e376e8e9d473508565c31b674aab6a6ccad9f4c6babc0507f302acf5960911e4573173d13f32a1d7922bd0aac7de1c1b5f05db52047eee4a0482a31a9e5b468e15277f466d79145ff40bf4fa2bc7808564d611645b2819a90e8be57c5918c34f3f0daf62e284c44042c8627454e7a9512fe3a92779e813d3a081ef12504bf0ee6e9203bfbf6a172d52f6ca2fad35ea5e6d304f03d8cedb1e54fa88cf022818b5ee615bee0372b804ef96361b38bb50aebee6d28eddbbce7c0afc629ce0389ed71fea7772d66a37394f7894828dbf1266d8b86f3509edbad5beb4706f3b6b94833dfa0730bec3fea83ff51bee0adff059e08998757fa0eea1186be5536f89a3865809fa85fac4f6836e3b578e29ff7188c28335e57b231636e44402d5d644dab1886452c5000376691baa05b631e0ab4415439f9ae36c49b2b3a31efe90bcf77a966b0daf831aebf52243191830b46283e64bf624aa1ede7c722063f36254b4266d8e1f69e1ebfb5a695883d44e438307ced9b1c05e6e4c4471b935e4e2376e9569ceddef41497dea3d66e24badd6cbb610fce2cce4545981912e7251d466e8ddfedc0f98fffaf2ae9100e39542c66e6bc0eedfbd886797d205ee127259f3b4dd39557389677d54ef682e260838341163799e7c1b4b479d64e948f66bf5f1094a6b7782a4863ba2e7ba3041dcb96e21a1842d2ace7b2c979162dd0a4204fc95db54e9b4b68bafbb370834a20aa9e79ca67b9f23dde160bcc3738adcd7577229e4e55e13ba84d74a3a09f88ccd2377fe53e04d20ff2856357c108f6cf5303c34fa698e155b9e5848bcc605c2794f52c2a3e757ade923f575a66bcce4a6c52e486ea3c8af692b2a70c8ee989327a048ec0881f6308336475a04e374cc10a5d00d40302e96d8fe4c4695a8cf7dbb11eaad9788584b2fea2d6bbcd11ec87085bc46ae632d7978d3c7c884c22efc8a4fceb9ed1870db4e945130959e1eb9a27eed97f9901cd846b1fa15df88fa7e15ebddd956a186f6319cb4551b5a6d7e406214c3d08751b04c41040a46e679cb069bb8c9c2a0d20bbcc1c9a3ad8848b52fdcda287a9fb398e9eec04005827e80218d292680e4eb06f81ef533fb8ac07693a132074c9da27cb9738e59ed76532d46afc1784000ee747d3a7e4b9da82550e746cafd6aec0b696a137560c2e0eed2e2c41588d5b13404d4ddc5a4661de82b781b13702ed8550fe189c2b7e608b512c630dc9380bbe5bcae10e493012b49a07e8e1b20a53f3c5af9d25cced97e1aac0b4b5d56048bbc1ff183bed7486c7a5d4248b6ab02e194b604d3acdbde684e785bd1197f58372765937b40970b62a477f86eb6853d8a1cfb1d332146b9302baba3262e09ead749a91e3fb64865187ea5c33000341229eb6265f5bc6068283da7a9d96826eb3c5f495fe38255945a9fb5dde8104a180d94d5e9fdfc2aadabc63fb98ffb207cae0a12e1b2f7e659c6c3617126fc3e5ca81b9d6fdfd3df4e2bc60ffee143815e27202c3d317862bcee347af1e61aca12296815b4b64adb47e9ee8b6165aa41848599636665236dce7eab63ea71ea6632769e03446e6f1a1a77ade618f3defd184e93825ee30ebfc05ef5ea624f8dfa6107dee23bf2c89092736d1c29d1f684f0b6c43bc04d6df5132b5c39514f4514efe1fe17b2eebd1e021e3325dc0104485de8e3b69f7a2cda18ebe352117352c28abbcf1fa7c740539e300b05c2b1736845ec7f8a3a8933995bc2cfa587330ac5ba6b0aa7b324ac37684a2f4622334fc4b90745366822e45fccce9ac13591e04fd32119190f741fe01844a33b7da7bc4f20ef4c61d1a7a27b26ed5cd891df9b814755c032809a0c1a4935b105cb113c66fa07d29d1a65cab5d48a118a226cb5533e09ba979b215aed3f479e6222b38c8e13a6bfd5e9902a30c385583be34689b55b3be4cb4b36e50fc139cfff461d72537dda09c099846f9e28e8c20bcf8302af9b6f272385a2105b2c531c0ee0543de28b319d2aa15605c70f0cc399b5cc422f6b7db7da6d5f6ffc9f9dcac476df42d66e93a90431010c6fd0aff1a43805e11b42b6add83228ad86c7e26aa38209b8edbfc942852369e8660e7a0d037e735d2fdac93f561961f21ed4de3d6bee26e431392983ea81f56ef3968c23acb0c4a4df9c42982728bdf44804204d7d51a5866e65333bb91ae2c57bc88db837bdcebcf108defcc64558e74cf5f26d26f71d0db725e4ec21dfb19ae8c8f08d1272f45aab2e01e38df908d73c06d8073ca504f7d6f5af32f1deb6fa0468d977a52fda7f05d0b8acb91e3ce9a0413879c1224d3fc56e307e97a3c78b55fb9b7da1a1d824b61b72945e77b49edfa4585b87e70f01c435429588571296b4da58146e40987c1208a8c3f77261f27000f631d34dc42d861ad6945798bac74783712182ecfd8700b35f2cc265e8863d3c0ec742774a24b6124dff315b3405d95ff22bff07cf961f7280dbf043e26eb4ecb32f054458e6f03128fc88851599520c2b7db87114775dceb217d5fcf2f18d025529569c5b1699b9bce99dde6f34d1073cbdaad0d498373008528de065dee6f7dea721c9fa005757a3173458f304f34a14ab9b1607d18835eb84cf831477267d142d29bd2cb9f8548083429bf0236627cb5144b064fc71ecb4a018015cba72adbc5125724831292b762f4c55b917d05462c0c8a994e6bfa516d52d44d5f0843994d8f842088452e33614f971db74fde3bdb624c612c98da783e64dbb50f48589125c8818c12cf0f21218cb182d3758ddd1275b2526b73345f5b82138f7a3c678525161fd578a7713758415184ba6d064772e8eb041021f6ce97dd4d80826549a8067629317da1c1ec592b271259310500274890fd896b7ad58b371db63f6274acb90b56450a3d846446c0c805953c1ac21e6520df866025988cd98d10c4781261e388d57807c2228ba552dfbd5a9ca0e546e6290ee46344022d2e20eefe17fe4174a2bc5f9da7c53ddd73e73e31876ebd76ccd26a78aa72c30265e34111ab0d683d6f4d939fa46820395a5c04054b50f5e776fd0b6feae149d29f77a745dfef21228bc46fcd90818a4e040534863d6c9b73ec14320f67dd3322b955f85e19f5936a6a9359c1910a324666892d006351db289ff1da7afc0280561167a04b7336f08ddc208e7aa2a3561d1d44f8164f88e36ce5f5f76ef2232b1a94a278fd88b51ca618626534ec0c6bcec5279a676e6664766e640105cdcb73b4dcb8d4c6c38b9d7c2fe1868c428ca020199c227477176d772d88fd6bfb5777580686e1481e5cd04cd0bd7e4e1da53642ac98b25e81a84a8d84678fa40a029eaacaa6c6c98d9735d6e959fbb676a7b406575e37e230504067b8bf3dede33eedb132c80deb3796b54aeea220d4e74329759987df5eb27628bbd57eeadeee915cebaf26f5664e0bf40e80c6216c79953e8695b2ee1a0cbb9c0ff51f20b9ad35c530ffca6cbebbb78129c3a48f1a9abdb9c2ef6b36eb6ead1efe8a4c4984d8e27c5ee628effe31f8751192e960a026f7fb196a46f34b2a9b6d5b957b91f1e76cea2d6b283fd62958b70cfed426d76a0803cd3412c70c3779d55202ba7d3f0fca5b4ec13d2b9c0f862a55eb4bd82f0caf2bc3f059f676dd1a52ec8acc015a9677ba656941552d40d38f227f969b38f062fd74ce666977d615e11cf484dfab91f76541659b734a96416f16d70fe799b45daff09bdd901f710e053aeb8691b12cab13fe9337777443bdceac59d9461efc19c96a4c08d7e3b507310ed718fbaafa159585f4f197abce0abe7aad6f49f86eab302dfba058b88aff9b25c5809</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">Hey, password is required here.</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
     </div>
 
     
@@ -236,7 +224,7 @@
       <i class="fa fa-chevron-left"></i> 0-Hexo搭建Blog
     </a></div>
       <div class="post-nav-item">
-    <a href="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022+CUDA12.4/" rel="next" title="2-安装libtorch(VS2022+CUDA12.4)">
+    <a href="/2024/12/23/2-%E5%AE%89%E8%A3%85libtorch-VS2022-CUDA124/" rel="next" title="2-安装libtorch(VS2022+CUDA12.4)">
       2-安装libtorch(VS2022+CUDA12.4) <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -297,7 +285,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E4%BB%93%E5%BA%93%E4%B8%AD%E7%9A%84%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%EF%BC%8C%E4%BD%86%E4%BF%9D%E7%95%99-Git-%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95"><span class="nav-number">1.</span> <span class="nav-text">删除仓库中的所有文件，但保留 Git 历史记录</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E5%85%8B%E9%9A%86%E6%88%96%E8%BF%9B%E5%85%A5%E7%8E%B0%E6%9C%89%E4%BB%93%E5%BA%93"><span class="nav-number">2.</span> <span class="nav-text">1. 克隆或进入现有仓库</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E5%88%A0%E9%99%A4%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E5%92%8C%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="nav-number">3.</span> <span class="nav-text">2. 删除所有文件和文件夹</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-%E6%8F%90%E4%BA%A4%E6%9B%B4%E6%94%B9"><span class="nav-number">4.</span> <span class="nav-text">3. 提交更改</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-%E6%8E%A8%E9%80%81%E5%88%B0%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93"><span class="nav-number">5.</span> <span class="nav-text">4. 推送到远程仓库</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%91%BD%E4%BB%A4%EF%BC%9A"><span class="nav-number">6.</span> <span class="nav-text">其他命令：</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -318,7 +305,7 @@
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">1</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>

@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1, 参考 启动容器  1. 报错信息在使用 PyTorch 等深度学习框架时，可能会遇到以下错误： 1RuntimeError: DataLoader worker (pid X) is killed by signal: Bus error. It is possible that dataloader&#x27;s workers are out of shared memory...">
+  <meta name="description" content="Here&#39;s something encrypted, password is required to continue reading.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="12-Docker容器中解决Shared Memory不足问题">
 <meta property="og:url" content="http://example.com/2025/01/27/12-Docker%E5%AE%B9%E5%99%A8%E4%B8%AD%E8%A7%A3%E5%86%B3SharedMemory%E4%B8%8D%E8%B6%B3%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="睿智的ljw侠">
-<meta property="og:description" content="1, 参考 启动容器  1. 报错信息在使用 PyTorch 等深度学习框架时，可能会遇到以下错误： 1RuntimeError: DataLoader worker (pid X) is killed by signal: Bus error. It is possible that dataloader&#x27;s workers are out of shared memory...">
+<meta property="og:description" content="Here&#39;s something encrypted, password is required to continue reading.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-01-27T03:49:05.000Z">
-<meta property="article:modified_time" content="2025-01-27T06:45:51.011Z">
+<meta property="article:modified_time" content="2025-02-11T08:35:42.065Z">
 <meta property="article:author" content="Jiawei Li">
 <meta name="twitter:card" content="summary">
 
@@ -172,10 +172,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2025-01-27 11:49:05 / 修改时间：14:45:51" itemprop="dateCreated datePublished" datetime="2025-01-27T11:49:05+08:00">2025-01-27</time>
+              <time title="创建时间：2025-01-27 11:49:05" itemprop="dateCreated datePublished" datetime="2025-01-27T11:49:05+08:00">2025-01-27</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-02-11 16:35:42" itemprop="dateModified" datetime="2025-02-11T16:35:42+08:00">2025-02-11</time>
+              </span>
 
           
 
@@ -188,52 +194,18 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <hr>
-<h5 id="1-参考"><a href="#1-参考" class="headerlink" title="1, 参考"></a>1, 参考</h5><ul>
-<li><a target="_blank" rel="noopener" href="https://gitee.com/ascend/ascend-docker-image/tree/dev/mindie#%E5%90%AF%E5%8A%A8%E5%AE%B9%E5%99%A8">启动容器</a></li>
-</ul>
-<h5 id="1-报错信息"><a href="#1-报错信息" class="headerlink" title="1. 报错信息"></a>1. 报错信息</h5><p>在使用 PyTorch 等深度学习框架时，可能会遇到以下错误：</p>
-<figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">RuntimeError:</span> DataLoader worker (pid X) <span class="built_in">is</span> killed <span class="keyword">by</span> signal: Bus <span class="keyword">error</span>. It <span class="built_in">is</span> possible that dataloader<span class="comment">&#x27;s workers are out of shared memory...</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><strong>错误原因</strong></p>
-</blockquote>
-<blockquote>
-<p>这个错误通常是由于容器的共享内存（<code>/dev/shm</code>）不足引起的，尤其在处理大规模数据加载或多线程操作时容易出现。</p>
-</blockquote>
-<hr>
-<h5 id="2-解决方案"><a href="#2-解决方案" class="headerlink" title="2. 解决方案"></a>2. 解决方案</h5><p>增大共享内存大小 (<code>--shm-size</code>)</p>
-<p>在使用 Docker 启动容器时，通过 <code>--shm-size</code> 参数增大共享内存。例如，将共享内存设置为 8GB：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --shm-size=8g ...</span><br></pre></td></tr></table></figure>
-
-<p>可以使用以下命令查看容器的共享内存使用情况：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">df</span> -h /dev/shm</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h5 id="3-操作步骤"><a href="#3-操作步骤" class="headerlink" title="3. 操作步骤"></a>3. 操作步骤</h5><p><strong>针对现有容器修改共享内存大小</strong></p>
-<p>在 Docker 中，共享内存大小属于<strong>容器运行期配置</strong>，无法直接对已创建的容器进行修改。为了保存现有容器内容并重新配置共享内存，可以按照以下步骤进行。</p>
-<ul>
-<li>停止运行中的容器</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker ps</span><br><span class="line">docker stop &lt;容器ID&gt;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>使用 <code>docker commit</code> 保存容器</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker commit &lt;容器ID&gt; &lt;new-image-name&gt;:&lt;tag&gt;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>以新的共享内存大小启动容器</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -d --net=host --shm-size=8g \</span><br><span class="line">    --privileged \</span><br><span class="line">    --name &lt;new-container-name&gt; \</span><br><span class="line">    --device=/dev/davinci_manager \</span><br><span class="line">    --device=/dev/hisi_hdc \</span><br><span class="line">    --device=/dev/devmm_svm \</span><br><span class="line">    --device=/dev/davinciX \</span><br><span class="line">    -v /usr/local/Ascend/driver:/usr/local/Ascend/driver:ro \</span><br><span class="line">    -v /usr/local/sbin:/usr/local/sbin:ro \</span><br><span class="line">    -v /home/ljw:/home/ljw \</span><br><span class="line">    &lt;new-image-name&gt;:&lt;tag&gt; bash</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>验证共享内存大小</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">df</span> -h /dev/shm</span><br></pre></td></tr></table></figure>
-
-<hr>
-
+        <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="645378d39f9860a3ae6b04d5b64f1a9f494e4affc93e8a506d0e93ddd5d5cc57">bb000fca0cf586020ff1fe744d83f7d78b587d8732662a868f478fa7b793bb3f3fe8d83db548eda72c62a90789a1e3c8827965cb70c168f8c66c7e2e9359d17e4ea5d88d8922e0bebcc8daf83fb8c1c9a409a688817a5ab2aa2c8f2280763cf24cef959bfec23950368d58f5cf27e6346cfba27099988ee1794ed93bfbe5ca12b09b6b6b48d105b77835cf1215982141c52bc24c27e94463268482140d03ca0af3f207b8c224a8c1159593eb4cc5f4b18c6842796e20ccee194b5c18c9c071158e8aacefa50a3e52a0fd2169c4b1f4bf41d37fff552ad2224f935383dc509bad5ac1d1e29fbbd453b782ed622674282dac1f1814a121827c58970e961a15660c0f0993fd9eb125299614810a37efa4ee7b06eae8bb128fb09fe4668d5c1b03486b4f3fe9915cdfd86bc12ac13e86e045ee8dbdeb6b286e6ac88671577d555bbe10b10320b514ee6fef1ce8af35ac9544276082727750c0915f0c8b09815d5af8b94a097c5c7c4f9093f1785d6bc4c889d3092c663a3490e66a4383135eae8b1fe1e5611c942f4618dbb0663f8bdeffe434200386e21219649a405192835c537261d214105eac131447ff461cf16f7375fbfd728018ca93d20baa32183807fbca03b067edb1efb68fd500e7ce92fdc061b2526924d77cf93e664cc8a271b01668a4b2ab8df433a953e91bb9a36c042cc93f96fcffd09c3a19b665f4f70ef4d159842c1d2cc5b775ea528327d1cfabd90145f8853cbededd8e2ddbae736f47ca9c6626fb132367f53d15a624b2f38a074a52869415038a4b322b0b50ba7113fa8dbc2808a4b604a03c3faff987a771faa84e8476212c8488558d9bc48acec0e9330e520b29853f0ea8c96d4079f84b77605d08dd2406e6ca183b4f50aaab484c042db21bf06a7a3b24abd53158ba7a588d5c4b5dbf33e20473d3eae0f9043cbab4fc8eba1d550a5d263e8370d3f83b7ac403e71e03fe299592bc1790a74f91c42395ae229ff6361aa85830be4ef2680eda315b1338739c1a929ddabb2bb15b54c325d356170211a4441ea1ceb9ceeaf7242c518e2f1ad1e24b3927a461de494827678bf0b96e1936a060d54e6e6a555150ecf0bfa033e9b66e0f5b8a0c1daba35b0f6eff768ae89c0ff1e83d68944462e98768492b2fc1fdd9ce6f48b257b9a522fa36d579cf943beb8ec441c044983d4761fbeac5dce0d5cf8a0e2d9e407cfbfff511a935c6bf24e611d62ef8af4f2e7bf2a672efc2692a779b48924769b496d51248bc96cd3284e44a44cf775ce390dc8454009f96b732caba1e9e5a7d6e142b38746a954608db42b67106993745d51139a13b56a76e0319fe0595e71db20926743ef3900b50a51ce5db548b66b9fc328dda1e3f395779d693e514fd1c996f31fcdf8e20d62ca0e50fb9e1c0c569dad23677346bc9e61b0021ebdf470e931f5b8e2ababc40b02df992bcc954a4febf59b8a40300795da42b53a302ddecda5cb3de48c05491e19dd658e4dc22e717718f6f5f93fe41569b9d7c195324114861bfab64a4b46debcff20ad4f02060ead2824b38389a2fcd88cca7d0e87798bf689e4d925ba59fd33fe4e68bb89a332f941b33446714470a59d38cc017238da1350bdf0d275d9ba0b1da21860aa533c4a47f28c2800e36db56fb1c0c5d36a51d516611e29ba47da9400230804509f8e682cc71d39e07c431a3d170ab0ca5f20bcac8e440a4e415e6a1370820984d96e9a1230ed4dbb94cd58b3ff11535fc6ae8d8b1dbec7d4f99b9aa7cc28911fd9b6fbbc15f338e1cd0611f4bd2755edb2d0b2217daf8f3baee72b481af112e6aa85cfffe67733235c89bba16c906aa2b68d014446475afcdaefcd48c2b3f491857134fa9b4de77ac8d01d217d48a02cf8507b1f1c0cdd6dd631762d217d93875dd1466b10de04005d4d823b30da21b1b5b30ac49623083eadbcc3c4d73b2248702c8f16fdc8ceb3c3eca4724945d349e958ec59d8a8dada29167b1998e569344ae89e33a64fe5cd8bc8fb2d201bc48f93bf1d20826d9e9b60580321a6a98b4754eb71c9ff633c03422381a675057d5f9942ebac8a764c175d13eb1203f6ec9cfbc1564d345d2cf720e22e5258ea03166914496952546412b274f00d187d3055080879210c4506d0dd635d7d08ed8e662a1a4f39c461b48d6850571bf810719e3ddaaea416c654b4c79cb4581ed8912e5abb1a9e85566ea52acca28970856e826e9d6d81606e52a5b6edae54c4b0efb385868c1a595b8a90328bbffb3a2ae592d090a950b37db77821eeef93749c7d29451514b6dc7b1949cfd3369e72c429625c2d96f925181ea63d19b6eba9425b93ddf1e0518634f2eac900632e9f78106817ee2dd79b51eecad0c75662bf4bcaa9bc2e1c7698e0f3d2240999b40b8c369c43fa327f5b2fe062d9f0eeba6f9b282bef9298804f224077b6c47cd99c690deaf6e76f5ba99a33bb13304dbee53493b432cbf198f3d154bec85afd5973ed24917bb168738d128469e8ece63c19ac48c0efb6fca657c5c3ebaf29ac55a32356775cff7aea474bece29f7ec7cb55139ec506d534a684e61002804f3882cb3a12d55a4e72d40106d8833f86365f0af3e08d25579eb005f2a167c13e974317ace32c27d56b6241f8e1de8fb4e78389889438c1bba3ea8a15a73e974d21afa9e039e3a896ff358de06fe6b84c99dbe809f30bf3213a97d9f56cd6e94287429e78b6622ae4e20d734b7e031a4c80f5040ba46f08aebbb5043ce82f1e2ce099e36f80d552a58730cbd38766a577824e07fc8863161ae4b965efb808b6b18bcb44469640b0fa3092092f628305f19dbb99c1f045dde590ce5a247af1a895d635c1f3a38154ba2c9b32b10ce9968e6c60ab40f890c7e2380a6aa659220bc6214736200061c4547ba3c9456cd06f3368a166016a27b30bf9e7ab75bb30ae3b9fddca6e7ade7c9d9707a369ff34d9c1515b7d0b7a3c263b3ac7423973bb8bf8b9052cbf96dcefa2ab4ee9c31fc2190d3d5ca1afb94fdca906cb6045b013d62a0660ea25b3c4dea74c4f1c2e2813342d713f89001ae59bc1176310cfc507043a9e427882d83e7fb66ee3a34a22e086bb84fd8c42f8bbc9d9e38f04489b09cfa507d21e4916ad9b8aa1f1145d3665052d24ee1f21c04fe9c17b2522130f9606abbd676b86dc2dcfc0b8c69b4573af71b5d5917ef2595f5c9c3d8c08c3b95c8c8f15e93a19b7db783c0528f8111dbda6a1e30fba72a3129ae50fe895b38aa60d0bc9dd53cf6006b83c971c22f1eebc58b73ebea3ec8ea780aae28d2ca7b418411fad5b4f910499bf7cd15f57d4cf845b82d1a375d76d74a3af51c0177c096beadd821751e086d5e07e584e3f4eaa2bf7124e3b7167581e9c85eb27dc674a585def179802703d9a8e541689ac754e588ce96e6ec2f0fbf0cd6b2b08c0bb31949d675c4a56b3a114676214435ed1dbb78bb23613d8ec1f397accb2d426f43e89da0b6ed0fb56c76aa4b9459059479769e610c8b10c317cfcdcd526f8c15cd9e338924fc5aa52be4d201d074c4ad3d5c1dc36e450cc7f1a25e1256b454cc8b56c2b49945d74ea094aeb10b46735ff0ca3187e479102daf31b8e23f8e9473d56dd697728bfe0c870069847245d72f70d43e21292a20e55955326cc405c272cdd3507beb523cac6f6c8e3f5d7009afe701d896532bd4a623bb2375500143989d74cede991a0e1873090656b215edd496cf13e14ee1afb75fc905928150e00496696ebb076670fc37bf8d2adefce5f1d1d6803777f5153530b5c269b7afb5ac73cfcf68af8cd7ed3a7a0475f4f8e771b7f8f50d86ea9e9f05f6d09caec2b61f42987c4efb08726ae62065eaf11ffd5627cc455c4b4a69e7893ff7b5c8dc22eb6028ea2964cac82d07528e985c3cac4c568b07ca000f41d98b140dd03483719fb71f695872763cfe1fa6e55d4727653352b4eaaa9861fdffa516e8a3137473c491b96d538a8100cfd27f61f7956633d34e580797a0da8150311047794fbca28a0f9773345428ad349f6e3619eaffe7935f9c9c7327fccf2ebf349c443f551ff4860e4e4c0e50270526341de0cf6c81817ef6eb142d5f48063812aa221bd0335f7cf981dad32d514d1197032dd5d3ac0b74ad6c4d99c7623be32ee4f01c490b82b6f704cf9ab9882c70eaadb9f1041d64e2fc21324955d07ad0fafdee7fef73619787bc92e1fe6446e3e781dcf2cfe23422b00d608323c7f762e72d7d12fc0f6eea320c46b3ef01270d38e4d48605a5da520dc1cd4649e09caf32b58b5e3ab5bc284671438e50f31f24dbe2cdc5e1e9edc8717dedf82e63e1546cab3a51bd0bb90c6652aae655374445a6a55266356e5ebed6f1b2eb5a3d05302742c935fcac6142806d2db1c8d6e94d3b0d74caf1bc3c2f65f5c2a62b213239c636dff6da3c0d626b343e3f80498ab0f2f283289b790a7e54d1dee414bf3612b102378abdc30f2442d4b6449c20dd64ca7b8d7d3203209c9c0246f53304757e73f9e7d78008b337ea779c79f7ff1d527d9439d0d1fa2211188a37e376afbccd2426355e4dd9d2d805a5afffdcc16438d66b29487ddf97f9b4a81f0c492aa7ed3084d6c1c3f3bbc9a18148fb452cd15098c4fc5c91b22ac27f82fa2d9cf9518b268003927f790149616b0b6c19230ad076ffb36dead43764e5befe921493520fea98d4c64dec2310ac17db0002aa1e96690079e214ec3de2c3051cfd73508e119a5753a59b7dd96e82a13d69b51119964594f1ef74d14ba93e0bacfc353dc92d1ecea2362db376ee00b1fe9404535cb47622e8150c84dc4c3db43ecb6e0911717e2a1f4f0fa92511e5e23f2a5ce2b4ed52e2a5f38df8a9c63544e3dd5e4e2d6eca08235586dac82e124891d9790df2300ff311b90f6198afb9fc4e2f810649e26ece4ecc8a4037733df2ead7470f7e16816f2b96b8c3dd1fe4b20f64971e793772417c88bfd99477a5ba1911095d34e3a9bcc18e677536bdb1da54d4889bccea1e12b25630691ba8a4f9879a1dc3595b1c3917e1ba874dc82bb330f4b2518447183914c03f119ccf2263c00618f7f0a9fc6ea0018bac1623d7dc4735feda4e286aa91bdba4de4265702038ee0d027f29c5568c1c4e156dc11ad53a1a7ea891739a9526e15cc20cba9301a3a410574f9273f1bbdb3b19f792f84283dcd833a43a6ae9addf9f64f1951c8d447286edb7a8687d2782b6bb6f16da312d518ac6ae29a94824d80e2d57b70276a680345e7d95762281384a856f360824fc388e89c663225478c253e3c32cc7b1e9032edb42e331fe95ff50bf72dc2e7da3ead7f93d2c15d5122f42a03cb1074a2823f975374473834c872a37244d6472df6d51ce95dc885cf24ba4a985d049a40db0e897d51c766db2074032df1764fc75c7d1c7d38eb4dc0ab683365f1c892c1c645e3701091229e0ec3d8f31faf846aef6f44976e7f57611e811ced334415e09a94d226861793774c8022bbeaeffef37de53645aba0f9717022d9f9c450255bb32914788a3d391a0a5b2ae90e923c9741b1c757b2981a23aa1de336c44208a1f0be28d8ca880d5f8dc97d3d7e538d060af58be1ca4868a95766e0edea944b99b5be76d507024cf1e4684a85d3506c9c6963a973fafc050b378b5c44cc8b4657a714adaf432a172eec7e33c47367cd3a179eb05341a1adb51e8fd3d76beb120e2064f093de541bcccae1613c12de5e094fa3ddec71465a84343cc7b3aeda98e1e353134066b68b58b3e407a67e06dd082346485bc1dbcb32c954427db533f6658a1a3fdf8e0a08ddb3a5aa0fff6b5473d3d774e0fa7155632e85c356d4af9c89e2280e6c6a9b21eea7cfe1f5654cfc5e3e6ca32327faae35d5f108ed35e7dfd41633224472211d0b40ac60b553c9f90c502ca05ebd4808de3fc0766bed03ffe83d1909504c2387c7b1ff6774ff33a5313caea422723bbc65ac89cd90d26f124ac986bc7178540612b170255def908129f85b30680acac0d0e3f0471d6b0b230580a1618a64ef495305d038662923bd3670fa60a3cfafbf88dc97d4a5eb3943b4c2e408d21387135458e3545f0eab36729b985326cc31ceae45c1de8cf8e6d949798999d6ffcac778fbae52c2c7ae68bcf2ad0383dad50adbb813e2454769859537f35e49521afd3434b90855a0a3f2f619ce154d79a05adc15d00ce6b01baa8b63a9073add1651e83c4322a7c009ef41dd881d5ef5fad618720da30ae104119a669ba1a04a7c8cf279831462b9fd686062b3beee173843be062fa51c7f40c8e7ba7a4be76833a721ff75183e73c21ce9ed62101fafc2543218fac6006056bcf9569943304edad46abe830281023a0f707af701536760af02af4e31da0d6a77c1a47909d2a10e571cc7e69ed4dba864bddae6c38aa51a34cbaa6ce512d6ee3bad59db8bed8bd14b0cf45515ed9a5caf5f023e6a0522b029a2530b01945fb58587f039a57e33e62a60aeeba77031fbff4df7372afb9c0c9a899806cc9cad1900c3b037c9a52e40ce082319c3b2a1d1510eb41307c4b70e5d459ef47e3056aa7bdd748aff46320e200b4370593278742e05702955e79ee9f3dcb480e57fb719e6b85487938c1acbeca1e7bccc9f27db4a480b3286f3562d6f388eb6acb5c56edff0e041d469b6c2127735c20e592b4a093ba4eccef8e0aad16c7d493ab28a1ed6e19d621431143c81fec3dbfae</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">Hey, password is required here.</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
     </div>
 
     
@@ -313,7 +285,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E5%8F%82%E8%80%83"><span class="nav-number">1.</span> <span class="nav-text">1, 参考</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E6%8A%A5%E9%94%99%E4%BF%A1%E6%81%AF"><span class="nav-number">2.</span> <span class="nav-text">1. 报错信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">3.</span> <span class="nav-text">2. 解决方案</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4"><span class="nav-number">4.</span> <span class="nav-text">3. 操作步骤</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -334,7 +305,7 @@
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">1</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
